@@ -11,16 +11,16 @@
     <mat-form-field class="col-12 col-lg-6">
       <mat-select placeholder="{{'Payroll.Payslip.Month'|translate}}" [(ngModel)]="searchPayslip.Month"
                   #month="ngModel" [ngModelOptions]="{standalone: true}" required>
-          <mat-option *ngFor="let month of monthList" [value]="month">
-              {{month}}
+          <mat-option *ngFor="let month of monthList" [value]="month.value">
+              {{month.viewValue}}
           </mat-option>
       </mat-select>
     </mat-form-field>
     <mat-form-field class="col-12 col-lg-6">
       <mat-select placeholder="{{'Payroll.Payslip.AcademicYear'|translate}}" [(ngModel)]="searchPayslip.AcademicYear"
                   #academicYear="ngModel" [ngModelOptions]="{standalone: true}" required>
-          <mat-option *ngFor="let academicYear of academicYearList" [value]="academicYear">
-              {{academicYear}}
+          <mat-option *ngFor="let academicYear of academicYearList" [value]="academicYear.id">
+              {{academicYear.academicYearCode}}
           </mat-option>
       </mat-select>
     </mat-form-field>
@@ -33,10 +33,10 @@
       </mat-select>
     </mat-form-field> -->
     <mat-form-field class="col-12 col-lg-6">
-      <mat-select placeholder="{{'Payroll.Payslip.Staff'|translate}}" [(ngModel)]="searchPayslip.StaffName"
+      <mat-select placeholder="{{'Payroll.Payslip.Staff'|translate}}" [(ngModel)]="searchPayslip.Staff"
                   #staffName="ngModel" [ngModelOptions]="{standalone: true}" required>
-          <mat-option *ngFor="let staffName of staffList" [value]="staffName">
-              {{staffName}}
+          <mat-option *ngFor="let staff of staffList" [value]="staff.id">
+              {{staff.employeeId}} - {{staff.firstName}} {{staff.lastName}}
           </mat-option>
       </mat-select>
     </mat-form-field>
