@@ -1,0 +1,229 @@
+.cal-month-view {
+  .cal-day-badge {
+    background-color: #d32f2f;
+  }
+
+  .cal-event {
+    background-color: #1E88E5;
+    border-color: #1E88E5;
+  }
+
+  .cal-day-cell {
+    &.cal-weekend .cal-day-number {
+      color: #d32f2f;
+    }
+  }
+}
+
+.cal-week-view {
+  .cal-event {
+    background-color: #1E88E5;
+    border-color: #1E88E5;
+    color: #fff;
+  }
+
+  .cal-header {
+    &.cal-today {
+      background-color: #e8fde7;
+    }
+
+    &.cal-weekend span {
+      color: #d32f2f;
+    }
+  }
+}
+
+.cal-day-view {
+  .cal-event {
+    background-color: #1E88E5;
+    border-color: #1E88E5;
+    color: #fff;
+  }
+}
+
+.dark-mode {
+  $bg-dark-primary: #1f262d;
+  $bg-dark-secondary: #394046;
+  $bg-active: #2c343a;
+  $text-color: #d5d6d7;
+  $border-color: rgba(black, .6);
+  $badge-color: #b94a48;
+  $event-color-secondary: #d1e8ff;
+
+  .cal-month-view {
+    background-color: $bg-dark-primary;
+
+    .cal-cell-row:hover {
+      background-color: $bg-dark-secondary;
+    }
+
+    .cal-cell-row .cal-cell:hover,
+    .cal-cell.cal-has-events.cal-open {
+      background-color: $bg-active;
+    }
+
+    .cal-days {
+      border-color: $border-color;
+    }
+
+    .cal-day-cell:not(:last-child) {
+      border-right-color: $border-color;
+    }
+
+    .cal-days .cal-cell-row {
+      border-bottom-color: $border-color;
+    }
+
+    .cal-day-badge {
+      background-color: $badge-color;
+      color: white;
+    }
+
+    .cal-event {
+      background-color: $bg-dark-secondary;
+      border-color: $event-color-secondary;
+      color: white;
+    }
+
+    .cal-day-cell.cal-weekend .cal-day-number {
+      color: indianred;
+    }
+
+    .cal-day-cell.cal-today {
+      background-color: $bg-dark-secondary;
+    }
+
+    .cal-day-cell.cal-drag-over {
+      background-color: darken($bg-active, 5%) !important;
+    }
+
+    .cal-open-day-events {
+      color: white;
+      background-color: $bg-dark-secondary;
+      box-shadow: inset 0 0 15px 0 rgba(black, 0.5);
+    }
+  }
+
+  .cal-week-view {
+    background-color: $bg-dark-primary;
+
+    .cal-day-headers {
+      border-color: $border-color;
+    }
+
+      .cal-day-headers .cal-header {
+        &:not(:last-child) {
+          border-right-color: $border-color;
+        }
+
+        &:first-child {
+          border-left-color: $border-color;
+        }
+      }
+
+        .cal-day-headers .cal-header:hover,
+        .cal-day-headers .cal-drag-over {
+          background-color: $bg-active;
+        }
+
+    .cal-day-column {
+      border-left-color: $border-color;
+    }
+
+    .cal-event {
+      background-color: $event-color-secondary;
+      border-color: $bg-dark-secondary;
+      color: $bg-dark-secondary;
+    }
+
+    .cal-all-day-events {
+      border-color: $border-color;
+    }
+
+    .cal-header.cal-today {
+      background-color: $bg-dark-secondary;
+    }
+
+    .cal-header.cal-weekend span {
+      color: indianred;
+    }
+
+    .cal-time-events {
+      border-color: $border-color;
+
+      .cal-day-columns {
+        &:not(.cal-resize-active) {
+          .cal-hour-segment:hover {
+            background-color: $bg-active;
+          }
+        }
+      }
+    }
+
+    .cal-hour-odd {
+      background-color: $bg-dark-secondary;
+    }
+
+    .cal-drag-over .cal-hour-segment {
+      background-color: $bg-active;
+    }
+
+    .cal-hour:not(:last-child) .cal-hour-segment,
+    .cal-hour:last-child :not(:last-child) .cal-hour-segment {
+      border-bottom-color: $border-color;
+    }
+  }
+
+  .cal-day-view {
+    background-color: $bg-dark-primary;
+
+    .cal-hour-rows {
+      border-color: $border-color;
+    }
+
+    .cal-hour:nth-child(odd) {
+      background-color: $bg-dark-secondary;
+    }
+
+    .cal-hour:not(:last-child) .cal-hour-segment,
+    .cal-hour:last-child :not(:last-child) .cal-hour-segment {
+      border-bottom-color: $border-color;
+    }
+
+    .cal-hour-segment:hover,
+    .cal-drag-over .cal-hour-segment {
+      background-color: $bg-active;
+    }
+
+    .cal-event {
+      background-color: $event-color-secondary;
+      border-color: $bg-dark-secondary;
+      color: $bg-dark-secondary;
+    }
+  }
+
+  .cal-tooltip.cal-tooltip-top .cal-tooltip-arrow {
+    border-top-color: black;
+  }
+
+  .cal-tooltip.cal-tooltip-right .cal-tooltip-arrow {
+    border-right-color: black;
+  }
+
+  .cal-tooltip.cal-tooltip-bottom .cal-tooltip-arrow {
+    border-bottom-color: black;
+  }
+
+  .cal-tooltip.cal-tooltip-left .cal-tooltip-arrow {
+    border-left-color: black;
+  }
+
+  .cal-tooltip-inner {
+    color: white;
+    background-color: black;
+  }
+  /*@include cal-theme( ( bg-primary: $bg-dark-primary, bg-secondary: $bg-dark-secondary, weekend-color: indianred, bg-active: $bg-active, border-color: $border-color, gray: $bg-dark-secondary, today-bg: $bg-dark-secondary, event-color-primary: $bg-dark-secondary ) );*/
+  .cal-month-view .cal-day-cell.cal-out-month .cal-day-number {
+    opacity: 0.15;
+  }
+}

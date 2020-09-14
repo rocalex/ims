@@ -9,3 +9,4 @@ Image-Storage
 dist
 obj
 /IMS.Web/package-lock.json
+/IMS.Web/wwwroot/css/
