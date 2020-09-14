@@ -1,0 +1,21 @@
+﻿<div class="rct-block">
+    <div class="rct-block-content">
+        <form class="row">
+            <mat-form-field class="form-group col-12 col-lg-6">
+                <mat-select placeholder="{{'Common.ResourceFileType'|translate}}" [(ngModel)]="selectedType"
+                            [ngModelOptions]="{standalone: true}" (selectionChange)="readResourceFile()" required>
+                    <mat-option *ngFor="let fileType of fileTypes" [value]="fileType">
+                        {{fileType}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </form>
+    </div>
+</div>
+
+<json-editor [options]="options" [data]="data" (change)="data = $event"></json-editor>
+<div class="col-12" *ngIf="data">
+    <button class="btn-icon-rounded btn-primary" matTooltip="Save" matTooltipPosition="above" (click)="updateResourceFile()">
+        <i class="zmdi zmdi-floppy"></i>
+    </button>
+</div>

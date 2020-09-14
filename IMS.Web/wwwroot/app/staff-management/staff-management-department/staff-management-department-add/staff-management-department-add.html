@@ -1,0 +1,56 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Staff.Department.AddDepartment'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" matTooltip="{{'Staff.Department.Departments'|translate}}" matTooltipPosition="above" routerLink="/staff/department/list" routerLinkActive="active"><i class="zmdi zmdi-view-list"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-block-content">
+        <form class="row">
+            <mat-form-field class="col-12 col-lg-6">
+                <input type="text" matInput placeholder="{{'Institute.AcademicYear.Code'|translate}}" required maxlength="20"
+                       [(ngModel)]="departmentCode" #departmentCodeModel="ngModel" [ngModelOptions]="{standalone: true}"
+                       (keyup)="checkWhiteSpace(departmentNameModel, departmentCodeModel)" (keydown)="resetError(departmentNameModel, departmentCodeModel)" />
+
+                <mat-error *ngIf="departmentCodeModel.invalid && departmentCodeModel.touched">
+                    <span *ngIf="departmentCodeModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                </mat-error>
+
+                <mat-hint class="mat-error" *ngIf="errorMessage !== ''">
+                    <span>{{errorMessage}}</span>
+                </mat-hint>
+
+                <mat-hint class="mat-error" *ngIf="departmentCodeModel.whiteSpaceError !== ''">
+                    <span>{{departmentCodeModel.whiteSpaceError}}</span>
+                </mat-hint>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <input type="text" matInput placeholder="{{'Staff.Department.DepartmentName'|translate}}" required maxlength="20"
+                       [(ngModel)]="departmentName" #departmentNameModel="ngModel" [ngModelOptions]="{standalone: true}"
+                       (keyup)="checkWhiteSpace(departmentNameModel, departmentCodeModel)" (keydown)="resetError(departmentNameModel, departmentCodeModel)" />
+
+                <mat-error *ngIf="departmentNameModel.invalid && departmentNameModel.touched">
+                    <span *ngIf="departmentNameModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                </mat-error>
+
+                <mat-hint class="mat-error" *ngIf="departmentNameModel.whiteSpaceError !== ''">
+                    <span>{{departmentNameModel.whiteSpaceError}}</span>
+                </mat-hint>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <input type="text" matInput placeholder="{{'Common.Description'|translate}}" maxlength="50"
+                       [(ngModel)]="departmentDescription" #departmentDescriptionModel="ngModel" [ngModelOptions]="{standalone: true}" />
+            </mat-form-field>
+
+            <div class="col-12">
+                <button class="btn-icon-rounded btn-primary" matTooltip="{{'Common.Save'|translate}}" matTooltipPosition="above" (click)="addDepartment()" 
+                        [disabled]="!(departmentNameModel.whiteSpaceError === '' && !errorMessage && departmentNameModel.valid && departmentCodeModel.whiteSpaceError === '' && departmentCodeModel.valid)">
+                    <i class="zmdi zmdi-floppy"></i>
+                </button>
+                <a class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="{{'Common.Cancel'|translate}}" matTooltipPosition="above" routerLink="/staff/department/list" routerLinkActive="active"><i class="zmdi zmdi-close"></i></a>
+            </div>
+        </form>
+    </div>
+</div>

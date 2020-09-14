@@ -1,0 +1,42 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Academic.Country.Countries'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary"
+       matTooltip="{{'Academic.Country.AddCountry'|translate}}" matTooltipPosition="before" *ngIf="isAllowed('Add')"
+       routerLink="/academic/country/add" routerLinkActive="active"><i class="zmdi zmdi-plus"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-full-block">
+        <div class="table-responsive">           
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th>{{'Common.Name'|translate}}</th>
+                        <th>{{'StudentManagement.LookUp.Code'|translate}}</th>
+                        <th>{{'StudentManagement.LookUp.Description'|translate}}</th>
+                        <th>{{'StudentManagement.LookUp.Status'|translate}}</th>
+                        <th>{{'Common.CreatedOn'|translate}}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let country of countries">
+                        <td>{{country.name}}</td>
+                        <td>{{country.code}}</td>
+                        <td>{{country.description}}</td>
+                        <td>{{country.status? 'Yes': 'No'}}</td>
+                        <td>{{country.createdOn|date}}</td>
+                        <td><a routerLink="/academic/country/{{country.id}}" matTooltip="{{'Academic.Country.EditCountry'|translate}}" *ngIf="isAllowed('Edit')"
+                               matTooltipPosition="above" routerLinkActive="active"><i class="zmdi zmdi-edit zmdi-hc-lg"></i></a></td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <div class="rct-block-title text-center" *ngIf="countries.length == 0">
+                {{'Academic.Country.NoCountryAdded'|translate}}
+            </div>
+        </div>
+    </div>
+</div>
+

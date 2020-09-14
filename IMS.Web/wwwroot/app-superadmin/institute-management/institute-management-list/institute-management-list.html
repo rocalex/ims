@@ -1,0 +1,42 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Admin.Institute.Institutes'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" matTooltip="Add Institute" matTooltipPosition="before" 
+       routerLink="/institute/add" routerLinkActive="active"><i class="zmdi zmdi-plus"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-full-block">
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th>{{'Admin.Institute.Name'|translate}}</th>
+                        <th>{{'Admin.Institute.Email'|translate}}</th>
+                        <th>{{'Admin.Institute.Code'|translate}}</th>
+                        <th>{{'Admin.Institute.Address'|translate}}</th>
+                        <th>{{'Admin.Institute.Location'|translate}}</th>
+                        <th>{{'Common.CreatedOn'|translate}}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let institute of institutes">
+                        <td>{{institute.name}}</td>
+                        <td>{{institute.admin.email}}</td>
+                        <td>{{institute.code}}</td>
+                        <td>{{institute.address}}</td>
+                        <td>{{institute.location}}</td>
+                        <td>{{institute.createdOn|date}}</td>
+                        <td><a matTooltip="Edit Institute" matTooltipPosition="above" 
+                               routerLink="/institute/{{institute.id}}" routerLinkActive="active">
+                            <i class="zmdi zmdi-edit zmdi-hc-lg"></i></a></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="rct-block-title text-center" *ngIf="!institutes.length">
+                No Institutes Added
+            </div>
+        </div>
+    </div>
+</div>

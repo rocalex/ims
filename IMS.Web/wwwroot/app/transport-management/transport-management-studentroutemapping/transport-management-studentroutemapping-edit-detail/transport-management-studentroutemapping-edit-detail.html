@@ -1,0 +1,35 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'TransportManagement.StudentRouteMapping.EditStudentRouteMapping'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" matTooltip="Details" matTooltipPosition="above" routerLink="/transportmanagement/studentroutemapping/list" routerLinkActive="active"><i class="zmdi zmdi-view-list"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-block-content">
+        <mat-form-field class="col-12 col-lg-6">
+            <mat-select placeholder="{{'TransportManagement.StudentRouteMapping.SelectRoute'|translate}}" [(ngModel)]="routeId"
+                        #RouteId="ngModel" [ngModelOptions]="{standalone: true}" disabled>
+                <mat-option *ngFor="let route of routes" [value]="route.id">
+                    {{route.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="col-12 col-lg-6">
+            <mat-select placeholder="{{'TransportManagement.StudentRouteMapping.SelectStudents'|translate}}" [(ngModel)]="selectedStudents"
+                        #Students="ngModel" [ngModelOptions]="{standalone: true}" multiple required>
+                <mat-option *ngFor="let student of students" [value]="student.id">
+                    {{student.rollNumber}} - {{student.firstName}} {{student.lastName}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <div class="col-12">
+            <button class="btn-icon-rounded btn-primary" matTooltip="Save" matTooltipPosition="above" (click)="addOrUpdateStudentRouteMapping()"
+                    [disabled]="!(Students.valid)">
+                <i class="zmdi zmdi-floppy"></i>
+            </button>
+            <a class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="Cancel" matTooltipPosition="above" routerLink="/transportmanagement/studentroutemapping/list" routerLinkActive="active"><i class="zmdi zmdi-close"></i></a>
+        </div>
+    </div>
+</div>

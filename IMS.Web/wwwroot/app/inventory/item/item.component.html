@@ -1,0 +1,252 @@
+<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Inventory.Item.AddItem'|translate}}</h2>
+    </div>
+</div>
+<div class="rct-block">
+    <div class="rct-block-content">
+        <mat-form-field class="col-12 col-lg-6">
+            <input type="text" matInput placeholder="{{'Inventory.Item.Code'|translate}}" required
+                NoSpaces [(ngModel)]="addItem.code" #RemainingQuantityModel="ngModel"
+                [ngModelOptions]="{standalone: true}" maxlength="20" />
+        </mat-form-field>
+        <mat-form-field class="col-12 col-lg-6">
+            <input type="text" matInput placeholder="{{'Inventory.Item.Name'|translate}}" required NoSpaces
+                [(ngModel)]="addItem.name" #ReferenceNoModel="ngModel" [ngModelOptions]="{standalone: true}"
+                maxlength="20" />
+        </mat-form-field>
+        <mat-form-field class="col-12 col-lg-6">
+            <input type="text" matInput placeholder="{{'Inventory.Item.AliasName'|translate}}" required NoSpaces
+                [(ngModel)]="addItem.alias" #ReferenceNoModel="ngModel" [ngModelOptions]="{standalone: true}"
+                maxlength="20" />
+        </mat-form-field>
+        <mat-form-field class="col-12 col-lg-6">
+            <mat-select placeholder="{{'Inventory.Item.UOM'|translate}}" [(ngModel)]="addItem.uomId"
+                #hostel="ngModel" [ngModelOptions]="{standalone: true}">
+                <mat-option *ngFor="let uom of uomList" [value]="uom.id">
+                    {{uom.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <div  class="col-12 col-lg-6 inline-block">
+            <mat-slide-toggle [(ngModel)]="addItem.status" [ngModelOptions]="{standalone: true}">
+                {{'Inventory.Item.Status'|translate}}
+            </mat-slide-toggle>
+        </div>
+        <mat-form-field class="col-12 col-lg-6">
+            <textarea type="text" matInput placeholder="{{'Inventory.Item.Description'|translate}}"
+                #PresentAddressModel="ngModel" [(ngModel)]="addItem.description"
+                [ngModelOptions]="{standalone: true}"></textarea>
+        </mat-form-field>
+        <mat-form-field class="col-12 col-lg-6">
+            <mat-select placeholder="{{'Inventory.Item.ItemType'|translate}}" [(ngModel)]="addItem.itemTypeId" 
+                #hostel="ngModel" [ngModelOptions]="{standalone: true}">
+                <mat-option *ngFor="let itemType of itemTypeList" [value]="itemType.id">
+                    {{itemType.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <div  class="col-12 col-lg-6 inline-block">
+            <mat-slide-toggle [(ngModel)]="addItem.isParent" [ngModelOptions]="{standalone: true}">
+                {{'Inventory.Item.IsParent'|translate}}
+            </mat-slide-toggle>
+        </div>
+        <div class="col-12 col-lg-6 form-group">
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" id="fileInput" aria-describedby="fileInput" #fileInput (change)="preview(fileInput.files)" accept=".jpg, .jpeg, .png" />
+                <label class="custom-file-label" for="fileInput">{{'Inventory.Item.UploadImage'|translate}}</label>
+            </div>
+            <img class="img-thumbnail mt-2" [src]="imgURL" height="200" *ngIf="imgURL" />
+        </div>
+        <div class="col-12">
+            <button class="btn-icon-rounded btn-primary" matTooltip="{{'Inventory.Item.Save'|translate}}"
+                matTooltipPosition="above" (click)="save()">
+                <i class="zmdi zmdi-floppy"></i>
+            </button>
+        </div>
+        <div>
+            <h2 class="mb-0">{{'Inventory.Item.SellingRate'|translate}}</h2>
+        </div>
+        <mat-form-field class="col-12 col-lg-6">
+            <input type="number" matInput placeholder="{{'Inventory.Item.SellingRateA'|translate}}" required NoSpaces
+                [(ngModel)]="addItem.sellingRateA" #ReferenceNoModel="ngModel" [ngModelOptions]="{standalone: true}"
+                maxlength="20" />
+        </mat-form-field>
+        <mat-form-field class="col-12 col-lg-6">
+            <input type="number" matInput placeholder="{{'Inventory.Item.SellingRateB'|translate}}" required NoSpaces
+                [(ngModel)]="addItem.sellingRateB" #ReferenceNoModel="ngModel" [ngModelOptions]="{standalone: true}"
+                maxlength="20" />
+        </mat-form-field>
+        <mat-form-field class="col-12 col-lg-6">
+            <mat-select placeholder="{{'Inventory.Item.SellingAccount'|translate}}" [(ngModel)]="addItem.sellingAccountId"
+                #hostel="ngModel" [ngModelOptions]="{standalone: true}">
+                <mat-option *ngFor="let account of accountList" [value]="account.id">
+                    {{account.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="col-12 col-lg-6">
+            <textarea type="text" matInput placeholder="{{'Inventory.Item.SellingDescription'|translate}}"
+                #PresentAddressModel="ngModel" [(ngModel)]="addItem.sellingDescription"
+                [ngModelOptions]="{standalone: true}"></textarea>
+        </mat-form-field>
+        <div>
+            <h2 class="mb-0">{{'Inventory.Item.PurchaseRate'|translate}}</h2>
+        </div>
+        <mat-form-field class="col-12 col-lg-6">
+            <input type="number" matInput placeholder="{{'Inventory.Item.PurchaseRateA'|translate}}" required NoSpaces
+                [(ngModel)]="addItem.purchaseRateA" #ReferenceNoModel="ngModel" [ngModelOptions]="{standalone: true}"
+                maxlength="20" />
+        </mat-form-field>
+        <mat-form-field class="col-12 col-lg-6">
+            <input type="number" matInput placeholder="{{'Inventory.Item.PurchaseRateB'|translate}}" required NoSpaces
+                [(ngModel)]="addItem.purchaseRateB" #ReferenceNoModel="ngModel" [ngModelOptions]="{standalone: true}"
+                maxlength="20" />
+        </mat-form-field>
+        <mat-form-field class="col-12 col-lg-6">
+            <mat-select placeholder="{{'Inventory.Item.PurchaseAccount'|translate}}" [(ngModel)]="addItem.purchaseAccountId" 
+                #hostel="ngModel" [ngModelOptions]="{standalone: true}">
+                <mat-option *ngFor="let account of accountList" [value]="account.id">
+                    {{account.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="col-12 col-lg-6">
+            <textarea type="text" matInput placeholder="{{'Inventory.Item.PurchaseDescription'|translate}}"
+                #PresentAddressModel="ngModel" [(ngModel)]="addItem.purchaseDescription"
+                [ngModelOptions]="{standalone: true}"></textarea>
+        </mat-form-field>
+    </div>
+</div>
+<div class="rct-block">
+    <div class="rct-block-content">
+        <mat-accordion>
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        {{'Inventory.Item.Notes'|translate}}
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="rct-block">
+                    <div class="rct-full-block">
+                        <div>
+                            <h2 class="mb-0">{{'Inventory.Item.NotesDetails'|translate}}</h2>
+                        </div>
+                        <div>
+                            <a class="btn-icon-rounded btn-outline-primary" *ngIf="isAllowed('Add')"
+                            (click)="enableAddingNotes()"
+                            matTooltip="{{'Inventory.Item.Add'|translate}}" matTooltipPosition="before"
+                            routerLinkActive="active"><i class="zmdi zmdi-plus"></i></a>
+                        </div>
+                        <mat-form-field class="col-12 col-lg-6" *ngIf="isAddingNotes">
+                            <mat-form-field class="col-12 col-lg-6">
+                                <textarea type="text" matInput placeholder="{{'Inventory.Item.PurchaseDescription'|translate}}"
+                                    #PresentAddressModel="ngModel" [(ngModel)]="addNote.purchaseDescription"
+                                    [ngModelOptions]="{standalone: true}"></textarea>
+                            </mat-form-field>
+                        </mat-form-field>
+                        <div class="table-responsive">
+                            <table class="table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>{{'Inventory.Item.Description'|translate}}</th>
+                                        <th>{{'Inventory.Item.CreatedOn'|translate}}</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let note of noteList">
+                                        <td>{{note.description}}</td>
+                                        <td>{{note.createdOn}}</td>
+                                        <td> <a class="nav-link" (click)="delete(note)"
+                                                *ngIf="isAllowed('Delete')" matTooltip="{{'Inventory.Item.Delete'|translate}}"
+                                                matTooltipPosition="above" routerLinkActive="active"><i
+                                                    class="zmdi zmdi-delete zmdi-hc-lg"></i></a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="rct-block-title text-center" *ngIf="noteList.length==0">
+                                {{'Inventory.Item.NoRecords'|translate}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </div>
+</div>
+<div class="rct-block">
+    <div class="rct-block-content">
+        <mat-accordion>
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        {{'Inventory.Item.Documents'|translate}}
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="rct-block">
+                    <div class="rct-full-block">
+                        <div>
+                            <h2 class="mb-0">{{'Inventory.Item.DocumentsDetails'|translate}}</h2>
+                        </div>
+                        <div>
+                            <a class="btn-icon-rounded btn-outline-primary" *ngIf="isAllowed('Add')"
+                            (click)="enableAddingDocument()"
+                            matTooltip="{{'Inventory.Item.Add'|translate}}" matTooltipPosition="before"
+                            routerLinkActive="active"><i class="zmdi zmdi-plus"></i></a>
+                        </div>
+                        <mat-form-field class="col-12 col-lg-6" *ngIf="isEnableAddingDocument">
+                            <input type="text" matInput placeholder="{{'Inventory.Item.DocumentName'|translate}}" required NoSpaces
+                                [(ngModel)]="addDocument.name" #ReferenceNoModel="ngModel" [ngModelOptions]="{standalone: true}"
+                                maxlength="20" />
+                        </mat-form-field>
+                        <mat-form-field class="col-12 col-lg-6">
+                            <input type="text" matInput placeholder="{{'Inventory.Item.ExpiryDate'|translate}}" required NoSpaces
+                                [(ngModel)]="addDocument.expiryDate" #ReferenceNoModel="ngModel" [ngModelOptions]="{standalone: true}"
+                                maxlength="20" />
+                        </mat-form-field>
+                        <mat-form-field class="col-12 col-lg-6">
+                            <input type="text" matInput placeholder="{{'Inventory.Item.MetaData'|translate}}" required NoSpaces
+                                [(ngModel)]="addDocument.metaData" #ReferenceNoModel="ngModel" [ngModelOptions]="{standalone: true}"
+                                maxlength="20" />
+                        </mat-form-field>
+                        <div class="col-12 col-lg-6 form-group inline-block">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="fileInput" aria-describedby="fileInputDocument" #fileInputDocument (change)="previewDocument(fileInputDocument.files)" />
+                                <label class="custom-file-label" for="fileInputDocument">{{'Inventory.Item.UploadImage'|translate}}</label>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>{{'Inventory.Item.DocumentName'|translate}}</th>
+                                        <th>{{'Inventory.Item.ExpiryDate'|translate}}</th>
+                                        <th>{{'Inventory.Item.MetaData'|translate}}</th>
+                                        <th>{{'Inventory.Item.DocumentUrl'|translate}}</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let document of documentList">
+                                        <td>{{document.code}}</td>
+                                        <td>{{document.name}}</td>
+                                        <td>{{document.createdOn | date}}</td>
+                                        <td>{{document.status}}</td>
+                                        <td> <a class="nav-link" (click)="deleteDocument(document)"
+                                                *ngIf="isAllowed('Delete')" matTooltip="{{'Inventory.Item.Delete'|translate}}"
+                                                matTooltipPosition="above" routerLinkActive="active"><i
+                                                    class="zmdi zmdi-delete zmdi-hc-lg"></i></a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="rct-block-title text-center" *ngIf="documentList.length==0">
+                                {{'Inventory.Item.NoRecords'|translate}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </div>
+</div>

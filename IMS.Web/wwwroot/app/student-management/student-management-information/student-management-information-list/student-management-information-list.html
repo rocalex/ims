@@ -1,0 +1,126 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Student.Information.Students'|translate}}</h2>
+    </div>
+    <div>
+        <button matTooltip="Upload" matTooltipPosition="above" *ngIf="isAllowed('Add')" class="btn-icon-rounded btn-outline-primary" (click)="openImportDialog(studentImport)"><i class="zmdi zmdi-upload"></i></button>
+        <a class="ml-2 btn-icon-rounded btn-outline-primary" *ngIf="isAllowed('Add')"
+           matTooltip="{{'Student.Information.AddStudent'|translate}}" matTooltipPosition="before"
+           routerLink="/student/information/add" routerLinkActive="active"><i class="zmdi zmdi-plus"></i></a>
+        <a class="btn-icon-rounded btn-outline-primary" matTooltip="{{'Student.Information.Students'|translate}}" matTooltipPosition="above" 
+        routerLink="/student/information/classlist" routerLinkActive="active"><i class="zmdi zmdi-view-list"></i></a>
+    </div>
+</div>
+<div class="Shop-grid-wrapper">
+    <div class="shop-head row mb-20">
+        <div class="col-12 col-md-6">
+            <div class="has-wrapper mb-0 form-group">
+                <input name="search" id="search-todo" (keyup)="searchStudent()" [(ngModel)]="search"
+                       [ngModelOptions]="{standalone: true}" placeholder="{{'Student.Information.Students'|translate}}"
+                       type="search" class="has-input-right input-lg-icon pl-15 form-control">
+                <i class="zmdi zmdi-search search-icon"></i>
+            </div>
+        </div>
+        <button matTooltip="Filter" matTooltipPosition="above" class="ml-2 btn-icon-rounded btn-outline-primary" (click)="openFilter(filterStudent)"><i class="zmdi zmdi-filter-list"></i></button>
+    </div>
+</div>
+<div class="shop-grid">
+    <div class="row">
+        <div class="col-12 col-md-6 col-lg-4 col-xl-3" *ngFor="let student of filteredData">
+            <div class="rct-block overflow-hidden">
+                <div class="rct-block-content">
+                    <div class="product-image mb-20 embed-responsive embed-responsive-1by1">
+                        <img [src]="((student.personalImage)?student.personalImage:'/assets/img/default_user.png')" alt="product" class="embed-responsive-item rounded-circle" />
+                    </div>
+                    <div class="rpoduct-detail row">
+                        <h4 class="col-12 mb-15">{{student.firstName}} {{student.lastName}}</h4>
+                        <div class="col-6 p-2 text-grey">
+                            <i class="mr-3 zmdi zmdi-cake zmdi-hc-lg"></i>
+                            <span>{{student.dateOfBirth|date}}</span>
+                        </div>
+                        <div class="col-6 p-2 text-grey">
+                            <i class="mr-3 zmdi zmdi-smartphone zmdi-hc-lg"></i>
+                            <span>{{student.mobileNumber}}</span>
+                        </div>
+                        <div class="col-6 p-2 text-grey">
+                            <i class="mr-3 zmdi zmdi-confirmation-number zmdi-hc-lg"></i>
+                            <span>{{student.rollNumber}}</span>
+                        </div>
+                        <div class="col-6 p-2 text-grey">
+                            <i class="mr-3 zmdi zmdi-confirmation-number zmdi-hc-lg"></i>
+                            <span>{{student.admissionNumber}}</span>
+                        </div>
+                        <div class="col-6 p-2 text-grey">
+                            <i class="mr-3 zmdi zmdi-calendar-alt zmdi-hc-lg"></i>
+                            <span>{{student.admissionDate|date}}</span>
+                        </div>
+                        <div class="col-6 p-2 text-grey">
+                            <i class="mr-3 zmdi zmdi-calendar-alt zmdi-hc-lg"></i>
+                            <span>{{student.createdOn|date}}</span>
+                        </div>
+                        <div class="col-6 p-2 text-grey">
+                            <i class="mr-3 zmdi zmdi-info zmdi-hc-lg"></i>
+                            <span>{{student.currentClass?.name}}</span>
+                        </div>
+                        <div class="col-6 p-2 text-grey">
+                            <i class="mr-3 zmdi zmdi-info zmdi-hc-lg"></i>
+                            <span>{{student.sectionMap?.name}}</span>
+                        </div>
+                    </div>
+                    <div class="rct-block-footer-drawer">
+                        <a class="btn-icon-rounded btn-outline-primary" *ngIf="isAllowed('Edit')" matTooltip="Edit" matTooltipPosition="above" routerLink="/student/information/{{student.id}}" routerLinkActive="active"><i class="zmdi zmdi-edit"></i></a>
+                        <a class="ml-2 btn-icon-rounded btn-outline-primary" matTooltip="Email" matTooltipPosition="above" routerLink="/student/notification/{{student.id}}" routerLinkActive="active"><i class="zmdi zmdi-email"></i></a>
+                        <button *ngIf="!student.isArchived" class="ml-2 btn-icon-rounded btn-outline-primary"  matTooltip="Archive" matTooltipPosition="above" (click)="archiveStudent(student.id)"><i class="zmdi zmdi-archive"></i></button>
+                        <button class="ml-2 btn-icon-rounded btn-outline-primary" matTooltip="In-Active" *ngIf="isAllowed('Delete')" matTooltipPosition="above" (click)="markActiveAndInActiveStudent(student.id)"><i class="zmdi zmdi-archive"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 rct-block rct-block-title text-center" *ngIf="filteredData.length==0">
+            No Student Added
+        </div>
+    </div>
+</div>
+
+<ng-template #filterStudent>
+    <div>
+        <h5>Filter Student</h5>
+    </div>
+    <mat-form-field>
+        <mat-select placeholder="{{'MarkManagement.ClassExam.SelectClass'|translate}}" [(ngModel)]="selectedClass"
+                    #ClassId="ngModel" [ngModelOptions]="{standalone: true}" required>
+            <mat-option *ngFor="let class of initialData.classes" [value]="class">
+                {{class.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-select placeholder="{{'MarkManagement.ClassExam.SelectSection'|translate}}" [(ngModel)]="section"
+                    #SectionId="ngModel" [ngModelOptions]="{standalone: true}" required>
+            <mat-option *ngFor="let section of initialData.sections" [value]="section">
+                {{section.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <button class="btn-icon-rounded btn-primary" matTooltip="Search" matTooltipPosition="above" (click)="filterData(); search=''">
+        <i class="zmdi zmdi-search"></i>
+    </button>
+    <button class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="Cancel" matTooltipPosition="above" (click)="closeModal(); search=''">
+        <i class="zmdi zmdi-close"></i>
+    </button>
+</ng-template>
+
+<ng-template #studentImport>
+    <button class="btn-icon-rounded btn-outline-primary" matTooltip="{{'Staff.Master.DownloadSample'|translate}}"
+            matTooltipPosition="before" (click)="downloadFile()">
+        <i class="zmdi zmdi-gradient"></i>
+    </button>
+    <div class="my-3">
+        <div class="custom-file">
+            <input type="file" class="custom-file-input" id="fileInput" aria-describedby="fileInput" #fileInput accept=".xlsx" />
+            <label class="custom-file-label" for="fileInput">Choose file</label>
+        </div>
+    </div>
+    <button class="btn-icon-rounded btn-outline-primary" matTooltip="Save" matTooltipPosition="above" (click)="importExcel()"><i class="zmdi zmdi-floppy"></i></button>
+    <button class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="Cancel" matTooltipPosition="above" (click)="closeImportDialog()"><i class="zmdi zmdi-close"></i></button>
+</ng-template>

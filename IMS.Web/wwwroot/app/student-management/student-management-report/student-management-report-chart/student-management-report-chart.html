@@ -1,0 +1,26 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Staff.Report.Charts'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" matTooltip="Details" matTooltipPosition="above" routerLink="/student/report/list" routerLinkActive="active"><i class="zmdi zmdi-view-list"></i></a>
+</div>
+<div class="page-title">
+    <button class="btn btn-outline-secondary" (click)="barChartType = 'bar'; barChartLegend = false;">Bar</button>
+    <button class="btn btn-outline-secondary ml-1" (click)="barChartType = 'doughnut'; barChartLegend = true;">Dough Nut</button>
+    <button class="btn btn-outline-secondary ml-1" (click)="barChartType = 'pie'; barChartLegend = true;">Pie</button>
+</div>
+<div class="row">
+    <!-- Class Wise Students -->
+    <div class="col-12 col-lg-6">
+        <div class="rct-block">
+            <div class="rct-block-title">
+                <!--<h2>{{'StudentManagement.Dashboard.ClassWiseStudents'|translate}}</h2>-->
+            </div>
+            <div class="rct-block-content">
+                <canvas baseChart [datasets]="barChartData" [options]="getChartOption()"
+                        [labels]="barChartLabels" [legend]="barChartLegend"
+                        [colors]="barChartColor" [chartType]="barChartType"></canvas>
+            </div>
+        </div>
+    </div>
+</div>

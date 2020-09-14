@@ -1,0 +1,28 @@
+﻿<div class="rct-block">
+    <div class="rct-full-block">
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th>{{'UserManagement.UserGroupFeature.Code'|translate}}</th>
+                        <th>{{'Common.Name'|translate}}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let userGroup of userGroups; let i =index">
+                        <td>{{userGroup.code}}</td>
+                        <td>{{userGroup.name}}</td>
+                        <td>
+                            <a routerLink="/usermanagement/permission/{{userGroup.id}}" *ngIf="isAllowed('Edit')"
+                               routerLinkActive="active">{{'UserManagement.UserGroupFeature.AccessControl'|translate}}</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="rct-block-title text-center" *ngIf="userGroups.length==0">
+                {{'UserManagement.UserGroupFeature.NoPermissionsAdded'|translate}}
+            </div>
+        </div>
+    </div>
+</div>

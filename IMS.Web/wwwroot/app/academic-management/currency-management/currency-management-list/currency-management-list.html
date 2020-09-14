@@ -1,0 +1,41 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Academic.Currency.Currencies'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary"
+       matTooltip="{{'Academic.Currency.AddCurrency'|translate}}" matTooltipPosition="before" *ngIf="isAllowed('Add')"
+       routerLink="/academic/currency/add" routerLinkActive="active"><i class="zmdi zmdi-plus"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-full-block">
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th>{{'Common.Name'|translate}}</th>
+                        <th>{{'Academic.Currency.Symbol'|translate}}</th>
+                        <th>{{'StudentManagement.LookUp.Description'|translate}}</th>
+                        <th>{{'StudentManagement.LookUp.Status'|translate}}</th>
+                        <th>{{'Common.CreatedOn'|translate}}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let currency of currencies">
+                        <td>{{currency.currencyName}}</td>
+                        <td>{{currency.symbol}}</td>
+                        <td>{{currency.description}}</td>
+                        <td>{{currency.status? 'Yes': 'No'}}</td>
+                        <td>{{currency.createdOn|date}}</td>
+                        <td><a routerLink="/academic/currency/{{currency.id}}" matTooltip="{{'Academic.Currency.EditCurrency'|translate}}" *ngIf="isAllowed('Edit')"
+                               matTooltipPosition="above" routerLinkActive="active"><i class="zmdi zmdi-edit zmdi-hc-lg"></i></a></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="rct-block-title text-center" *ngIf="currencies.length==0">
+                {{'Academic.Currency.NoCurrencyAdded'|translate}}
+            </div>
+        </div>
+    </div>
+</div>
+

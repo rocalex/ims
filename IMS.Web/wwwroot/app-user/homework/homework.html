@@ -1,0 +1,291 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Staff.Homework.Homework'|translate}}</h2>
+    </div>
+</div>
+
+<div *ngIf="isStaff">
+    <div class="rct-block">
+        <div class="rct-block-content">
+            <form class="row">
+                <mat-form-field class="form-group col-12 col-lg-6">
+                    <mat-select placeholder="{{'Staff.Homework.SelectStaff'|translate}}" [(ngModel)]="homeWork.StaffId" disabled
+                                #StaffId="ngModel" [ngModelOptions]="{standalone: true}" (selectionChange)="resetHomework()" required>
+                        <mat-option *ngFor="let staff of initialData.staffs" [value]="staff.id">
+                            {{staff.employeeId}} - {{staff.firstName}} {{staff.lastName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class="form-group col-12 col-lg-6">
+                    <mat-select placeholder="{{'Staff.Homework.SelectClass'|translate}}" [(ngModel)]="homeWork.ClassId"
+                                #ClassId="ngModel" [ngModelOptions]="{standalone: true}" (selectionChange)="resetHomework()" required>
+                        <mat-option *ngFor="let class of initialData.classes" [value]="class.id" [disabled]="isDisabledClass(class.id)">
+                            {{class.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class="form-group col-12 col-lg-6">
+                    <mat-select placeholder="{{'Staff.Homework.SelectSection'|translate}}" [(ngModel)]="homeWork.SectionId"
+                                #SectionId="ngModel" [ngModelOptions]="{standalone: true}" (selectionChange)="resetHomework()" required>
+                        <mat-option *ngFor="let section of initialData.sections" [value]="section.id">
+                            {{section.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class="form-group col-12 col-lg-6">
+                    <input matInput [matDatepicker]="homeworkDate" placeholder="{{'Staff.Homework.Date'|translate}} *"
+                           (dateChange)="homeWork.HomeworkDate = $event.value; resetHomework()" [value]="homeWork.HomeworkDate" disabled required>
+                    <mat-datepicker-toggle matSuffix [for]="homeworkDate"></mat-datepicker-toggle>
+                    <mat-datepicker #homeworkDate disabled="false"></mat-datepicker>
+                </mat-form-field>
+                <div class="col-12">
+                    <button class="btn-icon-rounded btn-primary" matTooltip="{{'Staff.Homework.SearchHomework'|translate}}"
+                            matTooltipPosition="above" (click)="getHomework()" [disabled]="!(ClassId.valid
+                        && SectionId.valid && (homeWork.HomeworkDate !== null && homeWork.HomeworkDate !== undefined))">
+                        <i class="zmdi zmdi-search"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="rct-block" *ngIf="homeWork.HomeworkSubjectMappings.length">
+        <div class="rct-full-block">
+            <div class="table-responsive">
+                <table class="table mb-0">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>{{'Staff.Homework.Sno'|translate}}</th>
+                            <th>{{'Staff.Homework.SubjectCode'|translate}}</th>
+                            <th>{{'Staff.Homework.SubjectName'|translate}}</th>
+                            <th>{{'Staff.Homework.Homework'|translate}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let homeworkSubject of homeWork.HomeworkSubjectMappings; let i = index">
+                            <td>
+                                <div class="form-group col-12 col-lg-6">
+                                    <mat-checkbox [(ngModel)]="homeworkSubject.IsSelected"
+                                                  [ngModelOptions]="{standalone: true}"></mat-checkbox>
+                                </div>
+                            </td>
+                            <td>{{i+1}}</td>
+                            <td>{{homeworkSubject.Subject.code}}</td>
+                            <td>{{homeworkSubject.Subject.name}}</td>
+                            <td>
+                                <mat-form-field class="mb-0">
+                                    <input type="text" matInput placeholder="{{'Staff.Homework.Homework'|translate}}" required NoSpaces
+                                           [(ngModel)]="homeworkSubject.HomeworkData" #HomeworkDataModel="ngModel" [ngModelOptions]="{standalone: true}"
+                                           maxlength="250" />
+                                    <mat-error *ngIf="HomeworkDataModel.invalid && HomeworkDataModel.touched">
+                                        <span *ngIf="HomeworkDataModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                                        <span *ngIf="(!HomeworkDataModel.hasError('required') && HomeworkDataModel.hasError('whitespace'))">{{'Common.WhiteSpace'|translate}}</span>
+                                    </mat-error>
+                                </mat-form-field>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="rct-block-title text-center" *ngIf="homeWork.HomeworkSubjectMappings.length==0">
+                    {{'Staff.Homework.NoSubjectFound'|translate}}
+                </div>
+            </div>
+            <div class="p-2">
+                <button class="btn-icon-rounded btn-primary" matTooltip="{{'Staff.Homework.SaveHomework'|translate}}" matTooltipPosition="above"
+                        (click)="addOrUpdateHomework()" [disabled]="!isAllowedToSave()">
+                    <i class="zmdi zmdi-floppy"></i>
+                </button>
+                <button class="ml-1 btn-icon-rounded btn-primary" matTooltip="{{'Staff.Homework.Cancel'|translate}}" matTooltipPosition="above"
+                        (click)="resetHomework()">
+                    <i class="zmdi zmdi-close"></i>
+                </button>
+                <button class="ml-1 btn-icon-rounded btn-primary" matTooltip="{{'Staff.Homework.SendSmsEmail'|translate}}"
+                        matTooltipPosition="above" [disabled]="!isAllowedToSend()" (click)="openSendOptionPopup(homeworkSendPopup)">
+                    <i class="zmdi zmdi-email"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <ng-template #homeworkSendPopup>
+        <div class="mat-dialog-content">
+            <div class="row">
+                <mat-form-field class="form-group col-12 col-lg-6">
+                    <mat-select placeholder="{{'Staff.Homework.SelectType'|translate}}" [(ngModel)]="selectedOption"
+                                [ngModelOptions]="{standalone: true}" required>
+                        <mat-option *ngFor="let option of sendOption" [value]="option">
+                            {{option}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div *ngIf="selectedOption === 'Message'">
+                <mat-form-field>
+                    <input type="text" matInput placeholder="{{'Staff.Homework.Message'|translate}}" required NoSpaces
+                           [(ngModel)]="message.Message" #MessageModel="ngModel" [ngModelOptions]="{standalone: true}"
+                           maxlength="250" />
+                    <mat-error *ngIf="MessageModel.invalid && MessageModel.touched">
+                        <span *ngIf="MessageModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                        <span *ngIf="(!MessageModel.hasError('required') && MessageModel.hasError('whitespace'))">{{'Common.WhiteSpace'|translate}}</span>
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <input type="text" matInput placeholder="{{'Staff.Homework.OtherNumberInCommaSeperate'|translate}}"
+                           [(ngModel)]="otherNumber" #NumberModel="ngModel" [ngModelOptions]="{standalone: true}" />
+                </mat-form-field>
+                <div class="table-responsive mt-2">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>{{'Staff.Homework.Sno'|translate}}</th>
+                                <th>{{'Staff.Homework.StudentName'|translate}}</th>
+                                <th>{{'Staff.Homework.MobileNumber'|translate}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let student of students; let j = index">
+                                <td>
+                                    <div class="form-group col-12 col-lg-6">
+                                        <mat-checkbox [(ngModel)]="student.isSelected"
+                                                      [ngModelOptions]="{standalone: true}"></mat-checkbox>
+                                    </div>
+                                </td>
+                                <td>{{j+1}}</td>
+                                <td>{{student.firstName}} {{student.lastName}}</td>
+                                <td>{{student.rollNumber}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <button class="btn-icon-rounded btn-primary" matTooltip="{{'Staff.Homework.SendHomework'|translate}}" matTooltipPosition="above"
+                        (click)="sendMessage()" [disabled]="!(MessageModel.valid && isAllowedToSendForSelectedStudent())">
+                    <i class="zmdi zmdi-email"></i>
+                </button>
+                <button class="ml-1 btn-icon-rounded btn-primary" matTooltip="{{'Staff.Homework.Cancel'|translate}}" matTooltipPosition="above"
+                        (click)="closePop()">
+                    <i class="zmdi zmdi-close"></i>
+                </button>
+            </div>
+            <div *ngIf="selectedOption === 'Mail'">
+                <mat-form-field>
+                    <input type="text" matInput placeholder="{{'Staff.Homework.Subject'|translate}}" required NoSpaces
+                           [(ngModel)]="mail.Subject" #SubjectModel="ngModel" [ngModelOptions]="{standalone: true}"
+                           maxlength="250" />
+                    <mat-error *ngIf="SubjectModel.invalid && SubjectModel.touched">
+                        <span *ngIf="SubjectModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                        <span *ngIf="(!SubjectModel.hasError('required') && SubjectModel.hasError('whitespace'))">{{'Common.WhiteSpace'|translate}}</span>
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <input type="text" matInput placeholder="{{'Staff.Homework.Message'|translate}}" required NoSpaces
+                           [(ngModel)]="mail.Message" #MessageModel="ngModel" [ngModelOptions]="{standalone: true}"
+                           maxlength="250" />
+                    <mat-error *ngIf="MessageModel.invalid && MessageModel.touched">
+                        <span *ngIf="MessageModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                        <span *ngIf="(!MessageModel.hasError('required') && MessageModel.hasError('whitespace'))">{{'Common.WhiteSpace'|translate}}</span>
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <input type="text" matInput placeholder="{{'Staff.Homework.BccInCommaSeperate'|translate}}"
+                           [(ngModel)]="otherNumber" #NumberModel="ngModel" [ngModelOptions]="{standalone: true}" />
+                </mat-form-field>
+                <div class="table-responsive mt-2">
+                    <table class="table mb-0">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>{{'Staff.Homework.Sno'|translate}}</th>
+                                <th>{{'Staff.Homework.StudentName'|translate}}</th>
+                                <th>{{'Staff.Homework.MobileNumber'|translate}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let student of students; let j = index">
+                                <td>
+                                    <div class="form-group col-12 col-lg-6">
+                                        <mat-checkbox [(ngModel)]="student.isSelected"
+                                                      [ngModelOptions]="{standalone: true}"></mat-checkbox>
+                                    </div>
+                                </td>
+                                <td>{{j+1}}</td>
+                                <td>{{student.firstName}} {{student.lastName}}</td>
+                                <td>{{student.rollNumber}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <button class="btn-icon-rounded btn-primary" matTooltip="{{'Staff.Homework.SendHomework'|translate}}" matTooltipPosition="above"
+                        (click)="sendMail()" [disabled]="!(SubjectModel.valid && MessageModel.valid && isAllowedToSendForSelectedStudent())">
+                    <i class="zmdi zmdi-email"></i>
+                </button>
+                <button class="ml-1 btn-icon-rounded btn-primary" matTooltip="{{'Staff.Homework.Cancel'|translate}}" matTooltipPosition="above"
+                        (click)="closePop()">
+                    <i class="zmdi zmdi-close"></i>
+                </button>
+            </div>
+        </div>
+    </ng-template>
+</div>
+
+<div class="rct-block" *ngIf="!isStaff">
+    <div class="rct-block-content">
+        <mat-form-field class="form-group col-12 col-lg-6">
+            <input matInput [matDatepicker]="dateOfHomeworkModel" placeholder="{{'Staff.Homework.Date'|translate}} *"
+                   (dateChange)="dateOfHomework = $event.value" [value]="dateOfHomework" disabled required>
+            <mat-datepicker-toggle matSuffix [for]="dateOfHomeworkModel"></mat-datepicker-toggle>
+            <mat-datepicker #dateOfHomeworkModel disabled="false"></mat-datepicker>
+        </mat-form-field>
+        <button class="btn-icon-rounded btn-primary" matTooltip="{{'Staff.Homework.SearchHomework'|translate}}"
+                matTooltipPosition="above" (click)="getStudentHomework()" [disabled]="!((dateOfHomework !== null
+                && dateOfHomework !== undefined))">
+            <i class="zmdi zmdi-search"></i>
+        </button>
+        <br />
+        <div *ngFor="let homework of studentHomeworks">
+            <p>
+                <strong>SMS Sent:</strong>
+                {{isMessageSend(homework.lastHomeworkMessageMapping?.studentRecieveHomeworkMessageMappings)}}
+            </p>
+            <p>
+                <strong>SMS Text:</strong>
+                {{homework.lastHomeworkMailMapping?.message}}
+            </p>
+            <p>
+                <strong>Mail Sent:</strong>
+                {{isMessageSend(homework.lastHomeworkMailMapping?.studentRecieveHomeworkMailMappings)}}
+            </p>
+            <p>
+                <strong>SMS Text:</strong>
+                {{homework.lastHomeworkMailMapping?.message}}
+            </p>
+            <div class="table-responsive">
+                <table class="table mb-0">
+                    <thead>
+                        <tr>
+                            <th>{{'Staff.Homework.Sno'|translate}}</th>
+                            <th>{{'Staff.Homework.SubjectCode'|translate}}</th>
+                            <th>{{'Staff.Homework.SubjectName'|translate}}</th>
+                            <th>{{'Staff.Homework.Homework'|translate}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let homeworkSubjectMapping of homework.homeworkSubjectMappings; let j = index">
+                            <td>{{j+1}}</td>
+                            <td>{{homeworkSubjectMapping.subject?.code}}</td>
+                            <td>{{homeworkSubjectMapping.subject?.name}}</td>
+                            <td>{{homeworkSubjectMapping.homeworkData}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="rct-block-title text-center" *ngIf="studentHomeworks.length==0">
+            {{'Staff.Homework.NoSubjectFound'|translate}}
+        </div>
+    </div>
+</div>

@@ -1,0 +1,51 @@
+<div class="page-title d-flex justify-content-between align-items-center">
+  <div class="page-title-wrap">
+      <h2 class="mb-0">{{'Payroll.Payslip.Title'|translate}}</h2>
+  </div>
+  <button class="btn-icon-rounded btn-outline-primary" *ngIf="isAllowed('Print')"
+     matTooltip="{{'Payroll.Component.Add'|translate}}" matTooltipPosition="before"
+     ><i class="zmdi zmdi-plus"></i></button>
+</div>
+<div class="rct-block">
+  <div class="rct-block-content">
+    <mat-form-field class="col-12 col-lg-6">
+      <mat-select placeholder="{{'Payroll.Payslip.Month'|translate}}" [(ngModel)]="searchPayslip.Month"
+                  #month="ngModel" [ngModelOptions]="{standalone: true}" required>
+          <mat-option *ngFor="let month of monthList" [value]="month">
+              {{month}}
+          </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="col-12 col-lg-6">
+      <mat-select placeholder="{{'Payroll.Payslip.AcademicYear'|translate}}" [(ngModel)]="searchPayslip.AcademicYear"
+                  #academicYear="ngModel" [ngModelOptions]="{standalone: true}" required>
+          <mat-option *ngFor="let academicYear of academicYearList" [value]="academicYear">
+              {{academicYear}}
+          </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <!-- <mat-form-field class="col-12 col-lg-6">
+      <mat-select placeholder="{{'Payroll.Payslip.'|translate}}" [(ngModel)]="searchPayslip.Group"
+                  #group="ngModel" [ngModelOptions]="{standalone: true}" required>
+          <mat-option *ngFor="let group of groupList" [value]="group">
+              {{group}}
+          </mat-option>
+      </mat-select>
+    </mat-form-field> -->
+    <mat-form-field class="col-12 col-lg-6">
+      <mat-select placeholder="{{'Payroll.Payslip.Staff'|translate}}" [(ngModel)]="searchPayslip.StaffName"
+                  #staffName="ngModel" [ngModelOptions]="{standalone: true}" required>
+          <mat-option *ngFor="let staffName of staffList" [value]="staffName">
+              {{staffName}}
+          </mat-option>
+      </mat-select>
+    </mat-form-field>
+    
+    <div class="col-12">
+      <button class="btn-icon-rounded btn-primary" matTooltip="{{'Payroll.Payslip.Search'|translate}}" matTooltipPosition="above" (click)="search()">
+          <i class="zmdi zmdi-search"></i>
+      </button>
+    </div>
+  </div>
+</div>
+  

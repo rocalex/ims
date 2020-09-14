@@ -1,0 +1,62 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Administration.LookUp.EditLookUp'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" matTooltip="Details" matTooltipPosition="above" routerLink="/administration/lookup/list" routerLinkActive="active"><i class="zmdi zmdi-view-list"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-block-content">
+        <form SubjectForm="ngForm" class="row">
+            <mat-form-field class="col-12 col-lg-6">
+                <input type="text" matInput placeholder="{{'Administration.LookUp.Code'|translate}}" required NoSpaces
+                       [(ngModel)]="updateLookUp.Code" #Code="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20"
+                       (keydown)="resetError('Code')" />
+                <mat-error *ngIf="Code.invalid && Code.touched">
+                    <span *ngIf="Code.hasError('required')">{{'Common.Required'|translate}}</span>
+                    <span *ngIf="(!Code.hasError('required') && Code.hasError('whitespace'))">{{'Administration.LookUp.CodeWhiteSpace'|translate}}</span>
+                    <span *ngIf="hasError('Code') && errorMessage">{{error.Message}}</span>
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="col-12 col-lg-6">
+                <input type="text" matInput placeholder="{{'Administration.LookUp.Name'|translate}}" required NoSpaces
+                       [(ngModel)]="updateLookUp.Name" #Name="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20"
+                       (keydown)="resetError('Name')" />
+                <mat-error *ngIf="Name.invalid && Name.touched">
+                    <span *ngIf="Name.hasError('required')">{{'Common.Required'|translate}}</span>
+                    <span *ngIf="(!Name.hasError('required') && Name.hasError('whitespace'))">{{'Administration.LookUp.NameWhiteSpace'|translate}}</span>
+                    <span *ngIf="hasError('Name') && errorMessage">{{error.Message}}</span>
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="col-12 col-lg-6">
+                <textarea matInput placeholder="{{'Administration.LookUp.Description'|translate}}" [(ngModel)]="updateLookUp.Description"
+                          [ngModelOptions]="{standalone: true}"></textarea>
+            </mat-form-field>
+            <mat-form-field class="col-12 col-lg-6">
+                <mat-select placeholder="{{'Administration.LookUp.SelectLookUp'|translate}}" [(ngModel)]="selectedLookUp" [ngModelOptions]="{standalone: true}" required>
+                    <mat-option *ngFor="let lookUp of lookUps" [value]="lookUp">
+                        {{lookUp.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div class="form-group col-12 col-lg-6">
+                <mat-slide-toggle [(ngModel)]="updateLookUp.Status" [ngModelOptions]="{standalone: true}">{{'Administration.LookUp.Status'|translate}}</mat-slide-toggle>
+            </div>
+            <div class="form-group col-12 col-lg-6">
+                <mat-slide-toggle [(ngModel)]="updateLookUp.IsDefault" [ngModelOptions]="{standalone: true}">{{'Administration.LookUp.IsDefault'|translate}}</mat-slide-toggle>
+            </div>
+            <div class="form-group col-12 col-lg-6">
+                <mat-slide-toggle [(ngModel)]="updateLookUp.IsSystemRow" [ngModelOptions]="{standalone: true}">{{'Administration.LookUp.IsSystemRow'|translate}}</mat-slide-toggle>
+            </div>
+            <div class="form-group col-12 col-lg-6">
+                <mat-slide-toggle [(ngModel)]="updateLookUp.IsDeleted" [ngModelOptions]="{standalone: true}">{{'Administration.LookUp.IsDeleted'|translate}}</mat-slide-toggle>
+            </div>
+            <div class="col-12">
+                <button class="btn-icon-rounded btn-primary" matTooltip="Save" matTooltipPosition="above" (click)="updateLookUpMapping()" [disabled]="!(Code.valid
+                    && Name.valid && selectedLookUp.id)">
+                    <i class="zmdi zmdi-floppy"></i>
+                </button>
+                <a class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="Cancel" matTooltipPosition="above" routerLink="/administration/lookup/list" routerLinkActive="active"><i class="zmdi zmdi-close"></i></a>
+            </div>
+        </form>
+    </div>
+</div>

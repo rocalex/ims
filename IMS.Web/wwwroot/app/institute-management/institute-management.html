@@ -1,0 +1,47 @@
+﻿<div class="horizontal-menu mb-4 d-flex">
+    <ul class="list-unstyled nav">
+        <li>
+            <a class="nav-link" routerLinkActive="active" *ngIf="isAllowed('InstituteAcademicYear')" [routerLink]="['academicyear']">
+                <i class="zmdi zmdi-city"></i>
+                <span class="menu-title">Academic Year</span>
+            </a>
+        </li>
+        <li>
+            <a class="nav-link" routerLinkActive="active" *ngIf="isAllowed('InstituteWeekOff')" [routerLink]="['weekoff']">
+                <i class="zmdi zmdi-calendar"></i>
+                <span class="menu-title">Week Off</span>
+            </a>
+        </li>
+        <li>
+            <a class="nav-link" routerLinkActive="active" *ngIf="isAllowed('InstituteHolidayOff')" [routerLink]="['holiday']">
+                <i class="zmdi zmdi-calendar"></i>
+                <span class="menu-title">Holiday Off</span>
+            </a>
+        </li>
+        <li>
+            <a class="nav-link" routerLinkActive="active" *ngIf="isAllowed('InstituteClass')" [routerLink]="['class']">
+                <i class="zmdi zmdi-graduation-cap"></i>
+                <span class="menu-title">Class</span>
+            </a>
+        </li>
+        <li>
+            <a class="nav-link" routerLinkActive="active" *ngIf="isAllowed('InstituteSubject')" [routerLink]="['subject']">
+                <i class="zmdi zmdi-book"></i>
+                <span class="menu-title">Subject</span>
+            </a>
+        </li>
+        <li>
+            <a class="nav-link" routerLinkActive="active" *ngIf="isAllowed('InstituteClassSubjectMapping')" [routerLink]="['classsubject']">
+                <i class="zmdi zmdi-arrow-split"></i>
+                <span class="menu-title">Class Subject Mapping</span>
+            </a>
+        </li>
+        <li>
+            <a class="nav-link" routerLinkActive="active" *ngIf="isAllowed('InstituteTimeTable')" [routerLink]="['timetable']">
+                <i class="zmdi zmdi-time"></i>
+                <span class="menu-title">Time Table</span>
+            </a>
+        </li>
+    </ul>
+</div>
+<router-outlet></router-outlet>

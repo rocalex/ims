@@ -1,0 +1,23 @@
+﻿<div class="horizontal-menu mb-4 d-flex">
+    <ul class="list-unstyled nav">
+        <li>
+            <a class="nav-link" routerLinkActive="active" *ngIf="isAllowed('UserManagementRole')" [routerLink]="['role']">
+                <i class="zmdi zmdi-accounts"></i>
+                <span class="menu-title">Role</span>
+            </a>
+        </li>
+        <li>
+            <a class="nav-link" routerLinkActive="active" *ngIf="isAllowed('UserManagementPermission')" [routerLink]="['permission']">
+                <i class="zmdi zmdi-settings"></i>
+                <span class="menu-title">Permission</span>
+            </a>
+        </li>
+        <li>
+            <a class="nav-link" routerLinkActive="active" *ngIf="isAllowed('UserManagementUsers')" [routerLink]="['user']">
+                <i class="zmdi zmdi-account"></i>
+                <span class="menu-title">Users</span>
+            </a>
+        </li>
+    </ul>
+</div>
+<router-outlet></router-outlet>

@@ -1,0 +1,48 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Institute.Class.Classes'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" *ngIf="isAllowed('Add')"
+       matTooltip="{{'Institute.Class.AddClass'|translate}}" matTooltipPosition="before"
+       routerLink="/institute/class/add" routerLinkActive="active"><i class="zmdi zmdi-plus"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-full-block">
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th>{{'Institute.Class.GroupCode'|translate}}</th>
+                        <th>{{'Institute.Class.ClassName'|translate}}</th>
+                        <th>{{'Institute.Class.DurationUnit'|translate}}</th>
+                        <th>{{'Institute.Class.Duration'|translate}}</th>
+                        <th>{{'Institute.Class.IsGroup'|translate}}</th>
+                        <th>{{'Institute.Class.ClassOrder'|translate}}</th>
+                        <th>{{'Institute.Class.NumberOfFeeTerms'|translate}}</th>
+                        <th>{{'Common.CreatedOn'|translate}}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let class of classes">
+                        <td>{{class.groupCode}}</td>
+                        <td>{{class.name}}</td>
+                        <td>{{instituteClassDurationUnitEnum[class.durationUnit]}}</td>
+                        <td>{{class.duration}}</td>
+                        <td>{{class.isGroup ? 'Yes':'No'}}</td>
+                        <td>{{class.classOrder}}</td>
+                        <td>{{class.numberOfFeeTerms}}</td>
+                        <td>{{class.createdOn|date}}</td>
+                        <td><a routerLink="/institute/class/{{class.id}}" matTooltip="{{'Institute.Class.EditClass'|translate}}" *ngIf="isAllowed('Edit')"
+                               matTooltipPosition="above" routerLinkActive="active"><i class="zmdi zmdi-edit zmdi-hc-lg"></i></a></td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <div class="rct-block-title text-center" *ngIf="classes.length==0">
+                {{'Institute.Class.NoClasses'|translate}}
+            </div>
+        </div>
+    </div>
+</div>
+

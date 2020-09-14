@@ -1,0 +1,29 @@
+﻿<div class="horizontal-menu mb-4 d-flex">
+    <ul class="list-unstyled nav">
+        <li>
+            <a class="nav-link" routerLinkActive="active" *ngIf="isAllowed('StaffActivity')" [routerLink]="['activity']">
+                <i class="zmdi zmdi-time"></i>
+                <span class="menu-title">Activity</span>
+            </a>
+        </li>
+        <li>
+            <a class="nav-link" routerLinkActive="active" *ngIf="isAllowed('Homework')" [routerLink]="['homework']">
+                <i class="zmdi zmdi-book"></i>
+                <span class="menu-title">Home work</span>
+            </a>
+        </li>
+        <li>
+            <a class="nav-link" routerLinkActive="active" *ngIf="isAllowed('Disciplinary')" [routerLink]="['disciplinary']">
+                <i class="zmdi zmdi-book"></i>
+                <span class="menu-title">Disciplinary</span>
+            </a>
+        </li>
+        <li>
+            <a class="nav-link" routerLinkActive="active" *ngIf="isAllowed('CircularNotice')" [routerLink]="['notice']">
+                <i class="zmdi zmdi-assignment"></i>
+                <span class="menu-title">Notice/Circular</span>
+            </a>
+        </li>
+    </ul>
+</div>
+<router-outlet></router-outlet>

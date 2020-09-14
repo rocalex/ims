@@ -1,0 +1,174 @@
+<header class="navbar navbar-expand-md rct-header">
+    <button class="btn humburger p-0 mr-2" (click)="onToggleSidenav()" tabindex="0" type="button" mini="true" aria-label="Menu" title="Sidebar Toggle">
+        <svg focusable="false" viewBox="0 0 24 24" aria-hidden="true" role="presentation">
+            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path>
+        </svg>
+    </button>
+    <a class="navbar-brand" href="/">
+        <img src="/assets/img/logo-white.png" class="img-fluid" alt="I Tech" />
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav ml-auto align-items-center">
+            <li class="list-inline-item language-dropdown tour-step-5 dropdown nav-item">
+                <div class="header-icon language-icon dropdown-toggle nav-link" tabindex="0" data-toggle="dropdown">
+                    <img [src]="'/assets/flag-icons/'+currentLanguage.code+'.png'" class="mr-10" width="25" height="16" alt="lang-icon" title="Languages">
+                </div>
+                <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu">
+                    <div class="dropdown-content">
+                        <ul class="list-unstyled mb-0 dropdown-list">
+                            <li *ngFor="let language of languages">
+                                <a (click)="selectLanguage(language)" tabindex="0">
+                                    <img [src]="'/assets/flag-icons/'+language.code+'.png'" class="mr-10" width="25" height="16" alt="lang-icon">
+                                    {{language.name}}
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+
+            <li class="list-inline-item language-dropdown tour-step-5 dropdown nav-item" *ngIf="institutes.length"
+                [ngClass]="{'liheadercomponentdisabled': (institutes.length === 1)}">
+                <div class="header-icon language-icon dropdown-toggle nav-link" tabindex="0" data-toggle="dropdown">
+                    <span>{{currentInstitute?.institute?.name}}</span>
+                </div>
+                <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu">
+                    <div class="dropdown-content">
+                        <ul class="list-unstyled mb-0 dropdown-list">
+                            <li *ngFor="let institute of institutes">
+                                <a (click)="selectInstitute(institute)" tabindex="0">
+                                    {{institute.institute.name}}
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+
+            <li class="list-inline-item language-dropdown tour-step-5 dropdown nav-item" *ngIf="academicYears.length"
+                [ngClass]="{'liheadercomponentdisabled': !userInfo.isAdminUser}">
+                <div class="header-icon language-icon dropdown-toggle nav-link" tabindex="0" data-toggle="dropdown">
+                    <span>{{selectedAcademicYear?.academicYearCode}}</span>
+                </div>
+                <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu">
+                    <div class="dropdown-content">
+                        <ul class="list-unstyled mb-0 dropdown-list">
+                            <li *ngFor="let academicYear of academicYears">
+                                <a (click)="selectAcademicYear(academicYear)" tabindex="0">
+                                    {{academicYear.academicYearCode}}
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+
+            <li class="list-inline-item notification-dropdown dropdown nav-item">
+                <button class="btn-nav-icon shake" tabindex="0" type="button" aria-label="bell" data-toggle="dropdown" title="{{'Notifications.Notifications'|translate}}" [class.d-none]="unreadNotificationCount===0">
+                    <i class="zmdi zmdi-notifications-active"></i>
+                    <span class="badge-xs badge-top-right rct-notify badge badge-danger">{{unreadNotificationCount}}</span>
+                </button>
+                <button class="btn-nav-icon" tabindex="0" type="button" aria-label="bell" data-toggle="dropdown" title="{{'Notifications.Notifications'|translate}}" [class.d-none]="unreadNotificationCount!==0">
+                    <i class="zmdi zmdi-notifications px-1"></i>
+                </button>
+                <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu">
+                    <div class="dropdown-content">
+                        <div class="dropdown-top d-flex align-items-center rounded-top bg-primary">
+                            <span class="text-white font-weight-bold flex-grow-1">{{'Notifications.RecentNotifications'|translate}}</span>
+                            <span class="badge badge-warning">{{unreadNotificationCount}} {{'Notifications.New'|translate}}</span>
+                            <button class="btn-nav-icon ml-2 p-2 text-white" tabindex="0" type="button" (click)="markAllNotificationAsRead()" [hidden]="unreadNotificationCount===0">
+                                <i matTooltip="{{'Notifications.MarkAllAsRead'|translate}}" matTooltipPosition="above" class="zmdi zmdi-check-all"></i>
+                            </button>
+                        </div>
+                        <ul class="list-unstyled dropdown-list overflow-auto max-h-200px">
+                            <li *ngFor="let notification of allNotifications">
+                                <div class="pt-5">
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="mb-5 text-primary">{{notification.notificationMessage}}</h5>
+                                        <span class="text-muted fs-12 text-nowrap">{{notification.notificationCreationDate|date}}</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <div class="text-muted fs-12 flex-grow-1">{{notification.notificationDetails}}</div>
+                                        <button class="btn-nav-icon ml-1 px-2 py-1" tabindex="0" type="button" (click)="markNotificationAsRead(notification.id)" [hidden]="notification.isReadByUser">
+                                            <i matTooltip="{{'Notifications.MarkAsRead'|translate}}" matTooltipPosition="above" class="zmdi zmdi-check"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="dropdown-foot p-2 bg-white rounded-bottom">
+                        <!--<button class="btn mr-10 btn-xs btn-primary" tabindex="0" type="button">View All</button>-->
+                        <a class="btn mr-10 btn-xs btn-primary" tabindex="0" routerLink="/notifications" routerLinkActive="active">{{'Notifications.ViewAll'|translate}}</a>
+                    </div>
+                </div>
+            </li>
+
+            <!--<li class="list-inline-item summary-icon">
+                <a href="javascript:void(0)" class="header-icon tour-step-3" title="Summary"><i class="zmdi zmdi-info-outline"></i></a>
+            </li>
+            <li class="list-inline-item setting-icon">
+                <button class="btn-nav-icon" tabindex="0" type="button" aria-label="settings" title="Chat"><i class="zmdi zmdi-comment"></i></button>
+            </li>-->
+            <li class="list-inline-item">
+                <div class="rct-dropdown dropdown">
+                    <div class="d-flex align-items-center pointer" data-toggle="dropdown">
+                        <div class="user-info text-nowrap">
+                            <!--<span class="user-name mx-4">{{user.name}}</span>-->
+                            <span class="user-name mx-4">{{userName}}</span>
+                        </div>
+                        <div class="user-profile">
+                            <img src="/assets/img/default_user.png" alt="user profile" class="img-fluid rounded-circle" width="40" height="40">
+                        </div>
+                    </div>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <div class="dropdown-item p-15 border-bottom user-profile-top bg-primary rounded-top">
+                            <!--<p class="text-white mb-0 fs-14">{{user.name}}</p>-->
+                            <p class="text-white mb-0 fs-14">{{userName}}</p>
+                            <span class="text-white fs-14">{{userInfo.user?.email}}</span>
+                        </div>
+                        <a class="dropdown-item" routerLink="/changepassword" *ngIf="!isSuperAdmin">
+                            <i class="zmdi zmdi-account text-primary mr-3"></i><span>{{'Shared.Header.ChangePassword'|translate}}</span>
+                        </a>
+                        <a class="dropdown-item" routerLink="/profile" *ngIf="!isSuperAdmin">
+                            <i class="zmdi zmdi-accounts-list-alt text-primary mr-3"></i><span>{{'UserProfile.Profile'|translate}}</span>
+                        </a>
+                        <a class="dropdown-item" href="/Home/LogOut">
+                            <i class="zmdi zmdi-power text-danger mr-3"></i><span>{{'Shared.Header.LogOut'|translate}}</span>
+                        </a>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</header>
+<div class="horizontal-menu">
+    <ul class="list-unstyled nav">
+        <ng-container *ngFor="let item of nav">
+            <li class="side-title" *ngIf="item.title">{{item.title}}</li>
+            <li *ngIf="!item.title && item.show" class="nav-item">
+                <a class="nav-link" *ngIf="!item.children" routerLinkActive="active"
+                   [routerLink]="item.url">
+                    <i *ngIf="item.icon" [class]="item.icon"></i>
+                    <span class="menu-title">{{item.name}}</span>
+                </a>
+                <a *ngIf="item.children" class="nav-item-link" tabindex="0" role="button" (click)="toggleSubMenu($event)">
+                    <i *ngIf="item.icon" [class]="item.icon"></i>
+                    <span class="menu-title">{{item.name}}</span>
+                </a>
+                <ul class="list-unstyled sub-menu" *ngIf="item.children">
+                    <li class="nav-item">
+                        <a *ngFor="let subitem of item.children" [hidden]="!subitem.show" class="nav-link" routerLinkActive="active"
+                           [routerLink]="subitem.url">
+                            <i *ngIf="subitem.icon" [class]="subitem.icon"></i>
+                            <span>{{subitem.name}}</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ng-container>
+    </ul>
+</div>

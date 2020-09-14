@@ -1,0 +1,115 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'StudentFeeManagement.FeeReceipt.EditFeeReceipt'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" matTooltip="{{'StudentFeeManagement.FeeReceipt.FeeReceipts'|translate}}" matTooltipPosition="above" routerLink="/student/feemanagement/feereceipt/list" routerLinkActive="active"><i class="zmdi zmdi-view-list"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-block-content">
+        <div class="row mx-0">
+            <fieldset class="col-12 col-lg-6">
+                <mat-form-field>
+                    <input matInput type="text" [(ngModel)]="feeReceipt.receiptNumber" readonly
+                           placeholder="{{'StudentFeeManagement.FeeReceipt.ReceiptNumber'|translate}}" NoSpaces
+                           #ReceiptNumber="ngModel" [ngModelOptions]="{standalone: true}" required />
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput type="text" [(ngModel)]="feeReceipt.challanNumber" NoSpaces maxlength="20"
+                           placeholder="{{'StudentFeeManagement.FeeReceipt.ChallanNumber'|translate}}"
+                           #ChallanNumber="ngModel" [ngModelOptions]="{standalone: true}" required />
+                </mat-form-field>
+                <mat-error *ngIf="ChallanNumber.invalid && ChallanNumber.touched">
+                    <span *ngIf="ChallanNumber.hasError('required')">{{'Common.Required'|translate}}</span>
+                    <span *ngIf="(!ChallanNumber.hasError('required') && ChallanNumber.hasError('whitespace'))">{{'Common.WhiteSpace'|translate}}</span>
+                </mat-error>
+                <mat-form-field>
+                    <input matInput [matDatepicker]="receiptDate" placeholder="{{'StudentFeeManagement.FeeReceipt.ReceiptDate'|translate}} *"
+                           (dateChange)="feeReceipt.receiptDate = $event.value" disabled required [value]="feeReceipt.receiptDate">
+                    <mat-datepicker-toggle matSuffix [for]="receiptDate"></mat-datepicker-toggle>
+                    <mat-datepicker #receiptDate disabled="false"></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-select placeholder="{{'Common.Select'|translate}} {{'StudentFeeManagement.FeeReceipt.ReceiptType'|translate}}" [(ngModel)]="feeReceipt.receiptTypeDescription"
+                                #IssuedById="ngModel" [ngModelOptions]="{standalone: true}" required (selectionChange)="changeOnCheque(feeReceipt)">
+                        <mat-option *ngFor="let receiptType of receiptTypes" [value]="receiptType">
+                            {{receiptType}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput type="text" [(ngModel)]="feeReceipt.chequeNumber" [readonly]="feeReceipt.receiptTypeDescription === 'Cash'"
+                           placeholder="{{'StudentFeeManagement.FeeReceipt.ChequeNumber'|translate}}" maxlength="20"
+                           #ChequeNumber="ngModel" [ngModelOptions]="{standalone: true}" />
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput [matDatepicker]="chequeDate" placeholder="{{'StudentFeeManagement.FeeReceipt.ChequeDate'|translate}}"
+                           (dateChange)="feeReceipt.chequeDate = $event.value" disabled [readonly]="feeReceipt.receiptTypeDescription === 'Cash'"
+                           [value]="feeReceipt.chequeDate">
+                    <mat-datepicker-toggle matSuffix [for]="chequeDate"></mat-datepicker-toggle>
+                    <mat-datepicker #chequeDate [disabled]="feeReceipt.receiptTypeDescription === 'Cash'"></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput type="text" [(ngModel)]="feeReceipt.bankName" [readonly]="feeReceipt.receiptType === 'Cash'"
+                           placeholder="{{'StudentFeeManagement.FeeReceipt.BankName'|translate}}" maxlength="20"
+                           #BankName="ngModel" [ngModelOptions]="{standalone: true}" />
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput type="number" [(ngModel)]="feeReceipt.amount" min="0" pattern="\d+" readonly
+                           placeholder="{{'StudentFeeManagement.FeeReceipt.Amount'|translate}}"
+                           #Amount="ngModel" [ngModelOptions]="{standalone: true}" required />
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput type="number" [(ngModel)]="feeReceipt.lateFee"
+                           placeholder="{{'StudentFeeManagement.FeeReceipt.LateFee'|translate}}" (change)="calculation()"
+                           #LateFee="ngModel" [ngModelOptions]="{standalone: true}" required />
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput type="number" [(ngModel)]="feeReceipt.previousAmountPaid"
+                           placeholder="{{'StudentFeeManagement.FeeReceipt.PreviousAmountPaid'|translate}}" (change)="calculation()"
+                           #PreviousAmountPaid="ngModel" [ngModelOptions]="{standalone: true}" required />
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput type="number" [(ngModel)]="feeReceipt.total" min="0" pattern="\d+" readonly
+                           placeholder="{{'StudentFeeManagement.FeeReceipt.Total'|translate}}"
+                           #Total="ngModel" [ngModelOptions]="{standalone: true}" required />
+                </mat-form-field>
+                <div class="form-group">
+                    <mat-slide-toggle [(ngModel)]="feeReceipt.isNewAdmission" [ngModelOptions]="{standalone: true}">
+                        {{'StudentFeeManagement.FeeReceipt.IsNewAdmission'|translate}}
+                    </mat-slide-toggle>
+                </div>
+                <mat-accordion>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                {{'StudentFeeManagement.FeeReceipt.FeeReceiptComponents'|translate}}
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="table-responsive">
+                            <table class="table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>{{'StudentFeeManagement.FeeReceipt.Name'|translate}}</th>
+                                        <th>{{'StudentFeeManagement.FeeReceipt.Amount'|translate}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let feeReceiptComponent of feeReceipt.feeReceiptComponents">
+                                        <td>{{feeReceiptComponent.name}}</td>
+                                        <td>{{feeReceiptComponent.amount}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </mat-expansion-panel>
+                </mat-accordion>
+                <div class="pt-3">
+                    <button class="btn-icon-rounded btn-primary" matTooltip="{{'Common.Save'|translate}}" matTooltipPosition="above" (click)="updateFeeReceipt()" [disabled]="!(ReceiptNumber.valid &&
+                            ChallanNumber.valid)">
+                        <i class="zmdi zmdi-floppy"></i>
+                    </button>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</div>

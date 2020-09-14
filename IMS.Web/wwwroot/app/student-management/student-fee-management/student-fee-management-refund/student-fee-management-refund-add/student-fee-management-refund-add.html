@@ -1,0 +1,159 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'StudentFeeManagement.Refund.AddRefunds'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" matTooltip="{{'StudentFeeManagement.Refund.Refunds'|translate}}" matTooltipPosition="above" routerLink="/student/feemanagement/refund/list" routerLinkActive="active"><i class="zmdi zmdi-view-list"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-block-content">
+        <div class="row mx-0">
+            <fieldset class="col-12 col-lg-6">
+                <mat-form-field>
+                    <mat-select placeholder="{{'Common.Select'|translate}} {{'StudentFeeManagement.Refund.CurrentClass'|translate}}" [(ngModel)]="currentSelectedClass"
+                                #CurrentSelectedClassModel="ngModel" [ngModelOptions]="{standalone: true}" required>
+                        <mat-option *ngFor="let class of initialData.classes" [value]="class">
+                            {{class.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-select placeholder="{{'Common.Select'|translate}} {{'StudentFeeManagement.Refund.CurrentSection'|translate}}" [(ngModel)]="currentSelectedSection"
+                                #CurrentSelectedSectionModel="ngModel" [ngModelOptions]="{standalone: true}" required>
+                        <mat-option *ngFor="let section of initialData.sections" [value]="section">
+                            {{section.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <button class="btn-icon-rounded btn-primary" matTooltip="Search" matTooltipPosition="above" (click)="getStudentByClassAndSectionId()" [disabled]="!(CurrentSelectedClassModel.valid &&
+                            CurrentSelectedSectionModel.valid)">
+                    <i class="zmdi zmdi-search"></i>
+                </button>
+            </fieldset>
+        </div>
+    </div>
+</div>
+
+<div class="rct-block">
+    <div class="rct-block-content">
+        <div class="row mx-0">
+            <fieldset class="col-12 col-lg-6">
+                <mat-form-field>
+                    <input type="text" matInput placeholder="{{'StudentFeeManagement.Refund.RefundNumber'|translate}}" [readonly]="!refundNumberEditable" required
+                           [(ngModel)]="addStudent.RefundNumber" #RefundNumberModel="ngModel" [ngModelOptions]="{standalone: true}"
+                           maxlength="20" (keyup)="checkWhiteSpace(RefundNumberModel, addStudent.RefundNumber)"
+                           (keydown)="checkWhiteSpace(RefundNumberModel, addStudent.RefundNumber); resetError('RefundNumber')" />
+                    <mat-error *ngIf="RefundNumberModel.invalid && RefundNumberModel.touched">
+                        <span *ngIf="RefundNumberModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                    </mat-error>
+                    <mat-hint class="mat-error" *ngIf="(!RefundNumberModel.hasError('required') && RefundNumberModel.whiteSpaceError)">
+                        <span>{{'Common.WhiteSpace'|translate}}</span>
+                    </mat-hint>
+                    <mat-hint class="mat-error" *ngIf="hasError('RefundNumber')" [hidden]="(errorMessage === '')">
+                        <span>{{error.Message}}</span>
+                    </mat-hint>
+                </mat-form-field>
+                <mat-form-field>
+                    <input type="text" matInput placeholder="{{'StudentFeeManagement.Refund.ChallanNumber'|translate}}" required
+                           [(ngModel)]="addStudent.ChallanNumber" #ChallanNumberModel="ngModel" [ngModelOptions]="{standalone: true}"
+                           maxlength="20" (keyup)="checkWhiteSpace(ChallanNumberModel, addStudent.ChallanNumber)"
+                           (keydown)="checkWhiteSpace(ChallanNumberModel, addStudent.ChallanNumber); resetError('ChallanNumber')" />
+                    <mat-error *ngIf="ChallanNumberModel.invalid && ChallanNumberModel.touched">
+                        <span *ngIf="ChallanNumberModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                    </mat-error>
+                    <mat-hint class="mat-error" *ngIf="(!ChallanNumberModel.hasError('required') && ChallanNumberModel.whiteSpaceError)">
+                        <span>{{'Common.WhiteSpace'|translate}}</span>
+                    </mat-hint>
+                    <mat-hint class="mat-error" *ngIf="hasError('ChallanNumber')" [hidden]="(errorMessage === '')">
+                        <span>{{error.Message}}</span>
+                    </mat-hint>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-select placeholder="{{'Common.Select'|translate}} {{'StudentFeeManagement.Refund.Student'|translate}}" [(ngModel)]="addStudent.StudentId"
+                                #StudentId="ngModel" [ngModelOptions]="{standalone: true}" required>
+                        <mat-option *ngFor="let student of students" [value]="student.id">
+                            {{student.rollNumber}} - {{student.firstName}} {{student.lastName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput [matDatepicker]="refundDate" placeholder="{{'StudentFeeManagement.Refund.RefundDate'|translate}} *"
+                           (dateChange)="addStudent.RefundDate = $event.value" disabled required [max]="currentDate" [min]="getMinimumDateForRefund()">
+                    <mat-datepicker-toggle matSuffix [for]="refundDate"></mat-datepicker-toggle>
+                    <mat-datepicker #refundDate disabled="false"></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-select placeholder="{{'Common.Select'|translate}} {{'StudentFeeManagement.Refund.IssuedBy'|translate}}" [(ngModel)]="addStudent.IssuedById"
+                                #IssuedById="ngModel" [ngModelOptions]="{standalone: true}" required>
+                        <mat-option *ngFor="let user of initialData.users" [value]="user.user.id">
+                            {{user.user.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field>
+                    <input type="number" matInput placeholder="{{'StudentFeeManagement.Refund.Amount'|translate}}" required
+                           [(ngModel)]="addStudent.Amount" #AmountModel="ngModel" [ngModelOptions]="{standalone: true}"
+                           maxlength="20" (keydown)="resetError('Amount')" min="0" pattern="\d+" />
+                    <mat-error *ngIf="AmountModel.invalid && AmountModel.touched">
+                        <span *ngIf="AmountModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                        <span *ngIf="AmountModel.hasError('pattern')">Amount should be positive number</span>
+                    </mat-error>
+                    <mat-hint class="mat-error" *ngIf="hasError('Amount')" [hidden]="(errorMessage === '')">
+                        <span>{{error.Message}}</span>
+                    </mat-hint>
+                </mat-form-field>
+                <mat-form-field>
+                    <input type="text" matInput placeholder="{{'StudentFeeManagement.Refund.ChequeNumber'|translate}}" required
+                           [(ngModel)]="addStudent.ChequeNumber" #ChequeNumberModel="ngModel" [ngModelOptions]="{standalone: true}"
+                           maxlength="20" (keyup)="checkWhiteSpace(ChequeNumberModel, addStudent.ChequeNumber)"
+                           (keydown)="checkWhiteSpace(ChequeNumberModel, addStudent.ChequeNumber); resetError('ChequeNumber')" />
+                    <mat-error *ngIf="ChequeNumberModel.invalid && ChequeNumberModel.touched">
+                        <span *ngIf="ChequeNumberModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                    </mat-error>
+                    <mat-hint class="mat-error" *ngIf="(!ChequeNumberModel.hasError('required') && ChequeNumberModel.whiteSpaceError)">
+                        <span>{{'Common.WhiteSpace'|translate}}</span>
+                    </mat-hint>
+                    <mat-hint class="mat-error" *ngIf="hasError('ChequeNumber')" [hidden]="(errorMessage === '')">
+                        <span>{{error.Message}}</span>
+                    </mat-hint>
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput [matDatepicker]="chequeDate" placeholder="{{'StudentFeeManagement.Refund.ChequeDate'|translate}} *"
+                           (dateChange)="addStudent.ChequeDate = $event.value" disabled required>
+                    <mat-datepicker-toggle matSuffix [for]="chequeDate"></mat-datepicker-toggle>
+                    <mat-datepicker #chequeDate disabled="false"></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field>
+                    <input type="text" matInput placeholder="{{'StudentFeeManagement.Refund.BankName'|translate}}" required
+                           [(ngModel)]="addStudent.BankName" #BankNameModel="ngModel" [ngModelOptions]="{standalone: true}"
+                           maxlength="20" (keyup)="checkWhiteSpace(BankNameModel, addStudent.BankName)"
+                           (keydown)="checkWhiteSpace(BankNameModel, addStudent.BankName); resetError('BankName')" />
+                    <mat-error *ngIf="BankNameModel.invalid && BankNameModel.touched">
+                        <span *ngIf="BankNameModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                    </mat-error>
+                    <mat-hint class="mat-error" *ngIf="(!BankNameModel.hasError('required') && BankNameModel.whiteSpaceError)">
+                        <span>{{'Common.WhiteSpace'|translate}}</span>
+                    </mat-hint>
+                    <mat-hint class="mat-error" *ngIf="hasError('BankName')" [hidden]="(errorMessage === '')">
+                        <span>{{error.Message}}</span>
+                    </mat-hint>
+                </mat-form-field>
+                <mat-form-field>
+                    <textarea type="text" maxlength="20" matInput placeholder="{{'StudentFeeManagement.Refund.Remark'|translate}}"
+                              [(ngModel)]="addStudent.Remark" [ngModelOptions]="{standalone: true}"></textarea>
+                </mat-form-field>
+            </fieldset>
+            <div class="col-12">
+                <button class="btn-icon-rounded btn-primary" matTooltip="{{'Common.Save'|translate}}" matTooltipPosition="above" (click)="addFeeRefund()"
+                        [disabled]="!(RefundNumberModel.valid && !RefundNumberModel.whiteSpaceError
+                        && ChallanNumberModel.valid && !ChallanNumberModel.whiteSpaceError
+                        && StudentId.valid && (addStudent.RefundDate !== undefined && addStudent.RefundDate !==null)
+                        && IssuedById.valid && AmountModel.valid && ChequeNumberModel.valid && !ChequeNumberModel.whiteSpaceError
+                        && (addStudent.ChequeDate !== undefined && addStudent.ChequeDate !==null)
+                        && BankNameModel.valid && !BankNameModel.whiteSpaceError)">
+                    <i class="zmdi zmdi-floppy"></i>
+                </button>
+                <a class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="{{'Common.Cancel'|translate}}" matTooltipPosition="above" routerLink="/student/feemanagement/refund/list" routerLinkActive="active"><i class="zmdi zmdi-close"></i></a>
+            </div>
+        </div>
+    </div>
+</div>

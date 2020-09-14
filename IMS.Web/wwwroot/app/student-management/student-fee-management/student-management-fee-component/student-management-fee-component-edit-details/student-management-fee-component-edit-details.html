@@ -1,0 +1,67 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'StudentManagement.FeeManagement.EditFeeComponent'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" matTooltip="{{'StudentManagement.FeeManagement.FeeComponents'|translate}}" matTooltipPosition="above" routerLink="/student/feemanagement/component/list" routerLinkActive="active"><i class="zmdi zmdi-view-list"></i></a>
+</div>
+
+<div class="rct-block">
+    <div class="rct-block-content">
+        <form class="row">
+            <mat-form-field class="col-12 col-lg-6">
+                <input type="text" matInput placeholder="{{'Common.Name'|translate}}" required maxlength="20"
+                       [(ngModel)]="feeComponent.name" #feeComponentNameModel="ngModel" [ngModelOptions]="{standalone: true}"
+                       (keyup)="checkWhiteSpace()" (keydown)="resetError()" />
+
+                <mat-error *ngIf="feeComponentNameModel.invalid && feeComponentNameModel.touched">
+                    <span *ngIf="feeComponentNameModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                </mat-error>
+
+                <mat-hint class="mat-error" *ngIf="errorMessage !== ''">
+                    <span>{{errorMessage}}</span>
+                </mat-hint>
+
+                <mat-hint class="mat-error" *ngIf="whiteSpaceError !== ''">
+                    <span>{{whiteSpaceError}}</span>
+                </mat-hint>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <mat-select placeholder="{{'Common.Type'|translate}}" [(ngModel)]="feeComponent.feeComponentType"
+                            #feeComponentTypeModel="ngModel" [ngModelOptions]="{standalone: true}" required (keyup)="checkWhiteSpace()" (keydown)="resetError()">
+                    <mat-option *ngFor="let feeComponentTypeEnum of feeComponentTypeEnumDetails" [value]="feeComponentTypeEnum.key">
+                        {{feeComponentTypeEnum.value}}
+                    </mat-option>
+                </mat-select>
+
+                <mat-error *ngIf="feeComponentTypeModel.invalid && feeComponentTypeModel.touched">
+                    <span *ngIf="feeComponentTypeModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <mat-select placeholder="{{'Common.Priority'|translate}}" [(ngModel)]="feeComponent.priority"
+                            #feeComponentPriorityModel="ngModel" [ngModelOptions]="{standalone: true}" (keyup)="checkWhiteSpace()" (keydown)="resetError()">
+                    <mat-option *ngFor="let feeComponentPriority of feeComponentPriorityList" [value]="feeComponentPriority">
+                        {{feeComponentPriority}}
+                    </mat-option>
+                </mat-select>
+
+                <mat-hint class="mat-error" *ngIf="duplicatePriorityMessage !== ''">
+                    <span>{{duplicatePriorityMessage}}</span>
+                </mat-hint>
+            </mat-form-field>
+
+            <div class="col-12">
+                <button class="btn-icon-rounded btn-primary" matTooltip="{{'Common.Save'|translate}}" matTooltipPosition="above" (click)="updateFeeComponent()"
+                        [disabled]="!(whiteSpaceError === '' && errorMessage === '' && feeComponentNameModel.valid && feeComponentTypeModel.valid && feeComponentPriorityModel.valid)">
+                    <i class="zmdi zmdi-floppy"></i>
+                </button>
+
+                <a class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="{{'Common.Cancel'|translate}}" matTooltipPosition="above" routerLink="/student/feemanagement/component/list" routerLinkActive="active">
+                    <i class="zmdi zmdi-close"></i>
+                </a>
+            </div>
+        </form>
+    </div>
+</div>

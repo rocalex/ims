@@ -1,0 +1,46 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Admin.Institute.AddInstitute'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" matTooltip="Details" matTooltipPosition="above" routerLink="/institute/list" routerLinkActive="active"><i class="zmdi zmdi-view-list"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-block-content">
+        <form class="row">
+            <mat-form-field class="col-12 col-lg-6">
+                <input type="text" matInput placeholder="{{'Admin.Institute.InstituteName'|translate}}" required readonly
+                       [(ngModel)]="institute.InstituteName" #InstituteNameModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20" />
+            </mat-form-field>
+            <mat-form-field class="col-12 col-lg-6">
+                <input type="text" matInput placeholder="{{'Admin.Institute.InstituteCode'|translate}}" required readonly
+                       [(ngModel)]="institute.Code" #CodeModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20" />
+            </mat-form-field>
+            <mat-form-field class="col-12 col-lg-6">
+                <textarea matInput type="text" placeholder="{{'Admin.Institute.InstituteAddress'|translate}}" [(ngModel)]="institute.Address" #Address="ngModel"
+                          [ngModelOptions]="{standalone: true}"></textarea>
+            </mat-form-field>
+            <mat-form-field class="col-12 col-lg-6">
+                <input matInput type="text" placeholder="{{'Admin.Institute.InstituteLocation'|translate}}" [(ngModel)]="institute.Location" #Location="ngModel"
+                       [ngModelOptions]="{standalone: true}" maxlength="250" />
+            </mat-form-field>
+            <mat-form-field class="col-12 col-lg-6">
+                <input matInput ngx-google-places-autocomplete #placesRef="ngx-places"
+                       placeholder="{{'TransportManagement.Stage.PlaceName'|translate}}" (onAddressChange)="handleAddressChange($event)" />
+            </mat-form-field>
+            <div class="col-12 col-lg-6">
+                <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" [disableDefaultUI]="false" [zoomControl]="false"
+                         (mapClick)="mapClicked($event)">
+                    <agm-marker [latitude]="markers.lat" [longitude]="markers.lng" [label]="markers.label"
+                                [markerDraggable]="markers.draggable">
+                    </agm-marker>
+                </agm-map>
+            </div>
+            <div class="col-12">
+                <button class="btn-icon-rounded btn-primary" matTooltip="Save" matTooltipPosition="above" (click)="updateInstitute()">
+                    <i class="zmdi zmdi-floppy"></i>
+                </button>
+                <a class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="Cancel" matTooltipPosition="above" routerLink="/institute/list" routerLinkActive="active"><i class="zmdi zmdi-close"></i></a>
+            </div>
+        </form>
+    </div>
+</div>

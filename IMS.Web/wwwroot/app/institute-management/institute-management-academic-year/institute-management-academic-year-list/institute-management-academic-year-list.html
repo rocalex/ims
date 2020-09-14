@@ -1,0 +1,44 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Institute.AcademicYear.AcademicYears'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" *ngIf="isAllowed('Add')"
+       matTooltip="{{'Institute.AcademicYear.AddAcademicYear'|translate}}" matTooltipPosition="before"
+       routerLink="/institute/academicyear/add" routerLinkActive="active"><i class="zmdi zmdi-plus"></i></a>
+</div>
+
+<div class="rct-block">
+    <div class="rct-full-block">
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th>{{'Institute.AcademicYear.Code'|translate}}</th>
+                        <th>{{'Institute.AcademicYear.ChallanStartingNumber'|translate}}</th>
+                        <th>{{'Institute.AcademicYear.FromDate'|translate}}</th>
+                        <th>{{'Institute.AcademicYear.ToDate'|translate}}</th>
+                        <th>{{'Institute.AcademicYear.IsActive'|translate}}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let academicYear of academicYears">
+                        <td>{{academicYear.academicYearCode}}</td>
+                        <td>{{academicYear.challanStartingNumber}}</td>
+                        <td>{{academicYear.fromDate|date}}</td>
+                        <td>{{academicYear.toDate|date}}</td>                        
+                        <td><mat-slide-toggle [(ngModel)]="academicYear.isActive" disabled></mat-slide-toggle></td>
+                        <td><a routerLink="/institute/academicyear/{{academicYear.id}}" *ngIf="isAllowed('Edit')"
+                               matTooltip="{{'Institute.AcademicYear.UpdateAcademicYear'|translate}}" matTooltipPosition="above" 
+                               routerLinkActive="active"><i class="zmdi zmdi-edit zmdi-hc-lg"></i></a></td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <div class="rct-block-title text-center" *ngIf="academicYears.length==0">
+                {{'Institute.AcademicYear.NoAcademicYearsAdded'|translate}}
+            </div>
+        </div>
+    </div>
+</div>
+

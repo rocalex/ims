@@ -1,0 +1,11 @@
+﻿/IMS.Web/package-lock.json
+bin
+logs
+/.vs
+.idea
+/IMS.Api/package-lock.json
+node_modules
+Image-Storage
+dist
+obj
+/IMS.Web/package-lock.json

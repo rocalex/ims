@@ -1,0 +1,29 @@
+<div class="horizontal-menu mb-4 d-flex">
+  <ul class="list-unstyled nav">
+      <li>
+          <a class="nav-link" routerLinkActive="active" [routerLink]="['messmanage']">
+              <i class="zmdi zmdi-info"></i>
+              <span class="menu-title">{{'Hostel.Mess.MessManage'|translate}}</span>
+          </a>
+      </li>
+      <li>
+          <a class="nav-link" routerLinkActive="active" [routerLink]="['expensetype']">
+              <i class="zmdi zmdi-collection-text"></i>
+              <span class="menu-title">{{'Hostel.Mess.ExpenseType'|translate}}</span>
+          </a>
+      </li>
+      <li>
+          <a class="nav-link" routerLinkActive="active" [routerLink]="['daily']">
+              <i class="zmdi zmdi-collection-text"></i>
+              <span class="menu-title">{{'Hostel.Mess.DailyExpenses'|translate}}</span>
+          </a>
+      </li>
+      <li>
+          <a class="nav-link" routerLinkActive="active" [routerLink]="['expenditure']">
+              <i class="zmdi zmdi-collection-text"></i>
+              <span class="menu-title">{{'Hostel.Mess.ManageExpenditure'|translate}}</span>
+          </a>
+      </li>
+  </ul>
+</div>
+<router-outlet></router-outlet>

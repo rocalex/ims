@@ -1,0 +1,72 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Administration.EventManagement.EventInfo.EditEventInfo'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" matTooltip="{{'Administration.EventManagement.EventInfo.EventInfo'|translate}}" matTooltipPosition="above" routerLink="/administration/event/info/list" routerLinkActive="active"><i class="zmdi zmdi-view-list"></i></a>
+</div>
+
+<div class="rct-block">
+    <div class="rct-block-content">
+        <form class="row">
+            <mat-form-field class="col-12 col-lg-6">
+                <input type="text" matInput placeholder="{{'Common.Name'|translate}}" required maxlength="25"
+                       [(ngModel)]="updatedEventInfo.name" #eventInfoNameModel="ngModel" [ngModelOptions]="{standalone: true}"
+                       (keyup)="checkWhiteSpace()" (keydown)="resetError()" />
+
+                <mat-error *ngIf="eventInfoNameModel.invalid && eventInfoNameModel.touched">
+                    <span *ngIf="eventInfoNameModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                </mat-error>
+
+                <mat-hint class="mat-error" *ngIf="errorMessage !== ''">
+                    <span>{{errorMessage}}</span>
+                </mat-hint>
+
+                <mat-hint class="mat-error" *ngIf="whiteSpaceError !== ''">
+                    <span>{{whiteSpaceError}}</span>
+                </mat-hint>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <input matInput [matDatepicker]="eventDate" placeholder="{{'Administration.EventManagement.EventInfo.EventDate'|translate}} *" [value]="updatedEventInfo.eventDate"
+                       (dateChange)="updatedEventInfo.eventDate = $event.value" disabled required>
+                <mat-datepicker-toggle matSuffix [for]="eventDate"></mat-datepicker-toggle>
+                <mat-datepicker #eventDate disabled="false"></mat-datepicker>
+            </mat-form-field>
+
+            <div class="form-group col-12 col-lg-6">
+                <mat-slide-toggle [(ngModel)]="updatedEventInfo.isActive" #isActiveModel="ngModel" [ngModelOptions]="{standalone: true}">{{'Institute.AcademicYear.IsActive'|translate}}</mat-slide-toggle>
+            </div>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <mat-select placeholder="{{'Common.Priority'|translate}}" [(ngModel)]="updatedEventInfo.priority"
+                            #eventInfoPriorityModel="ngModel" [ngModelOptions]="{standalone: true}" required (keyup)="checkWhiteSpace()" (keydown)="resetError()">
+                    <mat-option *ngFor="let eventInfoPriorityEnum of eventInfoPriorityEnumDetails" [value]="eventInfoPriorityEnum.key">
+                        {{eventInfoPriorityEnum.value}}
+                    </mat-option>
+                </mat-select>
+
+                <mat-error *ngIf="eventInfoPriorityModel.invalid && eventInfoPriorityModel.touched">
+                    <span *ngIf="eventInfoPriorityModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="form-group col-12 col-lg-6">
+                <textarea placeholder="Format" matInput [(ngModel)]="updatedEventInfo.description" #FormatModel="ngModel" [ngModelOptions]="{standalone: true}"></textarea>
+            </mat-form-field>
+
+            <div class="col-12">
+                <button class="btn-icon-rounded btn-primary" (click)="updateEventInfo()"
+                        matTooltip="{{'Common.Save'|translate}}" matTooltipPosition="above"
+                        [disabled]="!(eventInfoNameModel.valid && eventInfoPriorityModel.valid
+                        && (updatedEventInfo.eventDate !== null && updatedEventInfo.eventDate !== undefined)
+                        && whiteSpaceError === '' && errorMessage === '')">
+                    <i class="zmdi zmdi-floppy"></i>
+                </button>
+
+                <a class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="{{'Common.Cancel'|translate}}" matTooltipPosition="above" routerLink="/administration/event/info/list" routerLinkActive="active">
+                    <i class="zmdi zmdi-close"></i>
+                </a>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,38 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Staff.Disciplinary.Disciplinaries'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" matTooltip="{{'Staff.Disciplinary.AddDisciplinary'|translate}}" *ngIf="isAllowed('Add')"
+       matTooltipPosition="above" routerLink="/staff/activities/disciplinary/add" routerLinkActive="active"><i class="zmdi zmdi-plus"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-full-block">
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th>{{'Staff.Disciplinary.RollNumber'|translate}}</th>
+                        <th>{{'Staff.Disciplinary.StudentName'|translate}}</th>
+                        <th>{{'Staff.Disciplinary.MobileNumber'|translate}}</th>
+                        <th>{{'Staff.Disciplinary.Subject'|translate}}</th>
+                        <th>{{'Staff.Disciplinary.Status'|translate}}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let disciplinary of disciplinaries">
+                        <td>{{disciplinary.student?.rollNumber}}</td>
+                        <td>{{disciplinary.student?.firstName}} {{disciplinary.student?.lastName}}</td>
+                        <td>{{disciplinary.student?.mobileNumber}}</td>
+                        <td>{{disciplinary.subject}}</td>
+                        <td>{{disciplinary.status?.name}}</td>
+                        <td><a matTooltip="Edit" matTooltipPosition="above" *ngIf="isAllowed('Edit')" routerLink="/staff/activities/disciplinary/{{disciplinary.id}}" routerLinkActive="active"><i class="zmdi zmdi-edit zmdi-hc-lg"></i></a></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="rct-block-title text-center" *ngIf="disciplinaries.length==0">
+                {{'Staff.Disciplinary.NoDisciplinariesAdded'|translate}}
+            </div>
+        </div>
+    </div>
+</div>

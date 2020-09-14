@@ -1,0 +1,85 @@
+<div class="fixed-plugin">
+    <div class="dropdown">
+        <button type="button" class="bg-primary btn btn-secondary" data-toggle="dropdown">
+            <i class="zmdi zmdi-settings font-2x tour-step-6 spin-icon"></i>
+        </button>
+        <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu">
+            <ul class="list-unstyled text-center mb-0">
+                <!--<li class="header-title mb-10">Theme Color</li>
+                <li class="adjustments-line mb-10">
+                    <img *ngFor="let theme of themes"
+                         (click)="changeThemeColor(theme)"
+                         [src]="'assets/img/'+theme.name+'-theme.png'"
+                         alt="theme" class="img-fluid mr-5 pointer"
+                         [class.active]="theme.id === activeTheme.id"
+                         [title]="theme.name">
+
+                </li>-->
+                <li class="header-title sidebar-overlay d-none d-xl-block">Navbar Position</li>
+                <li class="sidebar-color pb-3 d-none d-xl-block">
+                    <span>Side</span>
+                    <mat-slide-toggle class="switch-btn mx-2"
+                                      [(ngModel)]="isTopNav"
+                                      (change)="toggleNavbar()">
+                    </mat-slide-toggle>
+                    <span>Top</span>
+                </li>
+                <li class="header-title sidebar-overlay" *ngIf="!isTopNav">Sidebar Overlay</li>
+                <li class="sidebar-color pb-3" *ngIf="!isTopNav">
+                    <span>Light</span>
+                    <mat-slide-toggle class="switch-btn mx-2"
+                                      [(ngModel)]="isDarkSidenav"
+                                      (change)="toggleDarkSidebar()">
+                    </mat-slide-toggle>
+                    <span>Dark</span>
+                </li>
+                <li class="header-title sidebar-img-check pb-3" *ngIf="!isTopNav">
+                    <mat-slide-toggle class="switch-btn"
+                                      [(ngModel)]="enableSidebarBackgroundImage"
+                                      (change)="toggleSidebarImage()">
+                        Sidebar Image
+                    </mat-slide-toggle>
+                </li>
+                <li class="background-img pb-3" *ngIf="!isTopNav && enableSidebarBackgroundImage">
+                    <a class="img-holder" [class.active]="selectedSidebarImage === sidebarImage" href="javascript:void(0)"
+                       *ngFor="let sidebarImage of sidebarBackgroundImages"
+                       (click)="setSidebarBgImage(sidebarImage)">
+                        <img [src]="sidebarImage" alt="sidebar" class="img-fluid" />
+                    </a>
+                </li>
+            </ul>
+            <ul class="list-unstyled mb-0 p-10 app-settings">
+                <li class="header-title mb-10">App Settings</li>
+                <li class="header-title mini-sidebar-option" *ngIf="!isTopNav">
+                    <mat-slide-toggle class="switch-btn"
+                                      [(ngModel)]="miniSidebar"
+                                      [disabled]="navCollapsed"
+                                      (change)="miniSidebarHanlder()">
+                        Mini Sidebar
+                    </mat-slide-toggle>
+                </li>
+                <li class="header-title box-layout-option">
+                    <mat-slide-toggle class="switch-btn"
+                                      [(ngModel)]="boxLayout"
+                                      (change)="boxLayoutHanlder()">
+                        Box Layout
+                    </mat-slide-toggle>
+                </li>
+                <li class="header-title">
+                    <mat-slide-toggle class="switch-btn"
+                                      [(ngModel)]="rtlLayout"
+                                      (change)="rtlLayoutHanlder()">
+                        Rtl Layout
+                    </mat-slide-toggle>
+                </li>
+                <li class="header-title">
+                    <mat-slide-toggle class="switch-btn"
+                                      [(ngModel)]="darkMode"
+                                      (change)="darkModeHanlder()">
+                        Dark Mode
+                    </mat-slide-toggle>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

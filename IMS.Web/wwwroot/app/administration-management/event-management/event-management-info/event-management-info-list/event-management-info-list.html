@@ -1,0 +1,43 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Administration.EventManagement.EventInfo.EventInfo'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" *ngIf="isAllowed('Add')"
+       matTooltip="{{'Administration.EventManagement.EventInfo.AddEventInfo'|translate}}" matTooltipPosition="before"
+       routerLink="/administration/event/info/add" routerLinkActive="active"><i class="zmdi zmdi-plus"></i></a>
+</div>
+
+<div class="rct-block">
+    <div class="rct-full-block">
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th>{{'Common.Name'|translate}}</th>
+                        <!--<th>{{'Common.Description'|translate}}</th>-->
+                        <th>{{'Common.Priority'|translate}}</th>
+                        <th>{{'Institute.AcademicYear.IsActive'|translate}}</th>
+                        <th>{{'Administration.EventManagement.EventInfo.EventDate'|translate}}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let eventInfo of eventInfoList">
+                        <td>{{eventInfo.name}}</td>
+                        <!--<td>{{eventInfo.description}}</td>-->
+                        <td>{{eventInfo.priorityName}}</td>
+                        <td><mat-slide-toggle [(ngModel)]="eventInfo.isActive" disabled></mat-slide-toggle></td>
+                        <td>{{eventInfo.eventDate | date}}</td>
+                        <td><a routerLink="/administration/event/info/{{eventInfo.id}}" *ngIf="isAllowed('Edit')"
+                               matTooltip="{{'Administration.EventManagement.EventInfo.EditEventInfo'|translate}}" 
+                               matTooltipPosition="above" routerLinkActive="active"><i class="zmdi zmdi-edit zmdi-hc-lg"></i></a></td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <div class="rct-block-title text-center" *ngIf="eventInfoList.length==0">
+                {{'Administration.EventManagement.EventInfo.NoEventInfo'|translate}}
+            </div>
+        </div>
+    </div>
+</div>

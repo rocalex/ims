@@ -1,0 +1,42 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'TransportManagement.VehicleMaster.VehicleDriverMapping'|translate}}</h2>
+    </div>
+</div>
+<div class="rct-block">
+    <div class="rct-full-block">
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th>{{'TransportManagement.VehicleMaster.VehicleCode'|translate}}</th>
+                        <th>{{'TransportManagement.VehicleMaster.VehicleType'|translate}}</th>
+                        <th>{{'TransportManagement.VehicleMaster.FuelType'|translate}}</th>
+                        <th>{{'TransportManagement.VehicleMaster.VehicleRegistrationNumber'|translate}}</th>
+                        <th>{{'TransportManagement.VehicleMaster.EngineNumber'|translate}}</th>
+                        <th>{{'TransportManagement.VehicleMaster.AverageKMPL'|translate}}</th>
+                        <th>{{'TransportManagement.VehicleMaster.NextMaintenanceDate'|translate}}</th>
+                        <th>{{'Common.CreatedOn'|translate}}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of vehicles">
+                        <td>{{item.vehicleCode}}</td>
+                        <td>{{item.vehicleTypeDescription}}</td>
+                        <td>{{item.fuelTypeDescription}}</td>
+                        <td>{{item.vehicleRegistrationNumber}}</td>
+                        <td>{{item.engineNumber}}</td>
+                        <td>{{item.averageKMPL}}</td>
+                        <td>{{item.nextMaintenanceDate|date}}</td>
+                        <td>{{item.createdOn|date}}</td>
+                        <td><a matTooltip="Edit" matTooltipPosition="above" *ngIf="isAllowed('Edit')" routerLink="/transportmanagement/vehicledrivermapping/{{item.id}}" routerLinkActive="active"><i class="zmdi zmdi-edit zmdi-hc-lg"></i></a></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="rct-block-title text-center" *ngIf="vehicles.length==0">
+                {{'TransportManagement.VehicleMaster.NoVehicleAdded'|translate}}
+            </div>
+        </div>
+    </div>
+</div>

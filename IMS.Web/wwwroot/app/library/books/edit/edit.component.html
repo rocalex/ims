@@ -1,0 +1,123 @@
+<div class="page-title d-flex justify-content-between align-items-center">
+  <div class="page-title-wrap">
+      <h2 class="mb-0">{{'Library.Books.AddBook'|translate}}</h2>
+  </div>
+  <a class="btn-icon-rounded btn-outline-primary" matTooltip="Details" matTooltipPosition="above"
+      routerLink="/library/books" routerLinkActive="active"><i class="zmdi zmdi-view-list"></i></a>
+</div>
+<div class="rct-block">
+  <div class="rct-block-content">
+      <mat-form-field class="col-12 col-lg-6">
+          <input type="text" matInput placeholder="{{'Library.Books.Code'|translate}}" required NoSpaces
+              [(ngModel)]="addBook.code" #CodeModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20" />
+      </mat-form-field>
+      <mat-form-field class="col-12 col-lg-6">
+          <input type="text" matInput placeholder="{{'Library.Books.Name'|translate}}" required NoSpaces
+              [(ngModel)]="addBook.name" #NameModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20" />
+      </mat-form-field>
+      <mat-form-field class="col-12 col-lg-6">
+          <input type="text" matInput placeholder="{{'Library.Books.IsbnNo'|translate}}" required NoSpaces
+              [(ngModel)]="addBook.isbn" #NameModel="ngModel" [ngModelOptions]="{standalone: true}"
+              maxlength="20" />
+      </mat-form-field>
+      <mat-form-field class="col-12 col-lg-6">
+          <input type="text" matInput placeholder="{{'Library.Books.Title'|translate}}" [(ngModel)]="addBook.title"
+              #NameModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20" />
+      </mat-form-field>
+
+      <mat-form-field class="col-12 col-lg-6">
+          <mat-select placeholder="{{'Library.Books.BookType'|translate}}" [(ngModel)]="addBook.bookTypeId"
+              #bookType="ngModel" [ngModelOptions]="{standalone: true}" required>
+              <mat-option *ngFor="let bookType of bookTypeList" [value]="bookType.id">
+                  {{bookType.name}}
+              </mat-option>
+          </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="col-12 col-lg-6">
+          <input type="text" matInput placeholder="{{'Library.Books.AuthorName'|translate}}" required
+              [(ngModel)]="addBook.authorName" #NameModel="ngModel" [ngModelOptions]="{standalone: true}"
+              maxlength="20" />
+      </mat-form-field>
+      <mat-form-field class="col-12 col-lg-6">
+          <input type="number" matInput placeholder="{{'Library.Books.Quantity'|translate}}"
+              [(ngModel)]="addBook.quantity" #HostelCautionDeposit="ngModel" [ngModelOptions]="{standalone: true}"
+              maxlength="20" />
+      </mat-form-field>
+      
+      <mat-form-field class="col-12 col-lg-6">
+          <input matInput [matDatepicker]="startDate" placeholder="{{'Library.Books.PurchaseDate'|translate}} *"
+                 [value]="addBook.purchaseDate" [max]="currentDate"
+                 (dateChange)="addBook.purchaseDate = $event.value" disabled required />
+          <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+          <mat-datepicker #startDate disabled="false"></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field class="col-12 col-lg-6">
+          <input type="text" matInput placeholder="{{'Library.Books.Edition'|translate}}"
+              [(ngModel)]="addBook.edition" #NameModel="ngModel" [ngModelOptions]="{standalone: true}"
+              maxlength="20" />
+      </mat-form-field>
+      <mat-form-field class="col-12 col-lg-6">
+          <input type="number" matInput placeholder="{{'Library.Books.Price'|translate}}" [(ngModel)]="addBook.price"
+              #HostelCautionDeposit="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20" />
+      </mat-form-field>
+      <mat-form-field class="col-12 col-lg-6">
+          <input type="number" matInput placeholder="{{'Library.Books.NoOfPages'|translate}}"
+              [(ngModel)]="addBook.pages" #HostelCautionDeposit="ngModel" [ngModelOptions]="{standalone: true}"
+              maxlength="20" />
+      </mat-form-field>
+      <mat-form-field class="col-12 col-lg-6">
+          <input type="text" matInput placeholder="{{'Library.Books.BillNumber'|translate}}"
+              [(ngModel)]="addBook.billNo" #NameModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20"/>
+      </mat-form-field>
+
+      <div class="col-12 col-lg-6 form-group">
+          <div class="custom-file">
+              <input type="file" class="custom-file-input" id="fileInput" aria-describedby="fileInput" #fileInput (change)="preview(fileInput.files)" accept=".jpg, .jpeg, .png" />
+              <label class="custom-file-label" for="fileInput">{{'Library.Books.UploadBookImage'|translate}}</label>
+          </div>
+          <img class="img-thumbnail mt-2" [src]="imgURL" height="200" *ngIf="imgURL" />
+      </div>
+  </div>
+</div>
+
+<div class="page-title d-flex justify-content-between align-items-center">
+  <div class="page-title-wrap">
+      <h2 class="mb-0">{{'Library.Books.Publisher'|translate}}</h2>
+  </div>
+</div>
+<div class="rct-block">
+  <div class="rct-block-content">
+      <mat-form-field class="col-12 col-lg-6">
+          <input type="text" matInput placeholder="{{'Library.Books.PublisherName'|translate}}" required NoSpaces
+              [(ngModel)]="addPublisher.name" #CodeModel="ngModel" [ngModelOptions]="{standalone: true}"
+              maxlength="20" />
+      </mat-form-field>
+      <mat-form-field class="col-12 col-lg-6">
+          <input type="text" matInput placeholder="{{'Library.Books.PublisherEmail'|translate}}" required NoSpaces
+              [(ngModel)]="addPublisher.email" #NameModel="ngModel" [ngModelOptions]="{standalone: true}"
+              maxlength="20" />
+      </mat-form-field>
+      <mat-form-field class="col-12 col-lg-6">
+          <input type="text" matInput placeholder="{{'Library.Books.PublisherContact'|translate}}" required NoSpaces
+              [(ngModel)]="addPublisher.contract" #NameModel="ngModel" [ngModelOptions]="{standalone: true}"
+              maxlength="20" />
+      </mat-form-field>
+      <mat-form-field class="col-12 col-lg-6">
+          <textarea type="text" matInput placeholder="{{'Library.Books.PublisherAddress'|translate}}"
+              #PresentAddressModel="ngModel" [(ngModel)]="addPublisher.address"
+              [ngModelOptions]="{standalone: true}"></textarea>
+      </mat-form-field>
+
+      <div class="col-12">
+          <button class="btn-icon-rounded btn-primary" matTooltip="{{'Library.Books.Save'|translate}}"
+              matTooltipPosition="above" (click)="add()">
+              <i class="zmdi zmdi-floppy"></i>
+          </button>
+          <a class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="{{'Library.Books.Cancel'|translate}}"
+              matTooltipPosition="above" routerLink="/library/books" routerLinkActive="active"><i
+                  class="zmdi zmdi-close"></i></a>
+      </div>
+  </div>
+</div>

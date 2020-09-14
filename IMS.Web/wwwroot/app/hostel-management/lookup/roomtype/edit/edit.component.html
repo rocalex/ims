@@ -1,0 +1,33 @@
+<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Hostel.Lookup.RoomTypes'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary"
+    matTooltip="{{'Hostel.Lookup.List'|translate}}" matTooltipPosition="before"
+    routerLink="/hostel/lookup/roomtype" routerLinkActive="active"><i class="zmdi zmdi-view-list"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-block-content">
+        <mat-form-field class="col-12 col-lg-6">
+            <input type="text" matInput placeholder="{{'Hostel.Lookup.RoomTypeCode'|translate}}" required
+                [(ngModel)]="addGroup.code" #NameModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20" />
+        </mat-form-field>
+        <mat-form-field class="col-12 col-lg-6">
+            <input type="text" matInput placeholder="{{'Hostel.Lookup.RoomTypeName'|translate}}" required
+                [(ngModel)]="addGroup.name" #NameModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20" />
+        </mat-form-field>
+        <mat-form-field class="col-12 col-lg-6">
+            <input type="text" matInput placeholder="{{'Hostel.Lookup.Description'|translate}}"
+                [(ngModel)]="addGroup.description" #NameModel="ngModel" [ngModelOptions]="{standalone: true}"
+                maxlength="20"/>
+        </mat-form-field>
+        <div class="col-12">
+            <button class="btn-icon-rounded btn-primary" matTooltip="{{'Hostel.Lookup.Save'|translate}}"
+                matTooltipPosition="above" (click)="add()">
+                <i class="zmdi zmdi-floppy"></i>
+            </button>
+            <a class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="{{'Hostel.Lookup.Cancel'|translate}}" matTooltipPosition="above" routerLink="/hostel/lookup/roomtype" routerLinkActive="active"><i class="zmdi zmdi-close"></i></a>
+            
+        </div>
+    </div>
+</div>

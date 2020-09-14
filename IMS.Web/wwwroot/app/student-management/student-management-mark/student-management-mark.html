@@ -1,0 +1,23 @@
+﻿<div class="horizontal-menu mb-4 d-flex">
+    <ul class="list-unstyled nav">
+        <li>
+            <a class="nav-link" routerLinkActive="active" *ngIf="isAllowed('StudentMarkExamDefinition')" [routerLink]="['examdefinition']">
+                <i class="zmdi zmdi-time"></i>
+                <span class="menu-title">Exam Definition</span>
+            </a>
+        </li>
+        <li>
+            <a class="nav-link" routerLinkActive="active" *ngIf="isAllowed('StudentMarkClassExam')" [routerLink]="['classexam']">
+                <i class="zmdi zmdi-time"></i>
+                <span class="menu-title">Class Exam</span>
+            </a>
+        </li>
+        <li>
+            <a class="nav-link" routerLinkActive="active" *ngIf="isAllowed('StudentMarkExamScoreEntry')" [routerLink]="['examscoreentry']">
+                <i class="zmdi zmdi-time"></i>
+                <span class="menu-title">Exam Score Entry</span>
+            </a>
+        </li>
+    </ul>
+</div>
+<router-outlet></router-outlet>

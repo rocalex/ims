@@ -1,0 +1,326 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Sidenav.Children.Dashboard'|translate}}</h2>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12 col-lg-4">
+        <div class="rct-block">
+            <div class="rct-block-content">
+                <div class="media">
+                    <div class="mr-10">
+                        <img [src]="((userDashboardDetails.personalImage)?userDashboardDetails.personalImage:'/assets/img/default_user.png')" alt="user profile" class="media-object rounded-circle img-thumbnail" width="120" height="120" />
+                    </div>
+                    <div class="media-body">
+                        <div class="d-flex justify-content-between">
+                            <div class="fw-bold">{{'Common.Name'|translate}}</div>
+                            <div class="text-primary">{{userDashboardDetails.name}}</div>
+                        </div>
+                        <hr class="my-1" />
+                        <div class="d-flex justify-content-between">
+                            <div class="fw-bold" *ngIf="userDashboardDetails.userDashboardType===0">{{'Student.Information.RollNumber'|translate}}</div>
+                            <div class="text-primary" *ngIf="userDashboardDetails.userDashboardType===0">{{userDashboardDetails.rollNumber}}</div>
+
+                            <div class="fw-bold" *ngIf="userDashboardDetails.userDashboardType===1">{{'Staff.Master.EmployeeId'|translate}}</div>
+                            <div class="text-primary" *ngIf="userDashboardDetails.userDashboardType===1">{{userDashboardDetails.employeeId}}</div>
+                        </div>
+                        <hr class="my-1" />
+                        <div class="d-flex justify-content-between">
+                            <div class="fw-bold">{{'Staff.Master.Email'|translate}}</div>
+                            <div class="text-primary">{{userDashboardDetails.email}}</div>
+                        </div>
+                        <hr class="my-1" />
+                        <div class="d-flex justify-content-between">
+                            <div class="fw-bold">{{'Staff.Master.MobileNumber'|translate}}</div>
+                            <div class="text-primary">{{userDashboardDetails.phoneNumber}}</div>
+                        </div>
+                        <hr class="my-1" *ngIf="userDashboardDetails.userDashboardType===0" />
+                        <div class="d-flex justify-content-between" *ngIf="userDashboardDetails.userDashboardType===0">
+                            <div class="fw-bold">{{'Student.Report.Class'|translate}}</div>
+                            <div class="text-primary">{{userDashboardDetails.class}}</div>
+                        </div>
+                        <hr class="my-1" *ngIf="userDashboardDetails.userDashboardType===0" />
+                        <div class="d-flex justify-content-between" *ngIf="userDashboardDetails.userDashboardType===0">
+                            <div class="fw-bold">{{'Student.Information.Section'|translate}}</div>
+                            <div class="text-primary">{{userDashboardDetails.section}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-6 mb-3">
+                <div class="rct-block rct-visual-block blue-madison text-white">
+                    <div class="rct-block-content">
+                        <div class="display-4">{{userDashboardDetails.classStudentCount}}</div>
+                        <h2>Class Students</h2>
+                        <i class="zmdi zmdi-accounts"></i>
+                    </div>
+                </div>
+                <div class="rct-block rct-visual-block green-haze text-white">
+                    <div class="rct-block-content">
+                        <div class="display-4">{{userDashboardDetails.instituteStudentCount}}</div>
+                        <h2>Institute Students</h2>
+                        <i class="zmdi zmdi-accounts"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="rct-block">
+                    <div class="rct-block-content">
+                        canvas chart data
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-lg-5">
+        <div class="rct-block">
+            <div class="rct-block-title d-flex justify-content-between">
+                <h2 class="mb-0">{{'Institute.TimeTable.TimeTables'|translate}}</h2>
+                <div class="d-flex align-items-center">
+                    <i matTooltip="Print" matTooltipPosition="above" class="zmdi zmdi-print zmdi-hc-lg" (click)="print('time-table')"></i>
+                    <i matTooltip="Collapse" matTooltipPosition="above" class="zmdi zmdi-minus zmdi-hc-lg ml-3"></i>
+                    <i matTooltip="Close" matTooltipPosition="above" class="zmdi zmdi-close zmdi-hc-lg ml-3"></i>
+                </div>
+            </div>
+            <div>
+                <div class="row mx-0 py-3" *ngIf="userDashboardDetails.userDashboardType===1">
+                    <div class="col-12 col-lg-5">
+                        <mat-form-field>
+                            <mat-select placeholder="{{'Institute.ClassSubjectMapping.SelectClass'|translate}}" [(ngModel)]="selectedClassId" #selectedClass="ngModel"
+                                        [ngModelOptions]="{standalone: true}" required>
+                                <mat-option *ngFor="let class of classList" [value]="class.id">
+                                    {{class.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-12 col-lg-5">
+                        <mat-form-field>
+                            <mat-select placeholder="{{'MarkManagement.ClassExam.SelectSection'|translate}}" [(ngModel)]="selectedSectionId" #selectedSection="ngModel"
+                                        [ngModelOptions]="{standalone: true}" required>
+                                <mat-option *ngFor="let section of sectionsList" [value]="section.id">
+                                    {{section.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-12 col-lg-2">
+                        <button class="btn-icon-rounded btn-primary" (click)="getStaffTimeTable()"><i class="zmdi zmdi-search"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive" id="time-table">
+                <table class="table table-bordered mb-0">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th *ngFor="let weekDay of timeTableDetailsList">
+                                {{weekDay.weekDaysEnumString}}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let rowHeader of rowHeaders; let i = index">
+                            <td>{{rowHeader.headerName}}</td>
+                            <td *ngFor="let timeTableDetail of timeTableDetailsList" class="p-1">
+                                <div [class]="getCssClass(timeTableDetail.timeTableWeekDaySubjectList[i])"
+                                     *ngIf="timeTableDetail.timeTableWeekDaySubjectList[i].isBreakPeriod">
+                                    <h6 class="mb-1 pb-1 border-bottom">Br</h6>
+                                    <span>Break</span>
+                                </div>
+                                <div [class]="getCssClass(timeTableDetail.timeTableWeekDaySubjectList[i])"
+                                     *ngIf="timeTableDetail.timeTableWeekDaySubjectList[i].subjectCode!==null
+                                     && timeTableDetail.timeTableWeekDaySubjectList[i].subjectCode!==undefined
+                                     && !timeTableDetail.timeTableWeekDaySubjectList[i].isBreakPeriod">
+                                    <h6 class="mb-1 pb-1 border-bottom" *ngIf="!timeTableDetail.timeTableWeekDaySubjectList[i].isBreakPeriod">
+                                        {{timeTableDetail.timeTableWeekDaySubjectList[i].subjectCode}}
+                                    </h6>
+                                    <span *ngIf="!timeTableDetail.timeTableWeekDaySubjectList[i].isBreakPeriod">
+                                        {{timeTableDetail.timeTableWeekDaySubjectList[i].subjectName}}
+                                    </span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!--<div class="rct-block">
+            <div class="rct-block-title">
+                <h2>Upcoming Events</h2>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-bordered mb-0">
+                    <thead>
+                        <tr>
+                            <th>Event</th>
+                            <th>Remarks</th>
+                            <th>Day Count</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Cultural Day</td>
+                            <td>Inter School Sports meet</td>
+                            <td>
+                                <span class="badge badge-info">15 days left</span>
+                            </td>
+                            <td>2019-05-06</td>
+                        </tr>
+                        <tr>
+                            <td>Cultural Day</td>
+                            <td>Inter School Sports meet</td>
+                            <td>
+                                <span class="badge badge-info">15 days left</span>
+                            </td>
+                            <td>2019-05-06</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>-->
+    </div>
+    <div class="col-12 col-lg-3">
+        <!--<div class="rct-block">
+            <div class="rct-block-title">
+                <h2>News Board</h2>
+            </div>
+            <div class="rct-block-content">
+                Data
+            </div>
+        </div>
+        <div class="rct-block">
+            <div class="rct-block-title d-flex justify-content-between">
+                <h2 class="mb-0">Class Forum</h2>
+                <div class="d-flex align-items-center">
+                    <i matTooltip="Add" matTooltipPosition="above" class="zmdi zmdi-plus zmdi-hc-lg"></i>
+                </div>
+            </div>
+            <div class="rct-block-content">
+                <ul class="list-unstyled">
+                    <li>
+                        <div class="media">
+                            <div class="mr-10">
+                                <div class="embed-responsive embed-responsive-1by1" style="width:50px;">
+                                    <img src="http://reactify.theironnetwork.org/data/images/user-1.jpg" alt="user profile" class="embed-responsive-item rounded-circle" />
+                                </div>
+                            </div>
+                            <div class="media-body pt-5">
+                                <div class="d-flex justify-content-between">
+                                    <h5 class="mb-5 text-primary">Jhon Smith</h5>
+                                    <span class="text-muted fs-12">10:00 AM</span>
+                                </div>
+                                <span class="text-muted fs-12 d-block">Notifications have been designed to make it easy to scan.</span>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>-->
+        <div class="rct-block" *ngIf="userDashboardDetails.userDashboardType===0">
+            <div class="rct-block-title">
+                <h2>Attendance</h2>
+            </div>
+            <div class="rct-block-content">
+                <mat-form-field class="form-group col-12 col-lg-6">
+                    <mat-select placeholder="{{'Common.Select'|translate}} {{'StudentManagement.Attendance.AttendanceType'|translate}}" [(ngModel)]="selectedAttendance"
+                                #AttendanceType="ngModel" [ngModelOptions]="{standalone: true}" (selectionChange)="resetAttendance()" required>
+                        <mat-option *ngFor="let attendanceType of attendanceTypes" [value]="attendanceType">
+                            {{attendanceType}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class="form-group col-12 col-lg-6" *ngIf="selectedAttendance === 'Daily'">
+                    <input matInput [matDatepicker]="admissionDate" placeholder="{{'Student.Attendance.Date'|translate}} *"
+                           (dateChange)="selectedDate = $event.value" [value]="selectedDate" disabled required>
+                    <mat-datepicker-toggle matSuffix [for]="admissionDate"></mat-datepicker-toggle>
+                    <mat-datepicker #admissionDate disabled="false"></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field class="form-group col-12 col-lg-6" *ngIf="selectedAttendance === 'Monthly'">
+                    <mat-select placeholder="{{'Common.Select'|translate}} {{'StudentManagement.Attendance.AttendanceMonth'|translate}}" [(ngModel)]="selectedMonth"
+                                #SelectedMonthModel="ngModel" [ngModelOptions]="{standalone: true}" (selectionChange)="resetAttendance()" required>
+                        <mat-option *ngFor="let monthName of monthNames" [value]="monthName">
+                            {{monthName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div class="col-12">
+                    <button class="btn-icon-rounded btn-primary" matTooltip="Search" matTooltipPosition="above" (click)="getStudentAttendance()"
+                            [disabled]="!(AttendanceType.valid)">
+                        <i class="zmdi zmdi-search"></i>
+                    </button>
+                </div>
+                <table class="table mb-0">
+                    <thead>
+                        <tr>
+                            <th *ngFor="let attendanceColumn of attendanceColumns">{{attendanceColumn}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td *ngFor="let attendanceColumn of attendances">
+                                <span [hidden]="attendanceColumn.isDisabled">
+                                    <svg *ngIf="attendanceColumn.value === 'None'" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="24" height="24" viewBox="0 0 24 24" class="text-grey" fill="currentcolor"><path d="M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3M19,5V19H5V5H19Z" /></svg>
+                                    <svg *ngIf="attendanceColumn.value === 'Present'" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="24" height="24" viewBox="0 0 24 24" class="text-success" fill="currentcolor"><path d="M9,7V17H11V13H13A2,2 0 0,0 15,11V9A2,2 0 0,0 13,7H9M11,9H13V11H11V9M5,3H19A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V5A2,2 0 0,1 5,3Z" /></svg>
+                                    <svg *ngIf="attendanceColumn.value === 'Absent'" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="24" height="24" viewBox="0 0 24 24" class="text-danger" fill="currentcolor"><path d="M3,5A2,2 0 0,1 5,3H19A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5C3.89,21 3,20.1 3,19V5M11,7A2,2 0 0,0 9,9V17H11V13H13V17H15V9A2,2 0 0,0 13,7H11M11,9H13V11H11V9Z" /></svg>
+                                    <svg *ngIf="attendanceColumn.value === 'Leave'" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="24" height="24" viewBox="0 0 24 24" class="text-warning" fill="currentcolor"><path d="M9,7V17H15V15H11V7H9M5,3H19A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V5A2,2 0 0,1 5,3Z" /></svg>
+                                    <svg *ngIf="attendanceColumn.value === 'Half Leave'" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="24" height="24" viewBox="0 0 24 24" class="text-warning" fill="currentcolor"><path d="M9,7V17H11V13H13V17H15V7H13V11H11V7H9M5,3H19A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V5A2,2 0 0,1 5,3Z" /></svg>
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                    </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12 col-lg-12">
+        <div class="rct-block">
+            <div class="rct-block-title d-flex justify-content-between">
+                <h2 class="mb-0">{{'StudentManagement.Dashboard.CalendarView'|translate}}</h2>
+            </div>
+            <div class="rct-block-title d-flex justify-content-between">
+                <div class="btn-group" role="group">
+                    <div class="btn btn-primary" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">
+                        {{'StudentManagement.Dashboard.Previous'|translate}}
+                    </div>
+                    <div class="btn btn-primary active" mwlCalendarToday [(viewDate)]="viewDate">
+                        {{'StudentManagement.Dashboard.Today'|translate}}
+                    </div>
+                    <div class="btn btn-primary" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">
+                        {{'StudentManagement.Dashboard.Next'|translate}}
+                    </div>
+                </div>
+                <div class="btn-group ml-3" role="group">
+                    <div class="btn btn-primary" (click)="setView(CalendarView.Month)" [class.active]="view === CalendarView.Month">
+                        {{'StudentManagement.Dashboard.Month'|translate}}
+                    </div>
+                    <div class="btn btn-primary" (click)="setView(CalendarView.Week)" [class.active]="view === CalendarView.Week">
+                        {{'StudentManagement.Dashboard.Week'|translate}}
+                    </div>
+                    <div class="btn btn-primary" (click)="setView(CalendarView.Day)" [class.active]="view === CalendarView.Day">
+                        {{'StudentManagement.Dashboard.Day'|translate}}
+                    </div>
+                </div>
+            </div>
+            <div class="rct-block-content">
+                <div [ngSwitch]="view">
+                    <mwl-calendar-month-view *ngSwitchCase="CalendarView.Month" [viewDate]="viewDate" [events]="calendarEvents"
+                                             [activeDayIsOpen]="activeDayIsOpen" (dayClicked)="dayClicked($event.day)"
+                                             (eventClicked)="handleEvent('Clicked', $event.event)">
+                    </mwl-calendar-month-view>
+                    <mwl-calendar-week-view *ngSwitchCase="CalendarView.Week" [viewDate]="viewDate" [events]="calendarEvents"
+                                            (eventClicked)="handleEvent('Clicked', $event.event)">
+                    </mwl-calendar-week-view>
+                    <mwl-calendar-day-view *ngSwitchCase="CalendarView.Day" [viewDate]="viewDate" [events]="calendarEvents"
+                                           (eventClicked)="handleEvent('Clicked', $event.event)">
+                    </mwl-calendar-day-view>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

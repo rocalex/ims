@@ -1,0 +1,90 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'StudentLeaveManagement.LeaveManagement.ApplyLeave'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" matTooltip="{{'StudentLeaveManagement.LeaveManagement.Leaves'|translate}}" matTooltipPosition="above"
+       routerLink="/leave/list" routerLinkActive="active"><i class="zmdi zmdi-view-list"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-block-content">
+        <form class="row">
+            <mat-form-field class="form-group col-12 col-lg-6">
+                <mat-select placeholder="{{'StudentLeaveManagement.LeaveManagement.SelectClass'|translate}}" [(ngModel)]="leave.ClassId"
+                            #ClassId="ngModel" [ngModelOptions]="{standalone: true}" disabled>
+                    <mat-option *ngFor="let class of initialData.classes" [value]="class.id">
+                        {{class.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="form-group col-12 col-lg-6">
+                <mat-select placeholder="{{'StudentLeaveManagement.LeaveManagement.SelectStudent'|translate}}" [(ngModel)]="leave.StudentId"
+                            #StudentId="ngModel" [ngModelOptions]="{standalone: true}" disabled>
+                    <mat-option *ngFor="let student of students" [value]="student.id">
+                        {{student.rollNumber}} - {{student.firstName}} {{student.lastName}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="form-group col-12 col-lg-6">
+                <input matInput [matDatepicker]="fromDate" placeholder="{{'StudentLeaveManagement.LeaveManagement.FromDate'|translate}} *"
+                       (dateChange)="leave.FromDate = $event.value;" [value]="leave.FromDate" [min]="todayDate" [max]="leave.EndDate" disabled required>
+                <mat-datepicker-toggle matSuffix [for]="fromDate"></mat-datepicker-toggle>
+                <mat-datepicker #fromDate disabled="false"></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field class="form-group col-12 col-lg-6">
+                <input matInput [matDatepicker]="endDate" placeholder="{{'StudentLeaveManagement.LeaveManagement.EndDate'|translate}} *"
+                       (dateChange)="leave.EndDate = $event.value" [value]="leave.EndDate" [min]="endDateValid()" disabled required>
+                <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+                <mat-datepicker #endDate disabled="false"></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field class="form-group col-12 col-lg-6">
+                <input type="text" placeholder="{{'StudentLeaveManagement.LeaveManagement.NoOfDays'|translate}}" matInput [value]="numberOfDays()" readonly />
+            </mat-form-field>
+            <mat-form-field class="form-group col-12 col-lg-6">
+                <mat-select placeholder="{{'StudentLeaveManagement.LeaveManagement.SelectType'|translate}}" [(ngModel)]="leave.LeaveTypeId"
+                            #LeaveTypeId="ngModel" [ngModelOptions]="{standalone: true}" (selectionChange)="getStudentAlreadyTakenLeaveCount()" required>
+                    <mat-option *ngFor="let leaveType of leaveTypes" [value]="leaveType.id">
+                        {{leaveType.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="form-group col-12 col-lg-6">
+                <input type="text" matInput placeholder="{{'StudentLeaveManagement.LeaveManagement.BalanceLeave'|translate}}" [value]="balanceLeave()" readonly />
+            </mat-form-field>
+            <mat-form-field class="form-group col-12 col-lg-6">
+                <textarea matInput placeholder="{{'StudentLeaveManagement.LeaveManagement.Reason'|translate}}" required NoSpaces
+                          [(ngModel)]="leave.Reason" #ReasonModel="ngModel" [ngModelOptions]="{standalone: true}"
+                          maxlength="250"></textarea>
+                <mat-error *ngIf="ReasonModel.invalid && ReasonModel.touched">
+                    <span *ngIf="ReasonModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                    <span *ngIf="(!ReasonModel.hasError('required') && ReasonModel.hasError('whitespace'))">{{'Common.WhiteSpace'|translate}}</span>
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="form-group col-12 col-lg-6">
+                <mat-select placeholder="{{'StudentLeaveManagement.LeaveManagement.Status'|translate}}" [(ngModel)]="leave.StatusId"
+                            #StatusId="ngModel" [ngModelOptions]="{standalone: true}" disabled>
+                    <mat-option *ngFor="let leaveStatus of initialData.leaveStatuses" [value]="leaveStatus.id">
+                        {{leaveStatus.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="form-group col-12 col-lg-6">
+                <mat-select placeholder="{{'StudentLeaveManagement.LeaveManagement.ApprovedBy'|translate}}" [(ngModel)]="leave.ApprovedById"
+                            #ApprovedById="ngModel" [ngModelOptions]="{standalone: true}" disabled>
+                    <mat-option *ngFor="let staff of initialData.staffs" [value]="staff.id">
+                        {{staff.employeeId}} - {{staff.firstName}} {{staff.lastName}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </form>
+        <div class="col-12">
+            <button class="btn-icon-rounded btn-primary" matTooltip="{{'StudentLeaveManagement.LeaveManagement.ApplyLeave'|translate}}" matTooltipPosition="above" (click)="addStudentLeave()"
+                    [disabled]="!((leave.FromDate !== undefined && leave.FromDate !==null)
+                    && (leave.EndDate !== undefined && leave.EndDate !==null) && LeaveTypeId.valid && ReasonModel.valid
+                    && leave.ApprovedById && leave.StatusId)">
+                <i class="zmdi zmdi-floppy"></i>
+            </button>
+            <a class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="{{'StudentLeaveManagement.LeaveManagement.CancelLeave'|translate}}" 
+               matTooltipPosition="above" routerLink="/leave/list" routerLinkActive="active"><i class="zmdi zmdi-close"></i></a>
+        </div>
+    </div>
+</div>

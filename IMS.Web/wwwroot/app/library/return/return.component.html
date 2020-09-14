@@ -1,0 +1,80 @@
+<div class="page-title d-flex justify-content-between align-items-center">
+  <div class="page-title-wrap">
+      <h2 class="mb-0">{{'Library.Returnbook.Title'|translate}}</h2>
+  </div>
+</div>
+<div class="rct-block">
+  <div class="rct-block-content">
+    <mat-form-field class="col-12 col-lg-6">
+      <mat-select placeholder="{{'Library.Returnbook.BookName'|translate}}" [(ngModel)]="selectedBook"
+                  #returnBook="ngModel" [ngModelOptions]="{standalone: true}" required>
+          <mat-option *ngFor="let book of bookList" [value]="book">
+              {{book.name}}
+          </mat-option>
+      </mat-select>
+    </mat-form-field>
+    
+    <mat-form-field class="col-12 col-lg-12">
+      <input type="text" matInput disabled placeholder="{{'Library.Returnbook.RemainingQuantity'|translate}}" 
+              [(ngModel)]="selectedBook.remaining" #RemainingQuantityModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20" />
+  </mat-form-field>
+    <div class="col-12">
+      <button class="btn-icon-rounded btn-primary" matTooltip="{{'Library.Returnbook.Search'|translate}}" matTooltipPosition="above" (click)="search()">
+          <i class="zmdi zmdi-search"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="rct-block" *ngIf="issueBookList.length>0">
+  <div class="rct-full-block">
+      <div class="table-responsive">
+          <table class="table mb-0">
+              <thead>
+                  <tr>
+                    <th></th>
+                    <th></th>
+                      <th>{{'Library.Returnbook.ReferenceNumber'|translate}}</th>
+                      <th>{{'Library.Returnbook.IssuedTo'|translate}}</th>
+                      <th>{{'Library.Returnbook.IssuedDate'|translate}}</th>
+                      <th>{{'Library.Returnbook.Fine'|translate}}</th>
+                      <th>{{'Library.Returnbook.ReturnDate'|translate}}</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr *ngFor="let issueBook of issueBookList;let indexOfBook=index;">
+                    <td>
+                      <mat-checkbox [(ngModel)]="selectionList[indexOfBook]" (change)="checkCanSave($event)" [ngModelOptions]="{standalone: true}"></mat-checkbox>
+                    </td>
+                    <td>{{indexOfBook + 1}}</td>
+                    <td>{{issueBook.refNo}}</td>
+                    <td>{{(issueBook.userType==0)?(fullName(issueBook.student)):(fullName(issueBook.staff))}}</td>
+                    <td>{{issueBook.issueDate | date}}</td>
+                    <td>
+                      <mat-form-field class="col-12 col-lg-12">
+                        <input type="text" matInput placeholder="{{'Library.Returnbook.Fine'|translate}}" 
+                                [(ngModel)]="fineList[indexOfBook]" #RemainingQuantityModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20" />
+                      </mat-form-field>
+                    </td>
+                    <td>
+                      <mat-form-field class="col-12 col-lg-6">
+                            <input matInput [matDatepicker]="startDate" placeholder="{{'Library.Returnbook.ReturnDate'|translate}}"
+                                    [value]="returnDateList[indexOfBook]" [max]="currentDate"
+                                    (dateChange)="returnDateList[indexOfBook] = $event.value" disabled required />
+                            <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+                            <mat-datepicker #startDate disabled="false"></mat-datepicker>
+                      </mat-form-field>
+                    </td>
+                  </tr>
+              </tbody>
+          </table>
+      </div>
+      
+    <div class="col-12">
+      <button class="btn-icon-rounded btn-primary" matTooltip="{{'Library.Returnbook.Save'|translate}}" matTooltipPosition="above" (click)="return()" [disabled]="enableSave">
+          <i class="zmdi zmdi-floppy"></i>
+      </button>
+      <a class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="{{'Library.Returnbook.Cancel'|translate}}" matTooltipPosition="above" routerLink="/library/issuebook" rIssuebookouterLinkActive="active"><i class="zmdi zmdi-close"></i></a>
+    </div>
+  </div>
+</div>

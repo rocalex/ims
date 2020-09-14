@@ -1,0 +1,42 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'FinanceManagement.GeneralReceipt.BasicReceipts'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" *ngIf="isAllowed('Add')"
+       matTooltip="{{'FinanceManagement.GeneralReceipt.AddBasicReceipts'|translate}}" matTooltipPosition="before"
+       routerLink="/finance/receipt/add" routerLinkActive="active"><i class="zmdi zmdi-plus"></i></a>
+</div>
+
+<div class="rct-block">
+    <div class="rct-full-block">
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th>{{'FinanceManagement.GeneralReceipt.Code'|translate}}</th>
+                        <th>{{'FinanceManagement.GeneralReceipt.Amount'|translate}}</th>
+                        <th>{{'FinanceManagement.GeneralReceipt.ReceiptDate'|translate}}</th>
+                        <th>{{'FinanceManagement.GeneralReceipt.ReceivedBy'|translate}}</th>
+                        <th>{{'FinanceManagement.GeneralReceipt.ReceivedFrom'|translate}}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let receipt of receiptsList">
+                        <td>{{receipt.code}}</td>
+                        <td>{{receipt.amount}}</td>
+                        <td>{{receipt.receiptDate | date}}</td>
+                        <td>{{receipt.receivedByUser?.name}}</td>
+                        <td>{{receipt.receivedFromChartOfAccount?.code}} - {{receipt.receivedFromChartOfAccount?.name}}</td>
+                        <td> <a class="nav-link" routerLink="/finance/receipt/{{receipt.id}}" *ngIf="isAllowed('Edit')"
+                                matTooltip="{{'FinanceManagement.GeneralReceipt.EditBasicReceipts'|translate}}" matTooltipPosition="above" 
+                                routerLinkActive="active"><i class="zmdi zmdi-edit zmdi-hc-lg"></i></a></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="rct-block-title text-center" *ngIf="receiptsList.length==0">
+                {{'FinanceManagement.GeneralReceipt.NoBasicReceipts'|translate}}
+            </div>
+        </div>
+    </div>
+</div>

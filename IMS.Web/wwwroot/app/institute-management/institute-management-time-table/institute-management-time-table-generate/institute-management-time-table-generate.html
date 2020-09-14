@@ -1,0 +1,145 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Institute.TimeTable.GenerateTimeTable'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" matTooltip="Details" matTooltipPosition="above" routerLink="/institute/timetable" routerLinkActive="active"><i class="zmdi zmdi-view-list"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-block-content">
+        <form class="row">
+            <mat-form-field class="col-12 col-lg-6">
+                <input type="text" matInput placeholder="{{'Institute.Class.ClassName'|translate}}" #classModel="ngModel" [(ngModel)]="class.name"
+                       [ngModelOptions]="{standalone: true}" required disabled />
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <input type="text" matInput placeholder="{{'Institute.TimeTable.SectionName'|translate}}" #sectionModel="ngModel" [(ngModel)]="section.name"
+                       [ngModelOptions]="{standalone: true}" required disabled />
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <mat-select placeholder="{{'Institute.AcademicYear.SelectAcademicYear'|translate}}" [(ngModel)]="timeTable.academicYearId"
+                            (selectionChange)="getTimeTableDetailsOnSelectionChange()"
+                            #academicYearModel="ngModel" [ngModelOptions]="{standalone: true}" required>
+                    <mat-option *ngFor="let academicYear of academicYears" [value]="academicYear.id">
+                        {{academicYear.academicYearCode}}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="academicYearModel.invalid && academicYearModel.touched">
+                    <span *ngIf="academicYearModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <mat-select placeholder="{{'Institute.TimeTable.NumberOfPeriods'|translate}}" #numberOfPeriodsModel="ngModel" [(ngModel)]="timeTable.periodCount" [ngModelOptions]="{standalone: true}" required>
+                    <mat-option *ngFor="let period of numberOfPeriods" [value]="period">
+                        {{period}}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="numberOfPeriodsModel.invalid && numberOfPeriodsModel.touched">
+                    <span *ngIf="numberOfPeriodsModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <input type="number" matInput placeholder="{{'Institute.TimeTable.PeriodDuration'|translate}}" #periodDurationModel="ngModel" [(ngModel)]="timeTable.periodDuration"
+                       [ngModelOptions]="{standalone: true}" required max="60" />
+
+                <mat-error *ngIf="periodDurationModel.invalid && periodDurationModel.touched">
+                    <span *ngIf="periodDurationModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                </mat-error>
+                <mat-hint class="mat-error" *ngIf="isPeriodDurationError">
+                    <span>{{errorMessage}}</span>
+                </mat-hint>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <input matInput [ngxTimepicker]="startTime" [disableClick]="true" placeholder="{{'Institute.TimeTable.StartTime'|translate}}"
+                       #EndTimeModel="ngModel" [(ngModel)]="timeTable.periodStartTime" [ngModelOptions]="{standalone: true}" readonly>
+                <ngx-material-timepicker-toggle matSuffix [for]="startTime"></ngx-material-timepicker-toggle>
+                <ngx-material-timepicker #startTime></ngx-material-timepicker>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-12">
+                <input type="number" matInput placeholder="{{'Institute.TimeTable.NumberOfBreaks'|translate}}" #numberOfBreaksModel="ngModel" [(ngModel)]="timeTable.breaksCount"
+                       [ngModelOptions]="{standalone: true}" required (change)="changeNumberOfBreaks()" min="0" />
+
+                <mat-error *ngIf="numberOfBreaksModel.invalid && numberOfBreaksModel.touched">
+                    <span *ngIf="numberOfBreaksModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                </mat-error>
+            </mat-form-field>
+
+            <ng-container *ngFor="let timeTableBreakDetails of timeTableBreakDetailsList; let i =index">
+                <mat-form-field class="col-12 col-lg-6">
+                    <input type="number" matInput placeholder="{{'Institute.TimeTable.BreakDuration'|translate}} ({{i+1}})" #breakDurationModel="ngModel" [(ngModel)]="timeTableBreakDetails.breakDuration"
+                           [ngModelOptions]="{standalone: true}" required max="60" />
+
+                    <mat-error *ngIf="breakDurationModel.invalid && breakDurationModel.touched">
+                        <span *ngIf="breakDurationModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="col-12 col-lg-6">
+                    <input type="number" matInput placeholder="{{'Institute.TimeTable.BreakAfterPeriod'|translate}} ({{i+1}})" #breakAfterPeriodModel="ngModel" [(ngModel)]="timeTableBreakDetails.breakAfterPeriod"
+                           [ngModelOptions]="{standalone: true}" required min="1" max="timeTable.periodCount" />
+
+                    <mat-error *ngIf="breakAfterPeriodModel.invalid && breakAfterPeriodModel.touched">
+                        <span *ngIf="breakAfterPeriodModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                    </mat-error>
+                </mat-form-field>
+            </ng-container>
+            <div class="form-group col-12 col-lg-6">
+                <mat-hint class="mat-error" *ngIf="isBreakDurationError || isBreakDurationNullError || isBreakAfterPeriodError || isBreakAfterPeriodNullError">
+                    <span>{{errorMessage}}</span>
+                </mat-hint>
+            </div>
+            <div class="col-12">
+                <button class="btn-icon-rounded btn-primary" (click)="generateTimeTable()"
+                        matTooltip="Refresh" matTooltipPosition="above"
+                        [disabled]="!(academicYearModel.valid && numberOfPeriodsModel.valid && periodDurationModel.valid && numberOfBreaksModel.valid && (timeTable.periodStartTime !== null && timeTable.periodStartTime !== undefined))">
+                    <i class="zmdi zmdi-refresh-sync"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="mt-3 rct-block" *ngIf="isSubjectTableVisible">
+    <div class="rct-full-block">
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>{{'Institute.TimeTable.DaysPeriods'|translate}}</th>
+                        <th *ngFor="let columnHeader of columnHeaders">
+                            {{columnHeader.headerName}}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let timeTableWeekDetail of timeTableDetailsList">
+                        <td>{{timeTableWeekDetail.weekDaysEnumString}}</td>
+                        <td *ngFor="let timeTableDetail of timeTableWeekDetail.timeTableWeekDaySubjectList">
+                            <div *ngIf="timeTableDetail.periodNumber!==0 && !timeTableDetail.isBreakPeriod">
+                                <mat-select placeholder="{{'Institute.TimeTable.SelectSubject'|translate}}"
+                                            (selectionChange)="setSubjectToWeekDay(timeTableDetail.periodNumber, timeTableDetail.weekDaysEnum, timeTableDetail.subjectId)"
+                                            [(ngModel)]="timeTableDetail.subjectId" #academicYearModel="ngModel" [ngModelOptions]="{standalone: true}">
+                                    <mat-option *ngFor="let subject of subjects" [value]="subject.id">
+                                        {{subject.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </div>
+                            <div *ngIf="timeTableDetail.periodNumber===0 || timeTableDetail.isBreakPeriod">
+                                Br
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="rct-block-content">
+        <button class="btn-icon-rounded btn-primary" matTooltip="Save" matTooltipPosition="above" (click)="bulkSaveTimeTableDetails()">
+            <i class="zmdi zmdi-floppy"></i>
+        </button>
+    </div>
+</div>

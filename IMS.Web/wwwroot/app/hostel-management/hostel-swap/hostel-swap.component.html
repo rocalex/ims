@@ -1,0 +1,72 @@
+<div class="page-title d-flex justify-content-between align-items-center">
+  <div class="page-title-wrap">
+    <h2 class="mb-0">{{'Hostel.Swap.Title'|translate}}</h2>
+  </div>
+</div>
+<div class="rct-block">
+  <div class="rct-block-content">
+    <mat-form-field class="col-12 col-lg-6">
+      <mat-select placeholder="{{'Hostel.Swap.Hostel'|translate}}" [(ngModel)]="hostelId" #hostel="ngModel"
+        (selectionChange)="getBlockListByHostelId($event.value)" [ngModelOptions]="{standalone: true}" required>
+        <mat-option *ngFor="let hostel of hostelList" [value]="hostel.id">
+          {{hostel.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="col-12 col-lg-6">
+      <mat-select placeholder="{{'Hostel.Swap.Block'|translate}}" [(ngModel)]="blockId" #block="ngModel"
+        (selectionChange)="generateFloor($event.value)" [ngModelOptions]="{standalone: true}" required>
+        <mat-option *ngFor="let block of blockList" [value]="block">
+          {{block.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="col-12 col-lg-6">
+      <mat-select placeholder="{{'Hostel.Swap.Floor'|translate}}" [(ngModel)]="floorId" #floor="ngModel"
+        (selectionChange)="getRoom($event.value)" [ngModelOptions]="{standalone: true}" required>
+        <mat-option *ngFor="let floor of floorList" [value]="floor">
+          {{floor.floorName}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="col-12 col-lg-6">
+      <mat-select placeholder="{{'Hostel.Swap.Room'|translate}}" [(ngModel)]="roomId" #room="ngModel"
+        [ngModelOptions]="{standalone: true}" required>
+        <mat-option *ngFor="let room of roomList" [value]="room.id">
+          {{room.roomNo}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div class="col-12">
+      <button class="btn-icon-rounded btn-primary" mattooltip="Search" mattooltipposition="above" (click)="search()"
+        aria-describedby="cdk-describedby-message-49" cdk-describedby-host="" ng-reflect-position="above"
+        ng-reflect-message="Search"><i class="zmdi zmdi-search"></i>
+      </button>
+    </div>
+  </div>
+  <div class="rct-full-block">
+    <div id="printHtml">
+      <form class="row ng-untouched ng-pristine ng-valid" novalidate="">
+        <div class="col-12 col-lg-6" *ngFor="let allocation of allocationList">
+          <mat-card class="mat-hostel-card-height mat-card">
+            <mat-card-header class="mat-hostel-card-header mat-card-header">
+              <div class="mat-card-header-text">
+                <mat-card-title class="mat-card-title"><span class="md-headline">Roll No : {{allocation.student.rollNumber}}</span></mat-card-title>
+                <mat-card-subtitle class="mat-card-subtitle"><span class="md-subhead">Name : {{allocation.student.firstName}} {{allocation.lastName}}</span><br><span
+                    class="md-subhead">Room No : {{allocation.bed.room.roomNo}}</span><br><span class="md-subhead">Bed No : {{allocation.bed.bedNo}}</span><br><span
+                    class="md-subhead">Gender : {{allocation.student.gender.name}}</span></mat-card-subtitle>
+              </div>
+            </mat-card-header><img alt="Student Profile" class="mat-hostel-card-image"
+              src="/assets/img/default_user.png">
+            <div class="mat-hostel-swap-vacant-footer">
+              <button class="btn btn-warning btn_hostel_card" (click)="openSwap(allocation)">Swap</button>
+              <button class="btn btn-secondary btn_hostel_card" (click)="vacant(allocation)">Vacant</button>
+            </div>
+          </mat-card>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

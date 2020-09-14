@@ -1,0 +1,29 @@
+﻿<div class="horizontal-menu mb-4 d-flex">
+    <ul class="list-unstyled nav">
+        <li>
+            <a class="nav-link" routerLinkActive="active" *ngIf="isAllowed('AcademicCountry')" [routerLink]="['country']">
+                <i class="zmdi zmdi-globe"></i>
+                <span class="menu-title">Country</span>
+            </a>
+        </li>
+        <li>
+            <a class="nav-link" routerLinkActive="active" *ngIf="isAllowed('AcademicState')" [routerLink]="['state']">
+                <i class="zmdi zmdi-globe"></i>
+                <span class="menu-title">State</span>
+            </a>
+        </li>
+        <li>
+            <a class="nav-link" routerLinkActive="active" *ngIf="isAllowed('AcademicCity')" [routerLink]="['city']">
+                <i class="zmdi zmdi-city"></i>
+                <span class="menu-title">City</span>
+            </a>
+        </li>
+        <li>
+            <a class="nav-link" routerLinkActive="active" *ngIf="isAllowed('AcademicCurrency')" [routerLink]="['currency']">
+                <i class="zmdi zmdi-money"></i>
+                <span class="menu-title">Currency</span>
+            </a>
+        </li>
+    </ul>
+</div>
+<router-outlet></router-outlet>

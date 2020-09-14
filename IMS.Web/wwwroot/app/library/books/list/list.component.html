@@ -1,0 +1,54 @@
+<div class="page-title d-flex justify-content-between align-items-center">
+  <div class="page-title-wrap">
+      <h2 class="mb-0">{{'Library.Books.Books'|translate}}</h2>
+  </div>
+  <a class="btn-icon-rounded btn-outline-primary" *ngIf="isAllowed('Add')"
+     matTooltip="{{'Library.Books.Add'|translate}}" matTooltipPosition="before"
+     routerLink="/library/books/add" routerLinkActive="active"><i class="zmdi zmdi-plus"></i></a>
+</div>
+
+<div class="rct-block">
+  <div class="rct-full-block">
+      <div class="table-responsive">
+          <table class="table mb-0">
+              <thead>
+                  <tr>
+                      <th>{{'Library.Books.Code'|translate}}</th>
+                      <th>{{'Library.Books.Name'|translate}}</th>
+                      <th>{{'Library.Books.BookType'|translate}}</th>
+                      <th>{{'Library.Books.AuthorName'|translate}}</th>
+                      <th>{{'Library.Books.PublisherName'|translate}}</th>
+                      <th>{{'Library.Books.Quantity'|translate}}</th>
+                      <th>{{'Library.Books.Remaining'|translate}}</th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr *ngFor="let book of bookList">
+                      <td>{{book.code}}</td>
+                      <td>{{book.name}}</td>
+                      <td>{{book.bookType.name}}</td>
+                      <td>{{book.authorName}}</td>
+                      <td>{{book.publisher.name}}</td>
+                      <td>{{book.quantity}}</td>
+                      <td>{{book.remaining}}</td>
+                      <td><a class="nav-link" routerLink="/library/returnbook" 
+                        matTooltip="{{'Hostel.Books.Return'|translate}}" matTooltipPosition="above" 
+                        routerLinkActive="active"><i class="zmdi zmdi-refresh-alt"></i></a></td>
+                      <td> <a class="nav-link" routerLink="/library/books/{{book.id}}" *ngIf="isAllowed('Edit')"
+                              matTooltip="{{'Hostel.Books.Edit'|translate}}" matTooltipPosition="above" 
+                              routerLinkActive="active"><i class="zmdi zmdi-edit zmdi-hc-lg"></i></a></td>
+                    <td><a class="nav-link" (click)="delete(book.id)"
+                        matTooltip="{{'Hostel.Books.Delete'|translate}}" matTooltipPosition="above" 
+                        routerLinkActive="active"><i class="zmdi zmdi-delete zmdi-hc-lg"></i></a></td>
+                  </tr>
+              </tbody>
+          </table>
+          <div class="rct-block-title text-center" *ngIf="bookList.length==0">
+              {{'Library.Books.NoBooks'|translate}}
+          </div>
+      </div>
+  </div>
+</div>

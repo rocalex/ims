@@ -1,0 +1,59 @@
+﻿<form class="row">
+    <mat-form-field class="col-12 col-lg-6">
+        <mat-select placeholder="{{'StudentManagement.LookUp.SelectLookup'|translate}}" [(ngModel)]="selected" [ngModelOptions]="{standalone: true}" disabled>
+            <mat-option *ngFor="let lookUp of lookUps" [value]="lookUp">
+                {{lookUp.Name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="col-12 col-lg-6">
+        <input type="text" matInput placeholder="{{'StudentManagement.LookUp.Name'|translate}}" required
+               [(ngModel)]="lookUpData.Name" #NameModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20"
+               (keyup)="checkWhiteSpace(NameModel, lookUpData.Name)"
+               (keydown)="checkWhiteSpace(NameModel, lookUpData.Name); resetError('Name')" />
+
+        <mat-error *ngIf="NameModel.invalid && NameModel.touched">
+            <span *ngIf="NameModel.hasError('required')">{{'Common.Required'|translate}}</span>
+        </mat-error>
+
+        <mat-hint class="mat-error" *ngIf="(!NameModel.hasError('required') && NameModel.whiteSpaceError)">
+            <span>Name can't be empty</span>
+        </mat-hint>
+
+        <mat-hint class="mat-error" *ngIf="hasError('Name')">
+            <span>{{error.Message}}</span>
+        </mat-hint>
+    </mat-form-field>
+
+    <mat-form-field class="col-12 col-lg-6">
+        <input type="text" matInput placeholder="{{'StudentManagement.LookUp.Code'|translate}}" required
+               [(ngModel)]="lookUpData.Code" #CodeModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20"
+               (keyup)="checkWhiteSpace(CodeModel, lookUpData.Code)"
+               (keydown)="checkWhiteSpace(CodeModel, lookUpData.Code); resetError('Code')" />
+
+        <mat-error *ngIf="CodeModel.invalid && CodeModel.touched">
+            <span *ngIf="CodeModel.hasError('required')">{{'Common.Required'|translate}}</span>
+        </mat-error>
+
+        <mat-hint class="mat-error" *ngIf="(!CodeModel.hasError('required') && CodeModel.whiteSpaceError)">
+            <span>Code can't be empty</span>
+        </mat-hint>
+
+        <mat-hint class="mat-error" *ngIf="hasError('Code')">
+            <span>{{error.Message}}</span>
+        </mat-hint>
+    </mat-form-field>
+
+    <mat-form-field class="col-12 col-lg-6">
+        <textarea type="text" matInput placeholder="{{'StudentManagement.LookUp.Description'|translate}}" maxlength="50"
+                  [(ngModel)]="lookUpData.Description" [ngModelOptions]="{standalone: true}"></textarea>
+    </mat-form-field>
+    <div class="col-12">
+        <button class="btn-icon-rounded btn-primary" matTooltip="{{'Common.Save'|translate}}" matTooltipPosition="above" (click)="add()" [disabled]="!(NameModel.valid && !NameModel.whiteSpaceError
+            && CodeModel.valid && !CodeModel.whiteSpaceError)">
+            <i class="zmdi zmdi-floppy"></i>
+        </button>
+        <a class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="{{'Common.Cancel'|translate}}" matTooltipPosition="above" routerLink="/student/lookup/{{selected.Url}}/list" routerLinkActive="active"><i class="zmdi zmdi-close"></i></a>
+    </div>
+</form>

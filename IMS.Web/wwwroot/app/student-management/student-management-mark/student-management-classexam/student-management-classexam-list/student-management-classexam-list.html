@@ -1,0 +1,41 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'MarkManagement.ClassExam.ClassExams'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" *ngIf="isAllowed('Add')"
+       matTooltip="{{'MarkManagement.ClassExam.AddClassExam'|translate}}" matTooltipPosition="before"
+       routerLink="/student/mark/classexam/add" routerLinkActive="active"><i class="zmdi zmdi-plus"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-full-block">
+        <div class="table-responsive">
+            <div class="table-responsive">
+                <table class="table mb-0">
+                    <thead>
+                        <tr>
+                            <th>{{'MarkManagement.ClassExam.Class'|translate}}</th>
+                            <th>{{'MarkManagement.ClassExam.Section'|translate}}</th>
+                            <th>{{'MarkManagement.ClassExam.ExamCode'|translate}}</th>
+                            <th>{{'MarkManagement.ClassExam.TotalAttendanceDays'|translate}}</th>
+                            <th>{{'Common.CreatedOn'|translate}}</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of classExams">
+                            <td>{{item.class.name}}</td>
+                            <td>{{item.section.name}}</td>
+                            <td>{{item.exam.code}}</td>
+                            <td>{{item.totalAttendanceDays}}</td>
+                            <td>{{item.createdOn|date}}</td>
+                            <td><a matTooltip="Edit" matTooltipPosition="above" *ngIf="isAllowed('Edit')" routerLink="/student/mark/classexam/{{item.id}}" routerLinkActive="active"><i class="zmdi zmdi-edit zmdi-hc-lg"></i></a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="rct-block-title text-center" *ngIf="classExams.length==0">
+                {{'MarkManagement.ClassExam.NoClassExams'|translate}}
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,49 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Staff.Activity.Activities'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" *ngIf="isAllowed('Add')"
+       matTooltip="{{'Staff.Activity.AddActivity'|translate}}" matTooltipPosition="before"
+       routerLink="/staff/activities/activity/add" routerLinkActive="active"><i class="zmdi zmdi-plus"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-full-block">
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th>{{'Common.Name'|translate}}</th>
+                        <th>{{'Common.Description'|translate}}</th>
+                        <th>{{'Staff.Activity.StartDate'|translate}}</th>
+                        <th>{{'Staff.Activity.EndDate'|translate}}</th>
+                        <th>{{'Institute.TimeTable.StartTime'|translate}}</th>
+                        <th>{{'MarkManagement.ClassExam.EndTime'|translate}}</th>
+                        <th>{{'StudentManagement.MeetingAgenda.MeetingAgendas'|translate}}</th>
+                        <th>{{'StudentManagement.ActivityStatus.ActivityStatus'|translate}}</th>
+                        <th>{{'Staff.Activity.IsActive'|translate}}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let activity of activities">
+                        <td>{{activity.name}}</td>
+                        <td>{{activity.description}}</td>
+                        <td>{{activity.startDate|date}}</td>
+                        <td>{{activity.endDate|date}}</td>
+                        <td>{{activity.startTime}}</td>
+                        <td>{{activity.endTime}}</td>
+                        <td>{{activity.meetingAgendaName}}</td>
+                        <td>{{activity.activityStatusName}}</td>
+                        <td><mat-slide-toggle [(ngModel)]="activity.isActive" #isActiveModel="ngModel" [ngModelOptions]="{standalone: true}" disabled></mat-slide-toggle></td>
+                        <td><a matTooltip="{{'Staff.Activity.EditActivity'|translate}}" *ngIf="isAllowed('Edit')" matTooltipPosition="above" routerLink="/staff/activities/activity/{{activity.id}}" routerLinkActive="active"><i class="zmdi zmdi-edit zmdi-hc-lg"></i></a></td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <div class="rct-block-title text-center" *ngIf="activities.length==0">
+                {{'Staff.Activity.NoActivitiesAdded'|translate}}
+            </div>
+        </div>
+    </div>
+</div>
+

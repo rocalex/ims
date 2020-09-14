@@ -1,0 +1,38 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Student.Articles.Articles'|translate}}</h2>
+    </div>
+</div>
+
+<div class="rct-block">
+    <div class="rct-full-block">
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th>{{'Student.Articles.Title'|translate}}</th>
+                        <th>{{'Student.Articles.FileName'|translate}}</th>
+                        <th>{{'Student.Articles.SubmittedBy'|translate}}</th>
+                        <th>{{'Student.Articles.SubmissionDate'|translate}}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let article of articlesList">
+                        <td>{{article.title}}</td>
+                        <td>{{article.fileName}}</td>
+                        <td>{{article.submittedByStudent.firstName}}</td>
+                        <td>{{article.submissionDate|date}}</td>
+                        <td class="text-right">
+                            <button class="btn-icon-rounded btn-primary" matTooltip="View" matTooltipPosition="above" (click)="viewArticle(article.id)"><i class="zmdi zmdi-eye"></i></button>
+                            <button class="ml-2 btn-icon-rounded btn-primary" matTooltip="Approve" matTooltipPosition="above" (click)="approveArticle(article.id)"><i class="zmdi zmdi-check" [hidden]="article.isApproved"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="rct-block-title text-center" *ngIf="articlesList.length==0">
+                {{'Student.Articles.NoArticles'|translate}}
+            </div>
+        </div>
+    </div>
+</div>

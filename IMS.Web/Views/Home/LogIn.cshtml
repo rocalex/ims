@@ -1,0 +1,75 @@
+﻿@model IMS.DomainModel.ApplicationClasses.Authentication.UserPassword
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+<div class="rct-session-wrapper">
+    <header class="session-header">
+        <div class="container">
+            <div class="session-logo">
+                <a href="/">
+                    <img src="~/assets/img/logo-white.png" alt="session-logo" class="img-fluid" width="110" height="35" />
+                </a>
+            </div>
+        </div>
+    </header>
+    <div class="session-inner-wrapper">
+        <div class="container">
+            <div class="row row-eq-height">
+                <div class="col-12 col-md-6 mx-auto">
+                    <div class="session-body text-center">
+                        <div class="session-head mb-30">
+                            <h2 class="font-weight-bold">Sign In</h2>
+                            @*<p class="mb-0">Most powerful ReactJS admin panel</p>*@
+                        </div>
+                        @using (Html.BeginForm())
+                        {
+                            <div class="has-wrapper form-group text-left">
+                                @Html.TextBoxFor(u => u.Email, htmlAttributes: new { @class = "has-input input-lg form-control", required = "required", placeholder = "Username", autofocus = "autofocus" })
+                                <span class="has-icon"><i class="ti-email"></i></span>
+                                @Html.ValidationMessageFor(u => u.Email)
+                            </div>
+                            <div class="has-wrapper form-group text-left">
+                                @Html.PasswordFor(u => u.Password, htmlAttributes: new { @class = "has-input input-lg form-control", required = "required", placeholder = "Password" })
+                                <span class="has-icon"><i class="ti-lock"></i></span>
+                                @Html.ValidationMessageFor(u => u.Password)
+                            </div>
+                            <div class="mb-15 form-group">
+                                <button class="btn btn-primary btn-lg btn-block text-white w-100" tabindex="0" type="submit">
+                                    Sign In
+                                </button>
+                            </div>
+                            @*<div class="mb-15 form-group">
+                                    <button class="btn btn-lg btn-info btn-block text-white w-100" tabindex="0" type="button">Sign In With Auth0</button>
+                                </div>*@
+                        }
+                        @*<p class="mb-20">or sign in with</p>*@
+                        @*<button class="btn btn-icon btn-icon-sm btn-facebook mr-15 mb-20 text-white" tabindex="0" type="button"><i class="zmdi zmdi-facebook"></i></button>
+                            <button class="btn btn-icon btn-icon-sm btn-google mr-15 mb-20 text-white" tabindex="0" type="button"><i class="zmdi zmdi-google"></i></button>
+                            <button class="btn btn-icon btn-icon-sm btn-twitter mr-15 mb-20 text-white" tabindex="0" type="button"><i class="zmdi zmdi-twitter"></i></button>
+                            <button class="btn btn-icon btn-icon-sm btn-instagram mr-15 mb-20 text-white" tabindex="0" type="button"><i class="zmdi zmdi-github-alt"></i></button>
+                            <p class="text-muted">By signing up you agree to Reactify</p>*@
+
+                        <p class="mb-0 d-flex align-items-center justify-content-between">
+                            <a href="/Home/ForgotPassword" class="text-muted">Forgot Password</a>
+                            <a target="_blank" href="#/terms-condition" class="text-muted">Terms of Service</a>
+                        </p>
+                        <hr />
+                        <div class="row app-store-links">
+                            <div class="col-6">
+                                <a href="#" class="text-decoration-none">
+                                    <img class="img-fluid" src="~/assets/img/google-play-badge.png" />
+                                </a>
+                            </div>
+                            <div class="col-6">
+                                <a href="#" class="text-decoration-none">
+                                    <img class="img-fluid" src="~/assets/img/app-store-badge.png" />
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

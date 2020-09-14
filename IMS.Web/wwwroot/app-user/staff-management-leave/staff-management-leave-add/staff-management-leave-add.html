@@ -1,0 +1,82 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'StaffLeaveManagement.LeaveManagement.ApplyLeave'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" matTooltip="{{'StaffLeaveManagement.LeaveManagement.Leaves'|translate}}" matTooltipPosition="above" 
+       routerLink="/leavemanagement/list" routerLinkActive="active"><i class="zmdi zmdi-view-list"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-block-content">
+        <form class="row">
+            <mat-form-field class="form-group col-12 col-lg-6">
+                <mat-select placeholder="{{'StaffLeaveManagement.LeaveManagement.SelectStaff'|translate}}" [(ngModel)]="leave.StaffId"
+                            #StaffId="ngModel" [ngModelOptions]="{standalone: true}" disabled>
+                    <mat-option *ngFor="let staff of initialData.staffs" [value]="staff.id">
+                        {{staff.employeeId}} - {{staff.firstName}} {{staff.lastName}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="form-group col-12 col-lg-6">
+                <input matInput [matDatepicker]="fromDate" placeholder="{{'StaffLeaveManagement.LeaveManagement.FromDate'|translate}} *"
+                       (dateChange)="leave.FromDate = $event.value;" [value]="leave.FromDate" [min]="todayDate" [max]="leave.EndDate" disabled required>
+                <mat-datepicker-toggle matSuffix [for]="fromDate"></mat-datepicker-toggle>
+                <mat-datepicker #fromDate disabled="false"></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field class="form-group col-12 col-lg-6">
+                <input matInput [matDatepicker]="endDate" placeholder="{{'StaffLeaveManagement.LeaveManagement.EndDate'|translate}} *"
+                       (dateChange)="leave.EndDate = $event.value" [value]="leave.EndDate" [min]="endDateValid()" disabled required>
+                <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+                <mat-datepicker #endDate disabled="false"></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field class="form-group col-12 col-lg-6">
+                <input type="text" placeholder="{{'StaffLeaveManagement.LeaveManagement.NoOfDays'|translate}}" matInput [value]="numberOfDays()" readonly />
+            </mat-form-field>
+            <mat-form-field class="form-group col-12 col-lg-6">
+                <mat-select placeholder="{{'StaffLeaveManagement.LeaveManagement.SelectType'|translate}}" [(ngModel)]="leave.LeaveTypeId"
+                            #LeaveTypeId="ngModel" [ngModelOptions]="{standalone: true}" (selectionChange)="getStaffAlreadyTakenLeaveCount()" required>
+                    <mat-option *ngFor="let leaveType of leaveTypes" [value]="leaveType.id">
+                        {{leaveType.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="form-group col-12 col-lg-6">
+                <input type="text" matInput placeholder="{{'StaffLeaveManagement.LeaveManagement.BalanceLeave'|translate}}" [value]="balanceLeave()" readonly />
+            </mat-form-field>
+            <mat-form-field class="form-group col-12 col-lg-6">
+                <textarea matInput placeholder="{{'StaffLeaveManagement.LeaveManagement.Reason'|translate}}" required NoSpaces
+                          [(ngModel)]="leave.Reason" #ReasonModel="ngModel" [ngModelOptions]="{standalone: true}"
+                          maxlength="250"></textarea>
+                <mat-error *ngIf="ReasonModel.invalid && ReasonModel.touched">
+                    <span *ngIf="ReasonModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                    <span *ngIf="(!ReasonModel.hasError('required') && ReasonModel.hasError('whitespace'))">{{'Common.WhiteSpace'|translate}}</span>
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="form-group col-12 col-lg-6">
+                <mat-select placeholder="{{'StaffLeaveManagement.LeaveManagement.Status'|translate}}" [(ngModel)]="leave.StatusId"
+                            #StatusId="ngModel" [ngModelOptions]="{standalone: true}" disabled>
+                    <mat-option *ngFor="let leaveStatus of initialData.leaveStatuses" [value]="leaveStatus.id">
+                        {{leaveStatus.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="form-group col-12 col-lg-6">
+                <mat-select placeholder="{{'StaffLeaveManagement.LeaveManagement.ApprovedBy'|translate}}" [(ngModel)]="leave.ApprovedById"
+                            #ApprovedById="ngModel" [ngModelOptions]="{standalone: true}" disabled>
+                    <mat-option *ngFor="let staff of initialData.users" [value]="staff.id">
+                        {{staff.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </form>
+        <div class="col-12">
+            <button class="btn-icon-rounded btn-primary" matTooltip="{{'StaffLeaveManagement.LeaveManagement.ApplyLeave'|translate}}" matTooltipPosition="above" (click)="addStaffLeave()"
+                    [disabled]="!((leave.FromDate !== undefined && leave.FromDate !==null)
+                    && (leave.EndDate !== undefined && leave.EndDate !==null) && LeaveTypeId.valid && ReasonModel.valid
+                    && leave.ApprovedById && leave.StatusId)">
+                <i class="zmdi zmdi-floppy"></i>
+            </button>
+            <a class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="{{'StaffLeaveManagement.LeaveManagement.CancelLeave'|translate}}"
+               matTooltipPosition="above" routerLink="/leavemanagement/list" routerLinkActive="active"><i class="zmdi zmdi-close"></i></a>
+        </div>
+    </div>
+</div>

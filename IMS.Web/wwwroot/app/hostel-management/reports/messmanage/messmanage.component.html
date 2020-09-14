@@ -1,0 +1,51 @@
+<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Hostel.Report.MessManage'|translate}}</h2>
+    </div>
+  </div>
+  <div class="rct-block">
+    <div class="rct-block-content">
+      <mat-form-field class="col-12 col-lg-6">
+        <mat-select placeholder="{{'Hostel.Report.Hostel'|translate}}" (selectionChange)="getMessManageList($event.value)" [(ngModel)]="hostelId"
+                    #hostel="ngModel" [ngModelOptions]="{standalone: true}" required>
+          <mat-option *ngFor="let hostel of hostelList" [value]="hostel.id">
+              {{hostel.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="col-12 col-lg-6">
+        <mat-select placeholder="{{'Hostel.Report.MessManage'|translate}}" [(ngModel)]="messManageId" (selectionChange)="search($event.value)"
+                    #mess="ngModel" [ngModelOptions]="{standalone: true}" required>
+          <mat-option *ngFor="let messManage of messManageList" [value]="messManage.id">
+              {{messManage.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div><div class="rct-full-block" *ngIf="isSearched">
+      <div class="table-responsive">
+        <table class="table mb-0">
+          <thead>
+            <tr>
+              <th>{{'Hostel.Report.RollNo'|translate}}</th>
+              <th>{{'Hostel.Report.Name'|translate}}</th>
+              <th>{{'Hostel.Report.CardNumber'|translate}}</th>
+              <th>{{'Hostel.Report.Duration'|translate}}</th>
+              <th>{{'Hostel.Report.PerStudentRate'|translate}}</th>
+              <th>{{'Hostel.Report.Total'|translate}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let result of results">
+              <td>{{result.rollNo}}</td>
+              <td>{{fullName(result)}}</td>
+              <td>{{result.cardNumber}}</td>
+              <td>{{result.duration}}</td>
+              <td>{{result.perStudentRate}}</td>
+              <td>{{result.total}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+    

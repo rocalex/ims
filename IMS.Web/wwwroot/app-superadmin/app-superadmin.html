@@ -1,0 +1,16 @@
+﻿<div class="main-container media" [class.sidebar-expanded]="isSidenavExpanded">
+    <app-sidenav class="rct-sidebar sidebar-overlay-dark"
+                 [nav]="nav"></app-sidenav>
+    <div class="rct-sidebar-expand-overlay" (click)="toggleSidenav(false)"></div>
+    <div class="main-page-container media-body">
+        <app-header class="app-header" [nav]="nav" (toggleSidenav)="toggleSidenav($event)" (languageChange)="languageChange($event)"
+                    (directionChange)="directionChange($event)" [isSuperAdmin]="true"></app-header>
+        <div class="rct-page rct-page-content">
+            <router-outlet></router-outlet>
+        </div>
+        <app-theme [direction]="direction"></app-theme>
+    </div>
+</div>
+<div class="page-loder" *ngIf="loader">
+    <div class="loader"></div>
+</div>

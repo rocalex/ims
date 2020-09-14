@@ -1,0 +1,120 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">Dashboard</h2>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12 col-lg-6">
+        <div class="rct-block">
+            <div class="rct-block-title d-flex justify-content-between">
+                <h2 class="mb-0">My Vehicle Info</h2>
+            </div>
+            <div class="rct-block-content">
+                <div class="media">
+                    <div class="mr-10">
+                        <img [src]="((primaryVehicle.vehiclePhoto)?primaryVehicle.vehiclePhoto:'/assets/img/default_user.png')" alt="vehicle photo" class="media-object rounded-circle img-thumbnail" width="120" height="120" />
+                    </div>
+                    <div class="media-body">
+                        <div class="d-flex justify-content-between">
+                            <div class="fw-bold">Vehicle Info.</div>
+                            <div class="text-primary">{{primaryVehicle.vehicleCode}}</div>
+                        </div>
+                        <hr class="my-1" />
+                        <div class="d-flex justify-content-between">
+                            <div class="fw-bold">Chasis Number</div>
+                            <div class="text-primary">{{primaryVehicle.chasisNumber}}</div>
+                        </div>
+                        <hr class="my-1" />
+                        <div class="d-flex justify-content-between">
+                            <div class="fw-bold">License Number</div>
+                            <div class="text-primary">{{driverInfo.licenseNumber}}</div>
+                        </div>
+                        <hr class="my-1" />
+                        <div class="d-flex justify-content-between">
+                            <div class="fw-bold">License Exp Date</div>
+                            <div class="text-primary">{{driverInfo.validityTill | date}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-lg-6">
+        <div class="rct-block">
+            <div class="rct-block-content">
+                <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" [disableDefaultUI]="false" [zoomControl]="false"
+                         (mapClick)="mapClicked($event)">
+                    <agm-marker [latitude]="markers.lat" [longitude]="markers.lng" [label]="markers.label"
+                                [markerDraggable]="markers.draggable">
+                    </agm-marker>
+                </agm-map>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-lg-6">
+        <div class="rct-block">
+            <div class="rct-block-title d-flex justify-content-between">
+                <h2 class="mb-0">Complaints List</h2>
+            </div>
+            <div class="table-responsive">
+                <!--<table class="table mb-0">
+            <thead>
+                <tr>
+                    <th>{{'Common.Name'|translate}}</th>
+                    <th>{{'Academic.Currency.Symbol'|translate}}</th>
+                    <th>{{'StudentManagement.LookUp.Description'|translate}}</th>
+                    <th>{{'StudentManagement.LookUp.Status'|translate}}</th>
+                    <th>{{'Common.CreatedOn'|translate}}</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let currency of currencies">
+                    <td>{{currency.currencyName}}</td>
+                    <td>{{currency.symbol}}</td>
+                    <td>{{currency.description}}</td>
+                    <td>{{currency.status? 'Yes': 'No'}}</td>
+                    <td>{{currency.createdOn|date}}</td>
+                    <td><a routerLink="/academic/currency/{{currency.id}}" matTooltip="{{'Academic.Currency.EditCurrency'|translate}}" matTooltipPosition="above" routerLinkActive="active"><i class="zmdi zmdi-edit zmdi-hc-lg"></i></a></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="rct-block-title text-center" *ngIf="currencies.length==0">
+            {{'Academic.Currency.NoCurrencyAdded'|translate}}
+        </div>-->
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-lg-6">
+        <div class="rct-block">
+            <div class="rct-block-title d-flex justify-content-between">
+                <h2 class="mb-0">Vehicle Maintenance/Repairs/Accidents</h2>
+            </div>
+            <div class="table-responsive">
+                <table class="table mb-0">
+                    <thead>
+                        <tr>
+                            <th>Vehicle</th>
+                            <th>Date</th>
+                            <th>Type</th>
+                            <th>Status</th>
+                            <th>Estimated Cost</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let vehicleAccidentMaintenanceDetail of vehicleAccidentMaintenanceDetailsList">
+                            <td>{{vehicleAccidentMaintenanceDetail.vehicleNumber}}</td>
+                            <td>{{vehicleAccidentMaintenanceDetail.date | date}}</td>
+                            <td>{{vehicleAccidentMaintenanceDetail.type}}</td>
+                            <td>{{vehicleAccidentMaintenanceDetail.status}}</td>
+                            <td>{{vehicleAccidentMaintenanceDetail.estimatedCost}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="rct-block-title text-center" *ngIf="vehicleAccidentMaintenanceDetailsList.length==0">
+                    No Entries Found
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

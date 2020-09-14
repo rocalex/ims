@@ -1,0 +1,112 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Staff.Planner.AddPlan'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" matTooltip="{{'Staff.Planner.Plans'|translate}}" matTooltipPosition="above" routerLink="/staff/planner/list" routerLinkActive="active"><i class="zmdi zmdi-view-list"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-block-content">
+        <form class="row">
+            <mat-form-field class="col-12 col-lg-6">
+                <input type="text" matInput placeholder="{{'Common.Name'|translate}}" required
+                       [(ngModel)]="plan.name" #planNameModel="ngModel" [ngModelOptions]="{standalone: true}"
+                       (keyup)="checkWhiteSpace(planNameModel)" (keydown)="resetError(planNameModel)" maxlength="25" />
+
+                <mat-error *ngIf="planNameModel.invalid && planNameModel.touched">
+                    <span *ngIf="planNameModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                </mat-error>
+                <mat-hint class="mat-error" *ngIf="errorMessage !== ''">
+                    <span>{{errorMessage}}</span>
+                </mat-hint>
+                <mat-hint class="mat-error" *ngIf="planNameModel.whiteSpaceError !== ''">
+                    <span>{{planNameModel.whiteSpaceError}}</span>
+                </mat-hint>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <input type="text" matInput placeholder="{{'Common.Description'|translate}}"
+                       [(ngModel)]="plan.description" #activityDescriptionModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="150" />
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <mat-select matInput placeholder="{{'Staff.Planner.SelectStaff'|translate}}" [(ngModel)]="plan.staffId" #staffModel="ngModel" [ngModelOptions]="{standalone: true}" required>
+                    <mat-option *ngFor="let staff of staffsList" [value]="staff.id">
+                        {{staff.employeeId}} - {{staff.firstName}}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="staffModel.invalid && staffModel.touched">
+                    <span *ngIf="staffModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <input matInput [matDatepicker]="dateOfPlan" placeholder="{{'Staff.Planner.DateOfPlan'|translate}} *"
+                       (dateChange)="plan.dateOfPlan = $event.value" disabled required [min]="currentDate">
+                <mat-datepicker-toggle matSuffix [for]="dateOfPlan"></mat-datepicker-toggle>
+                <mat-datepicker #dateOfPlan disabled="false"></mat-datepicker>
+            </mat-form-field>
+
+            <div class="form-group col-12 col-lg-6">
+                <mat-slide-toggle [(ngModel)]="plan.isActive" #isActiveModel="ngModel" [ngModelOptions]="{standalone: true}">{{'Staff.Planner.IsActive'|translate}}</mat-slide-toggle>
+            </div>
+
+            <div class="col-12">
+                <h3>{{'Staff.Activity.Attendees'|translate}}</h3>
+                <mat-hint class="mat-error" *ngIf="isPlannerAttendeeEmptyError">
+                    <span>{{'Staff.Activity.EmptyAttendeeList'|translate}}</span>
+                </mat-hint>
+
+                <mat-form-field class="form-group col-12 col-lg-12">
+                    <mat-select placeholder="{{'StudentManagement.LeaveType.SelectType'|translate}}" [(ngModel)]="selectedUserType"
+                                #LeaveAssignedTypeEnumDescription="ngModel" [ngModelOptions]="{standalone: true}" required
+                                (selectionChange)="setFilterList()">
+                        <mat-option *ngFor="let assignedType of attendeeTypeEnumDetails" [value]="assignedType.key">
+                            {{assignedType.value}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field class="form-group col-12 col-lg-12">
+                    <mat-chip-list #chipList aria-label="Attendee Selection">
+                        <mat-chip *ngFor="let plannerAttendee of plannerAttendeeList"
+                                  [selectable]="true"
+                                  [removable]="true"
+                                  (removed)="selectAttendee(false, plannerAttendee.attendeeName, plannerAttendee.plannerAttendeeType)">
+                            {{plannerAttendee.attendeeName}}
+                            <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
+                        </mat-chip>
+
+                        <input matInput placeholder="{{'Common.Name'|translate}}" [ngModelOptions]="{standalone: true}"
+                               #attendeeInput
+                               [disabled]="selectedUserType===null || selectedUserType===undefined"
+                               [matAutocomplete]="auto"
+                               [matChipInputFor]="chipList"
+                               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                               [matChipInputAddOnBlur]="true"
+                               [(ngModel)]="attendeeName"
+                               (ngModelChange)="filterAttendees(attendeeName)">
+                    </mat-chip-list>
+
+                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectAttendee(true, attendeeName, null); attendeeName = null;">
+                        <mat-option *ngFor="let filteredUser of filteredUsers" [value]="selectedUserType!==2 ? filteredUser.firstName : filteredUser.name">
+                            <div *ngIf="selectedUserType!==2">
+                                {{filteredUser.firstName}}
+                            </div>
+                            <div *ngIf="selectedUserType===2">
+                                {{filteredUser.name}}
+                            </div>
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+            </div>
+
+            <div class="col-12">
+                <button class="btn-icon-rounded btn-primary" matTooltip="{{'Common.Save'|translate}}" matTooltipPosition="above" (click)="addStaffPlan()"
+                        [disabled]="!(planNameModel.valid && staffModel.valid && !errorMessage && planNameModel.whiteSpaceError === '' && (plan.dateOfPlan !== undefined && plan.dateOfPlan !== null))">
+                    <i class="zmdi zmdi-floppy"></i>
+                </button>
+                <a class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="{{'Common.Cancel'|translate}}" matTooltipPosition="above" routerLink="/staff/planner/list" routerLinkActive="active"><i class="zmdi zmdi-close"></i></a>
+            </div>
+        </form>
+    </div>
+</div>

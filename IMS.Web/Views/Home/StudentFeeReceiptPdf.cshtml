@@ -1,0 +1,110 @@
+﻿@model IMS.DomainModel.ApplicationClasses.StudentFeeManagement.StudentFeePdfReportAc
+
+@{
+    <div id="receipt">
+            <div style="text-align: center;">
+                <h1><span>Payment Receipt</span></h1>
+            </div>
+            <div>
+                <table style="border: 1px solid black; width: 100%; border-spacing: 0px; margin: 0px;">
+                    <tr>
+                        <td>
+                            <table style="border-right: 1px solid black; width: 50%;">
+                                <tr>
+                                    <td>
+                                        <b>First Name:</b>
+                                    </td>
+                                    <td>
+                                        @Model.FirstName
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <b>Last Name:</b>
+                                    </td>
+                                    <td>
+                                        @Model.LastName
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <b>Admission Number:</b>
+                                    </td>
+                                    <td>
+                                        @Model.AdmissionNumber
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <b>Current Class:</b>
+                                    </td>
+                                    <td>
+                                        @Model.CurrentClass
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <b>Section:</b>
+                                    </td>
+                                    <td>
+                                        @Model.Section
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <b>Religion:</b>
+                                    </td>
+                                    <td>
+                                        @Model.Religion
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <b>Is Active:</b>
+                                    </td>
+                                    <td>
+                                        @Model.IsActive
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <b>Is Archived:</b>
+                                    </td>
+                                    <td>
+                                        @Model.IsArchived
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <table style="text-align: center; table-layout: fixed; width: 100%; border-top: 1px solid black; border-right: 1px solid black; border-collapse: collapse;">
+                                <thead>
+                                    <tr style="border-top: 1px solid black; border-right: 1px solid black; border-collapse: collapse;">
+                                        <th style="border-top: 1px solid black; border-right: 1px solid black; border-collapse: collapse;">Fee Component Type</th>
+                                        <th style="border-top: 1px solid black; border-right: 1px solid black; border-collapse: collapse;">Fee Component</th>
+                                        <th style="border-top: 1px solid black; border-right: 1px solid black; border-collapse: collapse;">Term</th>
+                                        <th style="border-top: 1px solid black; border-right: 1px solid black; border-collapse: collapse;">Amount</th>
+                                        <th style="border-top: 1px solid black; border-right: 1px solid black; border-collapse: collapse;">PaymentDate</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var paymentDetail in Model.PaymentDetails)
+                                    {
+                                        <tr class="collapsed-border-1">
+                                            <td style="border-top: 1px solid black; border-right: 1px solid black; border-collapse: collapse;">@paymentDetail.FeeComponentType</td>
+                                            <td style="border-top: 1px solid black; border-right: 1px solid black; border-collapse: collapse;">@paymentDetail.FeeComponent</td>
+                                            <td style="border-top: 1px solid black; border-right: 1px solid black; border-collapse: collapse;">@paymentDetail.Term</td>
+                                            <td style="border-top: 1px solid black; border-right: 1px solid black; border-collapse: collapse;">@paymentDetail.Amount</td>
+                                            <td style="border-top: 1px solid black; border-right: 1px solid black; border-collapse: collapse;">@paymentDetail.PaymentDate</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+}

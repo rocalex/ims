@@ -1,0 +1,167 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'MarkManagement.ClassExam.EditClassExam'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" matTooltip="Details" matTooltipPosition="above" routerLink="/student/mark/classexam/list" routerLinkActive="active"><i class="zmdi zmdi-view-list"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-block-content">
+        <form class="row">
+            <mat-form-field class="col-12 col-lg-6">
+                <mat-select placeholder="{{'MarkManagement.ClassExam.SelectClass'|translate}}" [(ngModel)]="addClassExam.ClassId"
+                            #ClassId="ngModel" [ngModelOptions]="{standalone: true}" required disabled>
+                    <mat-option *ngFor="let class of initialData.classes" [value]="class?.id">
+                        {{class?.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="col-12 col-lg-6">
+                <mat-select placeholder="{{'MarkManagement.ClassExam.SelectSection'|translate}}" [(ngModel)]="addClassExam.SectionId"
+                            #SectionId="ngModel" [ngModelOptions]="{standalone: true}" required disabled>
+                    <mat-option *ngFor="let section of initialData.sections" [value]="section?.id">
+                        {{section?.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="col-12 col-lg-6">
+                <mat-select placeholder="{{'MarkManagement.ClassExam.SelectExamCode'|translate}}" [(ngModel)]="addClassExam.ExamId"
+                            #ExamId="ngModel" [ngModelOptions]="{standalone: true}" required disabled>
+                    <mat-option *ngFor="let examDefinition of initialData.examDefinitions" [value]="examDefinition?.id">
+                        {{examDefinition?.code}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="col-12 col-lg-6">
+                <input type="number" [(ngModel)]="addClassExam.TotalAttendanceDays" #TotalAttendanceDays="ngModel" matInput
+                       [ngModelOptions]="{standalone: true}" pattern="^[1-9]\d*$" min="0" maxlength="10" required
+                       placeholder="{{'MarkManagement.ClassExam.TotalAttendanceDays'|translate}}" />
+                <mat-error *ngIf="TotalAttendanceDays.invalid && TotalAttendanceDays.touched">
+                    <span *ngIf="TotalAttendanceDays.hasError('required')">{{'Common.Required'|translate}}</span>
+                    <span *ngIf="TotalAttendanceDays.hasError('pattern')">{{'Common.NumberShouldBePositive'|translate}}</span>
+                </mat-error>
+            </mat-form-field>
+            <div class="col-12 form-group">
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead>
+                            <tr>
+                                <th>{{'MarkManagement.ClassExam.SubjectCode'|translate}}</th>
+                                <th>{{'MarkManagement.ClassExam.StartDate'|translate}}</th>
+                                <th>{{'MarkManagement.ClassExam.StartTime'|translate}}</th>
+                                <th>{{'MarkManagement.ClassExam.EndTime'|translate}}</th>
+                                <th>{{'MarkManagement.ClassExam.MaxScore'|translate}}</th>
+                                <th>{{'MarkManagement.ClassExam.MinScore'|translate}}</th>
+                                <th>{{'MarkManagement.ClassExam.Content'|translate}}</th>
+                                <th>{{'MarkManagement.ClassExam.Remark'|translate}}</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of addClassExam.ClassExamSubjectMappings">
+                                <td>{{getSubjectNameById(item.SubjectId)}}</td>
+                                <td>{{item.StartDate|date}}</td>
+                                <td>{{item.StartTime}}</td>
+                                <td>{{item.EndTime}}</td>
+                                <td>{{item.MaxScore}}</td>
+                                <td>{{item.MinScore}}</td>
+                                <td>{{item.Content}}</td>
+                                <td>{{item.Remark}}</td>
+                                <td>
+                                    <button class="btn-icon-rounded btn-primary" matTooltip="Edit" matTooltipPosition="above" (click)="editModal(item.DemoId, subject)">
+                                        <i class="zmdi zmdi-edit"></i>
+                                    </button>
+                                    <button class="ml-2 btn-icon-rounded btn-primary" matTooltip="Delete" matTooltipPosition="above" (click)="deleteFromList(item.DemoId)">
+                                        <i class="zmdi zmdi-delete"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button class="m-3 btn-icon-rounded btn-primary"
+                            matTooltip="{{'UserManagement.User.AddUser'|translate}}" matTooltipPosition="before"
+                            (click)="addList(subject)"
+                            [disabled]="!(TotalAttendanceDays.valid)">
+                        <i class="zmdi zmdi-plus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="col-12">
+                <button class="btn-icon-rounded btn-primary" matTooltip="Save" matTooltipPosition="above" (click)="updateClassExam()" [disabled]="!(TotalAttendanceDays.valid
+                        && addClassExam.ClassExamSubjectMappings.length)">
+                    <i class="zmdi zmdi-floppy"></i>
+                </button>
+                <a class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="Cancel" matTooltipPosition="above" routerLink="/student/mark/classexam/list" routerLinkActive="active"><i class="zmdi zmdi-close"></i></a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<ng-template #subject>
+    <div>
+        <h5>Add Subject</h5>
+    </div>
+    <mat-form-field class="col-12 col-lg-6">
+        <mat-select placeholder="{{'MarkManagement.ClassExam.SelectSubject'|translate}}"
+                    [(ngModel)]="tempClassExamSubjectMapping.SubjectId"
+                    #SubjectId="ngModel" [ngModelOptions]="{standalone: true}" required>
+            <mat-option *ngFor="let subject of subjects" [value]="subject.id">
+                {{subject.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field class="col-12 col-lg-6">
+        <input matInput [matDatepicker]="startDate" placeholder="{{'MarkManagement.ClassExam.StartDate'|translate}}"
+               (dateChange)="tempClassExamSubjectMapping.StartDate = $event.value" disabled>
+        <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+        <mat-datepicker #startDate disabled="false"></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field class="col-12 col-lg-6">
+        <input matInput [ngxTimepicker]="startTime" [disableClick]="true" placeholder="{{'MarkManagement.ClassExam.StartTime'|translate}}"
+               #StartTimeModel="ngModel" [(ngModel)]="tempClassExamSubjectMapping.StartTime" [ngModelOptions]="{standalone: true}" readonly>
+        <ngx-material-timepicker-toggle [for]="startTime"></ngx-material-timepicker-toggle>
+        <ngx-material-timepicker #startTime></ngx-material-timepicker>
+    </mat-form-field>
+    <mat-form-field class="col-12 col-lg-6">
+        <input matInput [ngxTimepicker]="endTime" [disableClick]="true" placeholder="{{'MarkManagement.ClassExam.EndTime'|translate}}"
+               #EndTimeModel="ngModel" [(ngModel)]="tempClassExamSubjectMapping.EndTime" [ngModelOptions]="{standalone: true}" readonly>
+        <ngx-material-timepicker-toggle [for]="endTime"></ngx-material-timepicker-toggle>
+        <ngx-material-timepicker #endTime></ngx-material-timepicker>
+    </mat-form-field>
+    <mat-form-field class="col-12 col-lg-6">
+        <input type="number" [(ngModel)]="tempClassExamSubjectMapping.MaxScore" #MaxScore="ngModel" matInput
+               [ngModelOptions]="{standalone: true}" pattern="^[0-9]\d*$" [min]="tempClassExamSubjectMapping.MinScore" maxlength="10" required
+               placeholder="{{'MarkManagement.ClassExam.MaxScore'|translate}}" />
+        <mat-error *ngIf="MaxScore.invalid && MaxScore.touched">
+            <span *ngIf="MaxScore.hasError('required')">{{'Common.Required'|translate}}</span>
+            <span *ngIf="MaxScore.hasError('pattern')">{{'Common.NumberShouldBePositive'|translate}}</span>
+            <span *ngIf="MaxScore.hasError('min')">Max score must be greater than min score</span>
+        </mat-error>
+    </mat-form-field>
+    <mat-form-field class="col-12 col-lg-6">
+        <input type="number" [(ngModel)]="tempClassExamSubjectMapping.MinScore" #MinScore="ngModel" matInput [max]="tempClassExamSubjectMapping.MaxScore"
+               [ngModelOptions]="{standalone: true}" pattern="^[0-9]\d*$" [min]="0" maxlength="10" required
+               placeholder="{{'MarkManagement.ClassExam.MinScore'|translate}}" />
+        <mat-error *ngIf="MinScore.invalid && MinScore.touched">
+            <span *ngIf="MinScore.hasError('required')">{{'Common.Required'|translate}}</span>
+            <span *ngIf="MinScore.hasError('pattern')">{{'Common.NumberShouldBePositive'|translate}}</span>
+            <span *ngIf="MinScore.hasError('max')">Min score must be lesser than max score</span>
+        </mat-error>
+    </mat-form-field>
+    <mat-form-field class="col-12 col-lg-6">
+        <textarea type="text" matInput placeholder="{{'MarkManagement.ClassExam.Content'|translate}}" maxlength="50"
+                  [(ngModel)]="tempClassExamSubjectMapping.Content" [ngModelOptions]="{standalone: true}"></textarea>
+    </mat-form-field>
+    <mat-form-field class="col-12 col-lg-6">
+        <textarea type="text" matInput placeholder="{{'MarkManagement.ClassExam.Remark'|translate}}" maxlength="50"
+                  [(ngModel)]="tempClassExamSubjectMapping.Remark" [ngModelOptions]="{standalone: true}"></textarea>
+    </mat-form-field>
+    <div class="col-12">
+        <button class="btn-icon-rounded btn-primary" matTooltip="Save" matTooltipPosition="above" (click)="saveModal()"
+                [disabled]="!(SubjectId.valid && MaxScore.valid && MinScore.valid)">
+            <i class="zmdi zmdi-floppy"></i>
+        </button>
+        <button class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="Cancel" matTooltipPosition="above" (click)="closeModal()">
+            <i class="zmdi zmdi-close"></i>
+        </button>
+    </div>
+</ng-template>

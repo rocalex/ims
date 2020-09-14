@@ -1,0 +1,95 @@
+<div class="page-title d-flex justify-content-between align-items-center">
+  <div class="page-title-wrap">
+      <h2 class="mb-0">{{'Sidenav.Children.Dashboard'|translate}}</h2>
+  </div>
+</div>
+
+<!-- Counts -->
+<div class="row">
+  <div class="col-12 col-lg-3">
+      <div class="rct-block rct-visual-block blue-madison text-white">
+          <div class="rct-block-content">
+              <div class="display-4">{{totalBooks}}</div>
+              <h2>{{'Library.Dashboard.TotalBooks'|translate}}</h2>
+              <i class="zmdi zmdi-accounts"></i>
+          </div>
+      </div>
+  </div>
+  <div class="col-12 col-lg-3">
+      <div class="rct-block rct-visual-block green-haze text-white">
+          <div class="rct-block-content">
+              <div class="display-4">{{issuedBooks}}</div>
+              <h2>{{'Library.Dashboard.IssuedBooks'|translate}}</h2>
+              <i class="zmdi zmdi-account"></i>
+          </div>
+      </div>
+  </div>
+  <!-- <div class="col-12 col-lg-3">
+      <div class="rct-block rct-visual-block purple-plum text-white">
+          <div class="rct-block-content">
+              <div class="display-4">{{latefee}}</div>
+              <h2>{{'Library.Dashboard.LateFees'|translate}}</h2>
+              <i class="zmdi zmdi-balance"></i>
+          </div>
+      </div>
+  </div> -->
+  <div class="col-12 col-lg-3">
+      <div class="rct-block rct-visual-block purple-plum text-white">
+          <div class="rct-block-content">
+              <div class="display-4">{{examPapers}}</div>
+              <h2>{{'Library.Dashboard.ExaminationPapers'|translate}}</h2>
+              <i class="zmdi zmdi-balance"></i>
+          </div>
+      </div>
+  </div>
+</div>
+
+<!-- Charts -->
+<div class="row">
+  <!-- Institute Wise Students -->
+  <!-- <div class="col-12 col-lg-6">
+      <div class="rct-block">
+          <div class="rct-block-title">
+              <h2 class="mb-0">{{'Library.Dashboard.InstituteBooks'|translate}}</h2>
+          </div>
+          <div class="rct-block-content">
+              <canvas baseChart [datasets]="InstituteWiseChartData" [options]="barChartOptions" [labels]="InstituteWiseChartLabels" [legend]="barChartLegend"
+                      [colors]="InstituteBarChartColor" [chartType]="barChartType"></canvas>
+          </div>
+      </div>
+  </div> -->
+  <!-- Student Wise Librarys -->
+  <!-- <div class="col-12 col-lg-6">
+      <div class="rct-block">
+          <div class="rct-block-title">
+              <h2 class="mb-0">{{'Library.Dashboard.StudentBooks'|translate}}</h2>
+          </div>
+          <div class="rct-block-content">
+              <canvas baseChart [data]="StudentWiseChartData" [labels]="StudentWiseChartLabels" [options]="donutChartOptions" [chartType]="donutChartType" [colors]="donutChartColor"></canvas>
+          </div>
+      </div>
+  </div> -->
+  <!-- Active/Inactive Librarys -->
+  <!-- <div class="col-12 col-lg-6">
+    <div class="rct-block">
+        <div class="rct-block-title">
+            <h2 class="mb-0">{{'Library.Dashboard.ActiveBooks'|translate}}</h2>
+        </div>
+        <div class="rct-block-content">
+            <canvas baseChart [datasets]="ActiveChartData" [options]="barChartOptions" [labels]="ActiveChartLabels" [legend]="barChartLegend"
+                    [colors]="ActiveChartColor" [chartType]="barChartType"></canvas>
+        </div>
+    </div>
+  </div> -->
+  <!-- Gender Wise Librarys
+  <div class="col-12 col-lg-6">
+      <div class="rct-block">
+          <div class="rct-block-title">
+              <h2 class="mb-0">{{'Library.Dashboard.GenderBooks'|translate}}</h2>
+          </div>
+          <div class="rct-block-content">
+              <canvas baseChart [data]="GenderWiseChartData" [labels]="GenderWiseChartLabels" [options]="donutChartOptions" [chartType]="donutChartType" [colors]="donutChartColor"></canvas>
+          </div>
+      </div>
+  </div> -->
+</div>

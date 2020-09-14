@@ -1,0 +1,49 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'StudentFeeManagement.Refund.Refunds'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" *ngIf="isAllowed('Add')"
+       matTooltip="{{'StudentFeeManagement.Refund.AddRefunds'|translate}}" matTooltipPosition="before"
+       routerLink="/student/feemanagement/refund/add" routerLinkActive="active"><i class="zmdi zmdi-plus"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-full-block">
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th>{{'StudentFeeManagement.Refund.RefundNumber'|translate}}</th>
+                        <th>{{'StudentFeeManagement.Refund.ChallanNumber'|translate}}</th>
+                        <th>{{'StudentFeeManagement.Refund.Student'|translate}}</th>
+                        <th>{{'StudentFeeManagement.Refund.RefundDate'|translate}}</th>
+                        <th>{{'StudentFeeManagement.Refund.IssuedBy'|translate}}</th>
+                        <th>{{'StudentFeeManagement.Refund.Amount'|translate}}</th>
+                        <th>{{'StudentFeeManagement.Refund.ChequeNumber'|translate}}</th>
+                        <th>{{'StudentFeeManagement.Refund.ChequeDate'|translate}}</th>
+                        <th>{{'StudentFeeManagement.Refund.BankName'|translate}}</th>
+                        <th>{{'StudentFeeManagement.Refund.Remark'|translate}}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let refund of refunds">
+                        <td>{{refund.refundNumber}}</td>
+                        <td>{{refund.challanNumber}}</td>
+                        <td>{{refund.student?.firstName}}</td>
+                        <td>{{refund.refundDate|date}}</td>
+                        <td>{{refund.issuedBy?.name}}</td>
+                        <td>{{refund.amount}}</td>
+                        <td>{{refund.chequeNumber}}</td>
+                        <td>{{refund.chequeDate|date}}</td>
+                        <td>{{refund.bankName}}</td>
+                        <td>{{refund.remark}}</td>
+                        <td><a matTooltip="{{'StudentFeeManagement.Refund.EditRefunds'|translate}}" *ngIf="isAllowed('Edit')" matTooltipPosition="above" routerLink="/student/feemanagement/refund/{{refund.id}}" routerLinkActive="active"><i class="zmdi zmdi-edit zmdi-hc-lg"></i></a></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="rct-block-title text-center" *ngIf="refunds.length==0">
+                {{'StudentFeeManagement.Refund.NoRefundAdded'|translate}}
+            </div>
+        </div>
+    </div>
+</div>

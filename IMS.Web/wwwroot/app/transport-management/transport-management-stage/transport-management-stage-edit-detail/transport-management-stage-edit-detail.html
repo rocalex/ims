@@ -1,0 +1,95 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'TransportManagement.Stage.EditStage'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" matTooltip="Details" matTooltipPosition="above" routerLink="/transportmanagement/stage/list" routerLinkActive="active"><i class="zmdi zmdi-view-list"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-block-content">
+        <mat-form-field class="col-12 col-lg-6">
+            <input type="text" matInput placeholder="{{'TransportManagement.Stage.Code'|translate}}" required NoSpaces
+                   [(ngModel)]="addStage.Code" #CodeModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20"
+                   (keydown)="resetError('Code')" />
+            <mat-error *ngIf="CodeModel.invalid && CodeModel.touched">
+                <span *ngIf="CodeModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                <span *ngIf="(!CodeModel.hasError('required') && CodeModel.hasError('whitespace'))">{{'Common.WhiteSpace'|translate}}</span>
+            </mat-error>
+            <mat-hint class="mat-error" *ngIf="hasError('Code')">
+                <span>{{error.Message}}</span>
+            </mat-hint>
+        </mat-form-field>
+
+        <mat-form-field class="col-12 col-lg-6">
+            <input type="text" matInput placeholder="{{'TransportManagement.Stage.Name'|translate}}" required NoSpaces
+                   [(ngModel)]="addStage.Name" #NameModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20"
+                   (keydown)="resetError('Name')" />
+            <mat-error *ngIf="NameModel.invalid && NameModel.touched">
+                <span *ngIf="NameModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                <span *ngIf="(!NameModel.hasError('required') && NameModel.hasError('whitespace'))">{{'Common.WhiteSpace'|translate}}</span>
+            </mat-error>
+            <mat-hint class="mat-error" *ngIf="hasError('Name')">
+                <span>{{error.Message}}</span>
+            </mat-hint>
+        </mat-form-field>
+
+        <mat-form-field class="col-12">
+            <mat-select placeholder="{{'TransportManagement.Stage.SelectSlab'|translate}}" [(ngModel)]="addStage.SlabId"
+                        #SlabId="ngModel" [ngModelOptions]="{standalone: true}" required>
+                <mat-option *ngFor="let slab of initialData.slabs" [value]="slab.id">
+                    {{slab.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="col-12 col-lg-6">
+            <textarea type="text" matInput placeholder="{{'TransportManagement.Stage.Address'|translate}}" maxlength="100"
+                      [(ngModel)]="addStage.Address" [ngModelOptions]="{standalone: true}"></textarea>
+        </mat-form-field>
+
+        <mat-form-field class="col-12 col-lg-6">
+            <input type="number" matInput placeholder="{{'TransportManagement.Stage.Term1'|translate}}" pattern="\d+"
+                   [(ngModel)]="addStage.Term1" #Term1Model="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20" />
+            <mat-error *ngIf="Term1Model.invalid && Term1Model.touched">
+                <span *ngIf="Term1Model.hasError('pattern')">{{'TransportManagement.Stage.TermError'|translate}}</span>
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="col-12 col-lg-6">
+            <input type="number" matInput placeholder="{{'TransportManagement.Stage.Term2'|translate}}" pattern="\d+"
+                   [(ngModel)]="addStage.Term2" #Term2Model="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20" />
+            <mat-error *ngIf="Term2Model.invalid && Term2Model.touched">
+                <span *ngIf="Term2Model.hasError('pattern')">{{'TransportManagement.Stage.TermError'|translate}}</span>
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="col-12 col-lg-6">
+            <input type="number" matInput placeholder="{{'TransportManagement.Stage.Term3'|translate}}" pattern="\d+"
+                   [(ngModel)]="addStage.Term3" #Term3Model="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20" />
+            <mat-error *ngIf="Term3Model.invalid && Term3Model.touched">
+                <span *ngIf="Term3Model.hasError('pattern')">{{'TransportManagement.Stage.TermError'|translate}}</span>
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="col-12 col-lg-6">
+            <input matInput ngx-google-places-autocomplete #placesRef="ngx-places"
+                   placeholder="{{'TransportManagement.Stage.PlaceName'|translate}}" (onAddressChange)="handleAddressChange($event)" />
+        </mat-form-field>
+        <div class="col-12 col-lg-6">
+            <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" [disableDefaultUI]="false" [zoomControl]="false"
+                     (mapClick)="mapClicked($event)">
+                <agm-marker [latitude]="markers.lat" [longitude]="markers.lng" [label]="markers.label"
+                            [markerDraggable]="markers.draggable">
+                </agm-marker>
+            </agm-map>
+        </div>
+
+        <div class="col-12">
+            <button class="btn-icon-rounded btn-primary" matTooltip="Save" matTooltipPosition="above" (click)="updateStage()"
+                    [disabled]="!(CodeModel.valid && NameModel.valid && SlabId.valid && Term1Model.valid && Term2Model.valid
+                    && Term3Model.valid)">
+                <i class="zmdi zmdi-floppy"></i>
+            </button>
+            <a class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="Cancel" matTooltipPosition="above" routerLink="/transportmanagement/stage/list" routerLinkActive="active"><i class="zmdi zmdi-close"></i></a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,42 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'StudentLeaveManagement.LeaveManagement.Leaves'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" matTooltip="{{'StudentLeaveManagement.LeaveManagement.ApplyLeave'|translate}}" matTooltipPosition="above"
+       routerLink="/leave/add" routerLinkActive="active"><i class="zmdi zmdi-plus"></i></a>
+</div>
+<div class="rct-block">
+    <div class="table-responsive">
+        <table class="table mb-0">
+            <thead>
+                <tr>
+                    <th>{{'StudentLeaveManagement.LeaveManagement.LeaveType'|translate}}</th>
+                    <th>{{'StudentLeaveManagement.LeaveManagement.NoOfDays'|translate}}</th>
+                    <th>{{'StudentLeaveManagement.LeaveManagement.Status'|translate}}</th>
+                    <th>{{'StudentLeaveManagement.LeaveManagement.FromDate'|translate}}</th>
+                    <th>{{'StudentLeaveManagement.LeaveManagement.EndDate'|translate}}</th>
+                    <th>{{'StudentLeaveManagement.LeaveManagement.ApprovedBy'|translate}}</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let leave of leaves">
+                    <td>{{leave.leaveType.name}}</td>
+                    <td>{{numberOfDays(leave.fromDate, leave.endDate)}}</td>
+                    <td>{{leave.leaveStatus.name}}</td>
+                    <td>{{leave.fromDate|date}}</td>
+                    <td>{{leave.endDate|date}}</td>
+                    <td>{{leave.approvedBy.employeeId}} - {{leave.approvedBy.firstName}} {{leave.approvedBy.lastName}}</td>
+                    <td>
+                        <a matTooltip="Edit" matTooltipPosition="above" [hidden]="!isAllowedToEdit(leave.id)"
+                           routerLink="/leave/{{leave.id}}"
+                           routerLinkActive="active"><i class="zmdi zmdi-edit zmdi-hc-lg"></i></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="rct-block-title text-center" *ngIf="leaves.length==0">
+            {{'StudentLeaveManagement.LeaveManagement.NoLeaveAdded'|translate}}
+        </div>
+    </div>
+</div>

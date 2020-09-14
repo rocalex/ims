@@ -1,0 +1,60 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'UserManagement.User.EditUser'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" matTooltip="Details" matTooltipPosition="above" routerLink="/usermanagement/user/list" routerLinkActive="active"><i class="zmdi zmdi-view-list"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-block-content">
+        <form class="row">
+            <mat-form-field class="col-12 col-lg-6">
+                <input matInput type="text" placeholder="{{'UserManagement.User.UserName'|translate}}" required [(ngModel)]="user.name" #userName="ngModel"
+                       maxlength="20" [ngModelOptions]="{standalone: true}" (keyup)="checkWhiteSpace()" (keydown)="checkWhiteSpace(); resetError()" />
+
+                <mat-error *ngIf="userName.invalid && userName.touched">
+                    <span *ngIf="userName.hasError('required')">{{'Common.Required'|translate}}</span>
+                </mat-error>
+
+                <mat-hint class="mat-error" *ngIf="userNameWhiteSpaceError !== ''">
+                    <span>{{userNameWhiteSpaceError}}</span>
+                </mat-hint>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <input matInput type="text" placeholder="{{'UserManagement.User.Email'|translate}}" [(ngModel)]="user.email" #userEmail="ngModel"
+                       [ngModelOptions]="{standalone: true}" disabled />
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <mat-select placeholder="{{'UserManagement.User.SelectInstitute'|translate}}" [(ngModel)]="user.instituteId" #userInstitute="ngModel"
+                            [ngModelOptions]="{standalone: true}" required (selectionChange)="getGroupsForSelectedInstitute()" [disabled]="institutesList.length===1">
+                    <mat-option *ngFor="let institute of institutesList" [value]="institute.id">
+                        {{institute.name}}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="userInstitute.invalid && userInstitute.touched">
+                    <span *ngIf="userInstitute.hasError('required')">{{'Common.Required'|translate}}</span>
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <mat-select placeholder="{{'UserManagement.User.SelectRole'|translate}}" [(ngModel)]="user.userGroupIdList" #userGroup="ngModel" [ngModelOptions]="{standalone: true}" required multiple>
+                    <mat-option *ngFor="let userGroup of userGroupsList" [value]="userGroup.id">
+                        {{userGroup.name}}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="userGroup.invalid && userGroup.touched">
+                    <span *ngIf="userGroup.hasError('required')">{{'Common.Required'|translate}}</span>
+                </mat-error>
+            </mat-form-field>
+
+            <div class="col-12">
+                <button class="btn-icon-rounded btn-primary" matTooltip="Save" matTooltipPosition="above" (click)="updateUser()" 
+                        [disabled]="!(userName.valid && user.instituteId !== null && user.instituteId !== undefined && userGroup.valid)">
+                    <i class="zmdi zmdi-floppy"></i>
+                </button>
+                <a class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="Cancel" matTooltipPosition="above" routerLink="/usermanagement/user/list" routerLinkActive="active"><i class="zmdi zmdi-close"></i></a>
+            </div>
+        </form>
+    </div>
+</div>

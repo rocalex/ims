@@ -1,0 +1,37 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Staff.Designation.Designations'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" *ngIf="isAllowed('Add')"
+       matTooltip="{{'Staff.Designation.AddDesignation'|translate}}" matTooltipPosition="before"
+       routerLink="/staff/designation/add" routerLinkActive="active"><i class="zmdi zmdi-plus"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-full-block">
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th>{{'Institute.AcademicYear.Code'|translate}}</th>
+                        <th>{{'Common.Name'|translate}}</th>
+                        <th>{{'Common.CreatedOn'|translate}}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let designation of designations">
+                        <td>{{designation.code}}</td>
+                        <td>{{designation.designationName}}</td>
+                        <td>{{designation.createdOn|date}}</td>
+                        <td><a matTooltip="{{'Staff.Designation.EditDesignations'|translate}}" *ngIf="isAllowed('Edit')" matTooltipPosition="above" routerLink="/staff/designation/{{designation.id}}" routerLinkActive="active"><i class="zmdi zmdi-edit zmdi-hc-lg"></i></a></td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <div class="rct-block-title text-center" *ngIf="designations.length==0">
+                {{'Staff.Designation.NoDesignationAdded'|translate}}
+            </div>
+        </div>
+    </div>
+</div>
+

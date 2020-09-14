@@ -1,0 +1,108 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Staff.Disciplinary.AddDisciplinary'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" matTooltip="{{'Staff.Disciplinary.Disciplinaries'|translate}}" 
+       matTooltipPosition="above" routerLink="/disciplinary/list" routerLinkActive="active"><i class="zmdi zmdi-view-list"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-block-content">
+        <form class="row">
+            <mat-form-field class="form-group col-12 col-lg-6">
+                <mat-select placeholder="{{'Staff.Homework.SelectStaff'|translate}}" [(ngModel)]="disciplinary.StaffId"
+                            #StaffId="ngModel" [ngModelOptions]="{standalone: true}" disabled>
+                    <mat-option *ngFor="let staff of initialData.staffs" [value]="staff.id">
+                        {{staff.employeeId}} - {{staff.firstName}} {{staff.lastName}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="form-group col-12 col-lg-6">
+                <mat-select placeholder="{{'Staff.Homework.SelectClass'|translate}}" [(ngModel)]="disciplinary.ClassId"
+                            #ClassId="ngModel" [ngModelOptions]="{standalone: true}" (selectionChange)="resetStudent()" required>
+                    <mat-option *ngFor="let class of initialData.classes" [value]="class.id" [disabled]="isDisabledClass(class.id)">
+                        {{class.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="form-group col-12 col-lg-6">
+                <mat-select placeholder="{{'Staff.Homework.SelectSection'|translate}}" [(ngModel)]="disciplinary.SectionId"
+                            #SectionId="ngModel" [ngModelOptions]="{standalone: true}" (selectionChange)="resetStudent()" required>
+                    <mat-option *ngFor="let section of initialData.sections" [value]="section.id">
+                        {{section.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div class="col-12">
+                <button class="btn-icon-rounded btn-primary" matTooltip="{{'Staff.Disciplinary.SearchStudent'|translate}}"
+                        matTooltipPosition="above" (click)="searchStudent()" [disabled]="!(ClassId.valid
+                        && SectionId.valid)">
+                    <i class="zmdi zmdi-search"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="rct-block" *ngIf="students.length">
+    <div class="rct-block-content">
+        <mat-form-field class="form-group col-12 col-lg-6">
+            <mat-select placeholder="{{'Staff.Disciplinary.SelectStudents'|translate}}" [(ngModel)]="disciplinary.StudentIds"
+                        #StudentIds="ngModel" [ngModelOptions]="{standalone: true}" multiple required>
+                <mat-option *ngFor="let student of students" [value]="student.id">
+                    {{student.rollNumber}} - {{student.firstName}} {{student.lastName}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="form-group col-12 col-lg-6">
+            <mat-select placeholder="{{'Staff.Disciplinary.SelectStatus'|translate}}" [(ngModel)]="disciplinary.StatusId"
+                        #StatusId="ngModel" [ngModelOptions]="{standalone: true}" required>
+                <mat-option *ngFor="let status of initialData.statuses" [value]="status.id">
+                    {{status.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="form-group col-12 col-lg-6">
+            <input type="text" matInput placeholder="{{'Staff.Disciplinary.Subject'|translate}}" required NoSpaces
+                   [(ngModel)]="disciplinary.Subject" #SubjectModel="ngModel" [ngModelOptions]="{standalone: true}"
+                   maxlength="250" />
+        </mat-form-field>
+        <mat-error *ngIf="SubjectModel.invalid && SubjectModel.touched">
+            <span *ngIf="SubjectModel.hasError('required')">{{'Common.Required'|translate}}</span>
+            <span *ngIf="(!SubjectModel.hasError('required') && SubjectModel.hasError('whitespace'))">{{'Common.WhiteSpace'|translate}}</span>
+        </mat-error>
+        <mat-form-field class="form-group col-12 col-lg-6">
+            <input matInput [matDatepicker]="dateDis" placeholder="{{'Staff.Disciplinary.Date'|translate}} *"
+                   (dateChange)="disciplinary.Date = $event.value" [value]="disciplinary.Date" disabled required>
+            <mat-datepicker-toggle matSuffix [for]="dateDis"></mat-datepicker-toggle>
+            <mat-datepicker #dateDis disabled="false"></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field class="form-group col-12 col-lg-6">
+            <input type="text" matInput placeholder="{{'Staff.Disciplinary.Description'|translate}}" required NoSpaces
+                   [(ngModel)]="disciplinary.Description" #DescriptionModel="ngModel" [ngModelOptions]="{standalone: true}"
+                   maxlength="250" />
+        </mat-form-field>
+        <mat-error *ngIf="DescriptionModel.invalid && DescriptionModel.touched">
+            <span *ngIf="DescriptionModel.hasError('required')">{{'Common.Required'|translate}}</span>
+            <span *ngIf="(!DescriptionModel.hasError('required') && DescriptionModel.hasError('whitespace'))">{{'Common.WhiteSpace'|translate}}</span>
+        </mat-error>
+        <mat-form-field class="form-group col-12 col-lg-6">
+            <input type="text" matInput placeholder="{{'Staff.Disciplinary.Remarks'|translate}}" [disabled]="isRemarkDisbale()"
+                   [(ngModel)]="disciplinary.Remarks" #RemarksModel="ngModel" [ngModelOptions]="{standalone: true}"
+                   maxlength="250" />
+        </mat-form-field>
+        <div class="col-12">
+            <button class="btn-icon-rounded btn-primary" matTooltip="{{'Staff.Disciplinary.SaveDisciplinary'|translate}}"
+                    matTooltipPosition="above" (click)="addDisciplinary()" [disabled]="!(StudentIds.valid && StatusId.valid
+                    && SubjectModel.valid && (disciplinary.Date !== null && disciplinary.Date !== undefined)
+                    && DescriptionModel.valid)">
+                <i class="zmdi zmdi-floppy"></i>
+            </button>
+            <a class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="{{'Staff.Disciplinary.Cancel'|translate}}" 
+               matTooltipPosition="above" routerLink="/disciplinary/list" routerLinkActive="active"><i class="zmdi zmdi-close"></i></a>
+        </div>
+    </div>
+</div>
+<div class="rct-block" *ngIf="!students.length">
+    <div class="rct-block-content">
+        {{'Staff.Disciplinary.NoStudentFound'|translate}}
+    </div>
+</div>

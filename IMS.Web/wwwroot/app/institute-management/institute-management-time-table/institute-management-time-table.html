@@ -1,0 +1,33 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Institute.TimeTable.TimeTables'|translate}}</h2>
+    </div>
+</div>
+
+<div class="rct-block">
+    <div class="rct-full-block">
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th>{{'Institute.TimeTable.ClassName'|translate}}</th>
+                        <th>{{'Institute.TimeTable.SectionName'|translate}}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let classSection of classSectionsList">
+                        <td>{{classSection.className}}</td>
+                        <td>{{classSection.sectionName}}</td>
+                        <td><a matTooltip="Generate Timetable" matTooltipPosition="above" routerLink="/institute/timetable/generate/{{classSection.classId}}/{{classSection.sectionId}}" routerLinkActive="active">
+                            <i class="zmdi zmdi-hourglass zmdi-hc-lg"></i></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="rct-block-title text-center" *ngIf="classSectionsList.length==0">
+                {{'Institute.TimeTable.EmptyListMessage'|translate}}
+            </div>
+        </div>
+    </div>
+</div>

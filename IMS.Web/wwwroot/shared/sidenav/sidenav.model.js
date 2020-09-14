@@ -1,0 +1,85 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+class Sidenav {
+    constructor() {
+        this.show = true;
+    }
+}
+exports.Sidenav = Sidenav;
+var UserGroupFeatureParentEnum;
+(function (UserGroupFeatureParentEnum) {
+    UserGroupFeatureParentEnum[UserGroupFeatureParentEnum["Academic"] = 0] = "Academic";
+    UserGroupFeatureParentEnum[UserGroupFeatureParentEnum["Student"] = 1] = "Student";
+    UserGroupFeatureParentEnum[UserGroupFeatureParentEnum["Staff"] = 2] = "Staff";
+    UserGroupFeatureParentEnum[UserGroupFeatureParentEnum["Administration"] = 3] = "Administration";
+    UserGroupFeatureParentEnum[UserGroupFeatureParentEnum["Transportation"] = 4] = "Transportation";
+    UserGroupFeatureParentEnum[UserGroupFeatureParentEnum["Finance"] = 5] = "Finance";
+})(UserGroupFeatureParentEnum = exports.UserGroupFeatureParentEnum || (exports.UserGroupFeatureParentEnum = {}));
+var UserGroupFeatureChildEnum;
+(function (UserGroupFeatureChildEnum) {
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["UserManagementRole"] = 0] = "UserManagementRole";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["UserManagementPermission"] = 1] = "UserManagementPermission";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["UserManagementUsers"] = 2] = "UserManagementUsers";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["AcademicCountry"] = 3] = "AcademicCountry";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["AcademicState"] = 4] = "AcademicState";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["AcademicCity"] = 5] = "AcademicCity";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["AcademicCurrency"] = 6] = "AcademicCurrency";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["StudentDashboard"] = 7] = "StudentDashboard";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["StudentLookUp"] = 8] = "StudentLookUp";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["StudentInfo"] = 9] = "StudentInfo";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["StudentInActive"] = 10] = "StudentInActive";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["StudentRelieving"] = 11] = "StudentRelieving";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["StudentArticles"] = 12] = "StudentArticles";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["StudentPromotion"] = 13] = "StudentPromotion";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["StudentAttendance"] = 14] = "StudentAttendance";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["StudentFeeComponent"] = 15] = "StudentFeeComponent";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["StudentCourseFeeTerm"] = 16] = "StudentCourseFeeTerm";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["StudentStudentFee"] = 17] = "StudentStudentFee";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["StudentFeeReceipt"] = 18] = "StudentFeeReceipt";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["StudentFeeRefund"] = 19] = "StudentFeeRefund";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["StudentFeeReport"] = 20] = "StudentFeeReport";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["StudentMarkExamDefinition"] = 21] = "StudentMarkExamDefinition";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["StudentMarkClassExam"] = 22] = "StudentMarkClassExam";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["StudentMarkExamScoreEntry"] = 23] = "StudentMarkExamScoreEntry";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["InstituteAcademicYear"] = 24] = "InstituteAcademicYear";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["InstituteWeekOff"] = 25] = "InstituteWeekOff";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["InstituteHolidayOff"] = 26] = "InstituteHolidayOff";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["InstituteClass"] = 27] = "InstituteClass";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["InstituteSubject"] = 28] = "InstituteSubject";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["InstituteClassSubjectMapping"] = 29] = "InstituteClassSubjectMapping";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["InstituteTimeTable"] = 30] = "InstituteTimeTable";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["StaffDashboard"] = 31] = "StaffDashboard";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["StaffDepartment"] = 32] = "StaffDepartment";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["StaffDesignation"] = 33] = "StaffDesignation";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["StaffInfo"] = 34] = "StaffInfo";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["StaffActivity"] = 35] = "StaffActivity";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["StaffPlanner"] = 36] = "StaffPlanner";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["AcademicEmail"] = 37] = "AcademicEmail";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["AcademicLookUp"] = 38] = "AcademicLookUp";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["AcademicTemplates"] = 39] = "AcademicTemplates";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["AcademicAutoSequence"] = 40] = "AcademicAutoSequence";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["AcademicEvent"] = 41] = "AcademicEvent";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["TransportVehicle"] = 42] = "TransportVehicle";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["TransportDriver"] = 43] = "TransportDriver";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["TransportVehicleDriverMapping"] = 44] = "TransportVehicleDriverMapping";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["TransportStage"] = 45] = "TransportStage";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["TransportRoute"] = 46] = "TransportRoute";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["TransportStudentRouteMapping"] = 47] = "TransportStudentRouteMapping";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["TransportVehicleMaintanence"] = 48] = "TransportVehicleMaintanence";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["TransportVehicleRepair"] = 49] = "TransportVehicleRepair";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["TransportVehicleAccident"] = 50] = "TransportVehicleAccident";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["TransportVehicleBreakDown"] = 51] = "TransportVehicleBreakDown";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["FinancePaymentType"] = 52] = "FinancePaymentType";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["FinanceChartOfPayment"] = 53] = "FinanceChartOfPayment";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["FinanceBasicReciept"] = 54] = "FinanceBasicReciept";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["FinanceBasicPayment"] = 55] = "FinanceBasicPayment";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["StaffReport"] = 56] = "StaffReport";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["StudentReport"] = 57] = "StudentReport";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["Homework"] = 58] = "Homework";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["Disciplinary"] = 59] = "Disciplinary";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["CircularNotice"] = 60] = "CircularNotice";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["StudentLeaveManagement"] = 61] = "StudentLeaveManagement";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["StaffLeaveManagement"] = 62] = "StaffLeaveManagement";
+    UserGroupFeatureChildEnum[UserGroupFeatureChildEnum["StaffAttendance"] = 63] = "StaffAttendance";
+})(UserGroupFeatureChildEnum = exports.UserGroupFeatureChildEnum || (exports.UserGroupFeatureChildEnum = {}));
+//# sourceMappingURL=sidenav.model.js.map

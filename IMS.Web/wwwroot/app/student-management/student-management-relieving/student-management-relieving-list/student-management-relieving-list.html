@@ -1,0 +1,55 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'StudentManagement.Relieving.Students'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" *ngIf="isAllowed('Add')"
+       matTooltip="{{'StudentManagement.Relieving.AddRelieving'|translate}}" matTooltipPosition="before"
+       routerLink="/student/relieving/add" routerLinkActive="active"><i class="zmdi zmdi-plus"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-full-block">
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th>{{'Student.Information.Photo'|translate}}</th>
+                        <th>{{'Student.Information.FirstName'|translate}}</th>
+                        <th>{{'Student.Information.LastName'|translate}}</th>
+                        <th>{{'Student.Information.DateofBirth'|translate}}</th>
+                        <th>{{'Student.Information.MobileNumber'|translate}}</th>
+                        <th>{{'Student.Information.RollNumber'|translate}}</th>
+                        <th>{{'Student.Information.AdmissionNumber'|translate}}</th>
+                        <th>{{'Student.Information.AdmissionDate'|translate}}</th>
+                        <th>{{'StudentManagement.Relieving.SelectRelievingType'|translate}}</th>
+                        <th>{{'StudentManagement.Relieving.RelievingDate'|translate}}</th>
+                        <th>{{'StudentManagement.Relieving.Reason'|translate}}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let student of students">
+                        <td>
+                            <div class="embed-responsive embed-responsive-1by1" style="width:50px;">
+                                <img [src]="((student.student.personalImage)?student.student.personalImage:'/assets/img/default_user.png')" class="embed-responsive-item rounded-circle" />
+                            </div>
+                        </td>
+                        <td>{{student.student.firstName}}</td>
+                        <td>{{student.student.lastName}}</td>
+                        <td>{{student.student.dateOfBirth|date}}</td>
+                        <td>{{student.student.mobileNumber}}</td>
+                        <td>{{student.student.rollNumber}}</td>
+                        <td>{{student.student.admissionNumber}}</td>
+                        <td>{{student.student.admissionDate|date}}</td>
+                        <td>{{student.studentRelievingDescription}}</td>
+                        <td>{{student.relievingDate|date}}</td>
+                        <td>{{student.reason}}</td>
+                        <td><a matTooltip="Edit" matTooltipPosition="above" *ngIf="isAllowed('Edit')" routerLink="/student/relieving/{{student.id}}" routerLinkActive="active"><i class="zmdi zmdi-edit zmdi-hc-lg"></i></a></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="rct-block-title text-center" *ngIf="students.length==0">
+                No Student Relieved
+            </div>
+        </div>
+    </div>
+</div>

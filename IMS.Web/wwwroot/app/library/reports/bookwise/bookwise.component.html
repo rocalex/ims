@@ -1,0 +1,65 @@
+<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Library.Report.Reports'|translate}}</h2>
+    </div>
+    <button class="btn-icon-rounded btn-primary" matTooltip="{{'Common.ExportAsExcel'|translate}}"
+            matTooltipPosition="before" (click)="exportExcel()">
+        <i class="zmdi zmdi-download"></i>
+    </button>
+    <a class="btn-icon-rounded btn-outline-primary" matTooltip="Details" matTooltipPosition="above" routerLink="/library/reports" routerLinkActive="active"><i class="zmdi zmdi-view-list"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-block-content">
+        <mat-form-field class="col-12 col-lg-6">
+            <mat-select placeholder="{{'Library.Report.BookType'|translate}}" (selectionChange)="changeBookType()"
+                        [(ngModel)]="bookTypeId" [ngModelOptions]="{standalone: true}">
+                <mat-option *ngFor="let bookType of bookList" [value]="bookType.id">
+                    {{bookType.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <button class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="{{'Library.Report.Refresh'}}" matTooltipPosition="above" (click)="reset()"><i class="zmdi zmdi-refresh"></i></button>
+
+        <mat-accordion>
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        {{'Library.Report.Books'|translate}}
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="rct-block">
+                    <div class="rct-full-block">
+                        <div class="table-responsive">
+                            <table class="table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>{{'Library.Report.BookName'|translate}}</th>
+                                        <th>{{'Library.Report.BookCode'|translate}}</th>
+                                        <th>{{'Library.Report.AuthorName'|translate}}</th>
+                                        <th>{{'Library.Report.BookType'|translate}}</th>
+                                        <th>{{'Library.Report.PublisherName'|translate}}</th>
+                                        <th>{{'Library.Report.BookStatus'|translate}}</th>
+                                        <th>{{'Library.Report.UserName'|translate}}</th>
+                                        <th>{{'Library.Report.CreatedDate'|translate}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let book of books">
+                                        <td>{{book.book.name}}</td>
+                                        <td>{{book.book.code}}]</td>
+                                        <td>{{book.book.authorName}}</td>
+                                        <td>{{book.book.bookType.name}}</td>
+                                        <td>{{book.book.publisher.name}}</td>
+                                        <td>{{statusList[book.status].label}}</td>
+                                        <td>{{fullName(book)}}</td>
+                                        <td>{{book.issueDate|date}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </div>
+</div>

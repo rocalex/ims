@@ -1,0 +1,307 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Student.Report.Reports'|translate}}</h2>
+    </div>
+    <button class="btn-icon-rounded btn-primary" [disabled]="!classWiseStudent.length" matTooltip="{{'Common.ExportAsExcel'|translate}}"
+            matTooltipPosition="before" (click)="exportExcel()" *ngIf="selectedOrder !== 7 && selectedOrder !== 6">
+        <i class="zmdi zmdi-download"></i>
+    </button>
+    <a class="btn-icon-rounded btn-outline-primary" matTooltip="Details" matTooltipPosition="above" routerLink="/student/report/list" routerLinkActive="active"><i class="zmdi zmdi-view-list"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-block-content">
+        <mat-form-field class="col-12 col-lg-6">
+            <mat-select placeholder="{{'Student.Report.FilterByClass'|translate}}" (selectionChange)="filterData()"
+                        [(ngModel)]="classFilterId" [ngModelOptions]="{standalone: true}">
+                <mat-option *ngFor="let class of initialData.classes" [value]="class.id">
+                    {{class.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <button class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="Refresh" matTooltipPosition="above" (click)="reset('Class')"><i class="zmdi zmdi-refresh"></i></button>
+
+        <div *ngIf="(selectedOrder === 1||selectedOrder === 5||selectedOrder === 7||selectedOrder === 8||selectedOrder === 6)">
+            <mat-form-field class="col-12 col-lg-6">
+                <mat-select placeholder="{{'Student.Report.FilterBySection'|translate}}" (selectionChange)="filterData()"
+                            [(ngModel)]="sectionFilterId" [ngModelOptions]="{standalone: true}">
+                    <mat-option *ngFor="let section of initialData.sections" [value]="section.id">
+                        {{section.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <button class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="Reset" matTooltipPosition="above" (click)="reset('Section')"><i class="zmdi zmdi-refresh"></i></button>
+        </div>
+
+        <div *ngIf="selectedOrder === 3">
+            <mat-form-field class="col-12 col-lg-6">
+                <mat-select placeholder="{{'Student.Report.FilterByReligion'|translate}}" (selectionChange)="filterData()"
+                            [(ngModel)]="religionFilterId" [ngModelOptions]="{standalone: true}">
+                    <mat-option *ngFor="let religion of initialData.religions" [value]="religion.id">
+                        {{religion.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <button class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="Reset" matTooltipPosition="above" (click)="reset('Religion')"><i class="zmdi zmdi-refresh"></i></button>
+        </div>
+
+        <div *ngIf="selectedOrder === 4">
+            <mat-form-field class="col-12 col-lg-6">
+                <mat-select placeholder="{{'Student.Report.FilterByGender'|translate}}" (selectionChange)="filterData()"
+                            [(ngModel)]="genderFilterId" [ngModelOptions]="{standalone: true}">
+                    <mat-option *ngFor="let gender of initialData.genders" [value]="gender.id">
+                        {{gender.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <button class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="Reset" matTooltipPosition="above" (click)="reset('Gender')"><i class="zmdi zmdi-refresh"></i></button>
+        </div>
+
+        <div *ngIf="selectedOrder === 5">
+            <mat-form-field class="col-12 col-lg-6">
+                <mat-select placeholder="{{'Student.Report.FilterByAttendanceType'|translate}}" (selectionChange)="filterData()"
+                            [(ngModel)]="attendanceTypeSelect" [ngModelOptions]="{standalone: true}">
+                    <mat-option *ngFor="let attendanceType of attendanceTypes" [value]="attendanceType">
+                        {{attendanceType}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <button class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="Reset" matTooltipPosition="above" (click)="reset('AttendanceType')"><i class="zmdi zmdi-refresh"></i></button>
+        </div>
+
+        <div *ngIf="selectedOrder === 7">
+            <mat-form-field class="col-12 col-lg-6">
+                <mat-select placeholder="{{'Student.Report.FilterByStaff'|translate}}" (selectionChange)="filterData()"
+                            [(ngModel)]="staffIdFilter" [ngModelOptions]="{standalone: true}">
+                    <mat-option *ngFor="let staff of initialData.staffs" [value]="staff.id" [disabled]="!isStaffIsAllowed(staff.id)">
+                        {{staff.employeeId}} - {{staff.firstName}} {{staff.lastName}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <button class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="Reset" matTooltipPosition="above" (click)="reset('AttendanceType')"><i class="zmdi zmdi-refresh"></i></button>
+        </div>
+
+        <div *ngIf="selectedOrder === 8">
+            <mat-form-field class="col-12 col-lg-6">
+                <mat-select placeholder="{{'Student.Report.FilterByExam'|translate}}" (selectionChange)="filterData()"
+                            [(ngModel)]="examIdFilter" [ngModelOptions]="{standalone: true}">
+                    <mat-option *ngFor="let exam of initialData.exams" [value]="exam.id" [disabled]="!isExamIsAllowed(exam.id)">
+                        {{exam.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <button class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="Reset" matTooltipPosition="above" (click)="reset('Exam')"><i class="zmdi zmdi-refresh"></i></button>
+        </div>
+
+        <div *ngIf="selectedOrder === 6">
+            <mat-form-field class="col-12 col-lg-6">
+                <mat-select placeholder="{{'Student.Report.FilterByMonth'|translate}}" (selectionChange)="filterData()"
+                            [(ngModel)]="selectedMonth" [ngModelOptions]="{standalone: true}">
+                    <mat-option *ngFor="let monthName of monthNames" [value]="monthName">
+                        {{monthName}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <button class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="Reset" matTooltipPosition="above" (click)="reset('Month')"><i class="zmdi zmdi-refresh"></i></button>
+        </div>
+
+        <mat-form-field class="col-12 col-lg-6">
+            <mat-select placeholder="{{'Student.Report.FilterByAcademicYear'|translate}}" disabled
+                        [(ngModel)]="academicYearFilterId" [ngModelOptions]="{standalone: true}">
+                <mat-option *ngFor="let academicYear of initialData.academicYears" [value]="academicYear.id">
+                    {{academicYear.academicYearCode}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-accordion *ngFor="let item of classWiseStudent">
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        {{item.name}}
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="rct-block" *ngIf="selectedOrder !== 7 && selectedOrder !== 6">
+                    <div class="rct-full-block">
+                        <div class="table-responsive" *ngIf="selectedOrder !== 5">
+                            <table class="table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>{{'Student.Report.RollNumber'|translate}}</th>
+                                        <th>{{'Student.Report.Name'|translate}}</th>
+                                        <th>{{'Student.Report.Class'|translate}}</th>
+                                        <th>{{'Student.Report.Religion'|translate}}</th>
+                                        <th>{{'Student.Report.Gender'|translate}}</th>
+                                        <th>{{'Student.Report.AdmissionDate'|translate}}</th>
+                                        <th>{{'Student.Report.DateOfBirth'|translate}}</th>
+                                        <th>{{'Student.Report.MobileNumber'|translate}}</th>
+                                        <th *ngIf="selectedOrder === 8">{{'Student.Report.Mark'|translate}}</th>
+                                        <th *ngIf="selectedOrder === 8">{{'Student.Report.Grade'|translate}}</th>
+                                        <th *ngIf="selectedOrder === 8">{{'Student.Report.SGPA'|translate}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let student of item.students">
+                                        <td>
+                                            <div class="embed-responsive embed-responsive-1by1" style="width:50px;">
+                                                <img [src]="((student.personalImage)?student.personalImage:'/assets/img/default_user.png')" alt="student" class="embed-responsive-item rounded-circle" />
+                                            </div>
+                                        </td>
+                                        <td>{{student.rollNumber}}</td>
+                                        <td>{{student.firstName}} {{student.lastName}}</td>
+                                        <td>{{student.currentClass?.name}}</td>
+                                        <td>{{student.religion?.name}}</td>
+                                        <td>{{student.gender?.name}}</td>
+                                        <td>{{student.admissionDate|date}}</td>
+                                        <td>{{student.dateOfBirth|date}}</td>
+                                        <td>{{student.mobileNumber}}</td>
+                                        <td *ngIf="selectedOrder === 8">{{student.mark}}</td>
+                                        <td *ngIf="selectedOrder === 8">{{student.grade}}</td>
+                                        <td *ngIf="selectedOrder === 8">{{student.sgpa}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="rct-block-title text-center" *ngIf="item.students.length==0">
+                                {{'Student.Report.NoStudentAdded'|translate}}
+                            </div>
+                        </div>
+                        <div class="table-responsive" *ngIf="selectedOrder === 5">
+                            <table class="table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>{{'Student.Report.RollNumber'|translate}}</th>
+                                        <th>{{'Student.Report.Name'|translate}}</th>
+                                        <th>{{'Student.Report.Dates'|translate}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let student of item.students">
+                                        <td>
+                                            <div class="embed-responsive embed-responsive-1by1" style="width:50px;">
+                                                <img [src]="((student.personalImage)?student.personalImage:'/assets/img/default_user.png')" alt="student" class="embed-responsive-item rounded-circle" />
+                                            </div>
+                                        </td>
+                                        <td>{{student.rollNumber}}</td>
+                                        <td>{{student.firstName}} {{student.lastName}}</td>
+                                        <td>
+                                            <ul *ngFor="let attendance of student.attendances">
+                                                <li>{{attendance.attendanceDate|date}}</li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="rct-block-title text-center" *ngIf="item.students.length==0">
+                                {{'Student.Report.NoStudentAdded'|translate}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="rct-block" *ngIf="selectedOrder === 7">
+                    <div class="rct-full-block">
+                        <div class="table-responsive" *ngIf="selectedOrder !== 5">
+                            <table class="table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>{{'Student.Report.Date'|translate}}</th>
+                                        <th>{{'Student.Report.ByStaff'|translate}}</th>
+                                        <th *ngIf="item.name === 'Homework'">{{'Student.Report.Homework'|translate}}</th>
+                                        <th *ngIf="item.name === 'Notice'">{{'Student.Report.Notice'|translate}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let homework of item.homeworks">
+                                        <td>{{homework.date|date}}</td>
+                                        <td>{{homework.byStaff?.employeeId}} - {{homework.byStaff?.firstName}} {{homework.byStaff?.lastName}}</td>
+                                        <td *ngIf="item.name === 'Homework'">
+                                            <div *ngFor="let message of homework.message">
+                                                {{message.message}}
+                                                <div *ngFor="let student of message.students">
+                                                    <div class="embed-responsive embed-responsive-1by1" style="width:50px;">
+                                                        <img [src]="(((getStudent(student))?.personalImage)?(getStudent(student))?.personalImage:'/assets/img/default_user.png')" alt="student" class="embed-responsive-item rounded-circle" />
+                                                    </div>
+                                                    {{(getStudent(student))?.rollNumber}}
+                                                    {{(getStudent(student))?.firstName}} {{(getStudent(student))?.lastName}}
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td *ngIf="item.name === 'Notice'">
+                                            <div *ngFor="let message of homework.message">
+                                                {{message.message}}
+                                                <ul *ngFor="let student of message.students">
+                                                    <li>{{student.name}}</li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="rct-block-title text-center" *ngIf="item.homeworks.length==0">
+                                {{'Student.Report.NoHomeworkAdded'|translate}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="rct-block" *ngIf="selectedOrder === 6">
+                    <div class="rct-full-block">
+                        <div class="table-responsive">
+                            <table class="table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>{{'Student.Report.RollNumber'|translate}}</th>
+                                        <th>{{'Student.Report.Name'|translate}}</th>
+                                        <th *ngFor="let month of allowedMonths">
+                                            {{month}}<br />
+                                            -----------------
+                                            Total Classes<br />
+                                            -----------------
+                                            Attended<br />
+                                            -----------------
+                                            In %
+                                        </th>
+                                        <th>
+                                            Total no. of Classes held<br />
+                                            -----------------
+                                            No. of Classes Attended<br />
+                                            -----------------
+                                            In %
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let student of item.students">
+                                        <td>
+                                            <div class="embed-responsive embed-responsive-1by1" style="width:50px;">
+                                                <img [src]="((student.personalImage)?student.personalImage:'/assets/img/default_user.png')" alt="student" class="embed-responsive-item rounded-circle" />
+                                            </div>
+                                        </td>
+                                        <td>{{student.rollNumber}}</td>
+                                        <td>{{student.firstName}} {{student.lastName}}</td>
+                                        <td *ngFor="let month of allowedMonths; let i = index">
+                                            {{student.attendances[i].total}}<br />
+                                            -----------------<br />
+                                            {{student.attendances[i].present}}<br />
+                                            -----------------<br />
+                                            {{student.attendances[i].percentage| number : '.2-2'}}
+                                        </td>
+                                        <td>
+                                            {{getTotalClasses(student.attendances)}}<br />
+                                            ------------------<br />
+                                            {{getTotalClass()}}<br />
+                                            ------------------<br />
+                                            {{(getTotalClasses(student.attendances)/getTotalClass()*100)| number : '.2-2'}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="rct-block-title text-center" *ngIf="item.students.length==0">
+                                {{'Student.Report.NoStudentAdded'|translate}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </div>
+</div>

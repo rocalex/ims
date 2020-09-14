@@ -1,0 +1,1 @@
+{"version":3,"file":"student-management.routes.js","sourceRoot":"","sources":["student-management.routes.ts"],"names":[],"mappings":";;AAAA,4CAAuD;AAEvD,MAAM,uBAAuB,GAAW;IACtC;QACE,IAAI,EAAE,SAAS;QACf,QAAQ,EAAE;YACR,EAAE,IAAI,EAAE,EAAE,EAAE,UAAU,EAAE,aAAa,EAAE,SAAS,EAAE,MAAM,EAAE;SAC3D;KACF;CAEF,CAAC;AACW,QAAA,wBAAwB,GAAG,qBAAY,CAAC,OAAO,CAAC,uBAAuB,CAAC,CAAC"}

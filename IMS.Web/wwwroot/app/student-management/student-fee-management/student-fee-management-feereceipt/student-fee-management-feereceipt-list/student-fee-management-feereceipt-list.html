@@ -1,0 +1,49 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'StudentFeeManagement.FeeReceipt.FeeReceipts'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" *ngIf="isAllowed('Add')"
+       matTooltip="{{'StudentFeeManagement.FeeReceipt.AddFeeReceipt'|translate}}" matTooltipPosition="before"
+       routerLink="/student/feemanagement/feereceipt/add" routerLinkActive="active"><i class="zmdi zmdi-plus"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-full-block">
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th>{{'StudentFeeManagement.FeeReceipt.ReceiptNumber'|translate}}</th>
+                        <th>{{'StudentFeeManagement.FeeReceipt.ReceiptDate'|translate}}</th>
+                        <th>{{'StudentFeeManagement.FeeReceipt.Student'|translate}}</th>
+                        <th>{{'StudentFeeManagement.FeeReceipt.ReceiptType'|translate}}</th>
+                        <th>{{'StudentFeeManagement.FeeReceipt.ChallanNumber'|translate}}</th>
+                        <th>{{'StudentFeeManagement.FeeReceipt.Amount'|translate}}</th>
+                        <th>{{'StudentFeeManagement.FeeReceipt.LateFee'|translate}}</th>
+                        <th>{{'StudentFeeManagement.FeeReceipt.PreviousAmountPaid'|translate}}</th>
+                        <th>{{'StudentFeeManagement.FeeReceipt.Total'|translate}}</th>
+                        <th>{{'StudentFeeManagement.FeeReceipt.Term'|translate}}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let refund of feeReceipts">
+                        <td>{{refund.receiptNumber}}</td>
+                        <td>{{refund.receiptDate|date}}</td>
+                        <td>{{refund.student?.firstName}}</td>
+                        <td>{{refund.receiptTypeDescription}}</td>
+                        <td>{{refund.challanNumber}}</td>
+                        <td>{{refund.amount}}</td>
+                        <td>{{refund.lateFee}}</td>
+                        <td>{{refund.previousAmountPaid}}</td>
+                        <td>{{refund.total}}</td>
+                        <td>{{refund.term === 0 ? 'All': refund.term}}</td>
+                        <td><a matTooltip="{{'StudentFeeManagement.FeeReceipt.EditFeeReceipt'|translate}}" *ngIf="isAllowed('Edit')" matTooltipPosition="above" routerLink="/student/feemanagement/feereceipt/{{refund.id}}" routerLinkActive="active"><i class="zmdi zmdi-edit zmdi-hc-lg"></i></a></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="rct-block-title text-center" *ngIf="feeReceipts.length==0">
+                {{'StudentFeeManagement.FeeReceipt.NoFeeReceiptAdded'|translate}}
+            </div>
+        </div>
+    </div>
+</div>

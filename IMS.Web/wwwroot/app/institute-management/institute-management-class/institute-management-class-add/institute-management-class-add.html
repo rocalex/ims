@@ -1,0 +1,104 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Institute.Class.AddClass'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" matTooltip="{{'Institute.Class.Classes'|translate}}" matTooltipPosition="above" routerLink="/institute/class/list" routerLinkActive="active"><i class="zmdi zmdi-view-list"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-block-content">
+        <form class="row">
+            <mat-form-field class="col-12 col-lg-6">
+                <input type="text" matInput placeholder="{{'Institute.Class.GroupCode'|translate}}" required NoSpaces
+                       [(ngModel)]="addClass.GroupCode" #GroupCode="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20"
+                       (keydown)="resetError('GroupCode')" />
+
+                <mat-error *ngIf="GroupCode.invalid && GroupCode.touched">
+                    <span *ngIf="GroupCode.hasError('required')">{{'Common.Required'|translate}}</span>
+                    <span *ngIf="(!GroupCode.hasError('required') && GroupCode.hasError('whitespace'))">{{'Institute.Class.CodeWhitespace'|translate}}</span>
+                </mat-error>
+
+                <mat-hint class="mat-error" *ngIf="hasError('GroupCode') && error.HasError">
+                    <span>{{error.Message}}</span>
+                </mat-hint>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <input type="text" matInput placeholder="{{'Institute.Class.ClassName'|translate}}" required NoSpaces
+                       [(ngModel)]="addClass.Name" #Name="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20"
+                       (keydown)="resetError('Name')" />
+
+                <mat-error *ngIf="Name.invalid && Name.touched">
+                    <span *ngIf="Name.hasError('required')">{{'Common.Required'|translate}}</span>
+                    <span *ngIf="(!Name.hasError('required') && Name.hasError('whitespace'))">{{'Institute.Class.NameWhitespace'|translate}}</span>
+                </mat-error>
+
+                <mat-hint class="mat-error" *ngIf="hasError('Name') && error.HasError">
+                    <span>{{error.Message}}</span>
+                </mat-hint>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <mat-select placeholder="{{'Institute.Class.SelectDurationUnit'|translate}}" [(ngModel)]="selectedDurationUnit" [ngModelOptions]="{standalone: true}" required>
+                    <mat-option *ngFor="let durationUnit of durationUnitList" [value]="durationUnit">
+                        {{durationUnit}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <input type="number" matInput placeholder="{{'Institute.Class.Duration'|translate}}" required [min]="0" [max]="999"
+                       [(ngModel)]="addClass.Duration" #Duration="ngModel" [ngModelOptions]="{standalone: true}" pattern="^\d*(\.\d{0,0})?$"
+                       (keydown)="resetError('Duration')" />
+
+                <mat-error *ngIf="Duration.invalid && Duration.touched">
+                    <span *ngIf="Duration.hasError('required')">{{'Common.Required'|translate}}</span>
+                    <span *ngIf="Duration.hasError('pattern')">{{'Institute.Class.DecimalOrNegativeValue'|translate}}. </span>
+                    <span *ngIf="Duration.hasError('max') || Duration.hasError('min')">{{'Institute.Class.Range'|translate}}</span>
+                    <span *ngIf="hasError('Duration') && errorMessage">{{error.Message}}</span>
+                </mat-error>
+            </mat-form-field>
+            <div class="form-group col-12 col-lg-6">
+                <mat-slide-toggle [(ngModel)]="addClass.IsGroup" [ngModelOptions]="{standalone: true}">{{'Institute.Class.IsGroup'|translate}}</mat-slide-toggle>
+            </div>
+            <mat-form-field class="col-12 col-lg-6">
+                <input type="number" matInput placeholder="{{'Institute.Class.ClassOrder'|translate}}" required [min]="0" [max]="999" pattern="^\d*(\.\d{0,0})?$"
+                       [(ngModel)]="addClass.ClassOrder" #ClassOrder="ngModel" [ngModelOptions]="{standalone: true}"
+                       (keydown)="resetError('ClassOrder')" />
+
+                <mat-error *ngIf="ClassOrder.invalid && ClassOrder.touched">
+                    <span *ngIf="ClassOrder.hasError('required')">{{'Common.Required'|translate}}</span>
+                    <span *ngIf="ClassOrder.hasError('pattern')">{{'Institute.Class.DecimalOrNegativeValue'|translate}}. </span>
+                    <span *ngIf="ClassOrder.hasError('max') || ClassOrder.hasError('min')">{{'Institute.Class.Range'|translate}}</span>
+                    <span *ngIf="hasError('ClassOrder') && errorMessage">{{error.Message}}</span>
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="col-12 col-lg-6">
+                <input type="number" matInput placeholder="{{'Institute.Class.NumberOfFeeTerms'|translate}}" required [min]="0" [max]="999" pattern="^\d*(\.\d{0,0})?$"
+                       [(ngModel)]="addClass.NumberOfFeeTerms" #NumberOfFeeTerms="ngModel" [ngModelOptions]="{standalone: true}"
+                       (keydown)="resetError('NumberOfFeeTerms')" />
+
+                <mat-error *ngIf="NumberOfFeeTerms.invalid && NumberOfFeeTerms.touched">
+                    <span *ngIf="NumberOfFeeTerms.hasError('required')">{{'Common.Required'|translate}}</span>
+                    <span *ngIf="NumberOfFeeTerms.hasError('pattern')">{{'Institute.Class.DecimalOrNegativeValue'|translate}}. </span>
+                    <span *ngIf="NumberOfFeeTerms.hasError('max') || NumberOfFeeTerms.hasError('min')">{{'Institute.Class.Range'|translate}}</span>
+                    <span *ngIf="hasError('NumberOfFeeTerms') && errorMessage">{{error.Message}}</span>
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="col-12 col-lg-6">
+                <mat-select placeholder="{{'Institute.Class.SelectClassTeacher'|translate}}" [(ngModel)]="addClass.ClassTeacherId"
+                            [ngModelOptions]="{standalone: true}" #ClassTeacherId="ngModel" required>
+                    <mat-option *ngFor="let staff of initialdata.staffs" [value]="staff.id">
+                        {{staff.employeeId}} - {{staff.firstName}} {{staff.lastName}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div class="col-12">
+                <button class="btn-icon-rounded btn-primary" (click)="addInstituteClass()" matTooltip="{{'Common.Save'|translate}}" matTooltipPosition="above" [disabled]="!(GroupCode.valid && Name.valid
+                        && selectedDurationUnit !== '' && Duration.valid && ClassOrder.valid && NumberOfFeeTerms.valid && ClassTeacherId.valid)">
+                    <i class="zmdi zmdi-floppy"></i>
+                </button>
+                <a class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="{{'Common.Cancel'|translate}}" matTooltipPosition="above" routerLink="/institute/class/list" routerLinkActive="active"><i class="zmdi zmdi-close"></i></a>
+            </div>
+        </form>
+    </div>
+</div>

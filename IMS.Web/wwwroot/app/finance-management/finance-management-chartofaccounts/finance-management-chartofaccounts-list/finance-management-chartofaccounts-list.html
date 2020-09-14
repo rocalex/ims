@@ -1,0 +1,260 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'FinanceManagement.ChartOfAccount.ChartOfAccounts'|translate}}</h2>
+    </div>
+    <a tabindex="0" class="btn-icon-rounded btn-outline-secondary" *ngIf="isAllowed('Add')"
+       matTooltip="{{'FinanceManagement.ChartOfAccount.AddChartOfAccounts'|translate}}" (click)="showAddChartOfAccountForm()">
+    <i class="zmdi zmdi-plus"></i></a>
+</div>
+
+<div class="row">
+    <!-- Tree View -->
+    <div class="col-12 col-md-4 col-lg-3 col-xl-2">
+        <div class="rct-block">
+            <div class="rct-block-title">
+                <h4>{{'FinanceManagement.ChartOfAccount.AccountType'|translate}}</h4>
+            </div>
+            <div class="p-3 text-center" *ngIf="treeViewData.length === 0">
+                {{'FinanceManagement.ChartOfAccount.NoAccountTypeAdded'|translate}}
+            </div>
+            <div class="rct-full-block" *ngIf="treeViewData.length !== 0">
+                <kendo-treeview [nodes]="treeViewData"
+                                textField="name"
+                                kendoTreeViewExpandable
+                                kendoTreeViewHierarchyBinding
+                                childrenField="children">
+
+                    <ng-template kendoTreeViewNodeTemplate let-dataItem>
+                        <div class="d-flex">
+                            <div class="flex-grow-1 ename">{{dataItem.name}}</div>
+                            <div [hidden]="!dataItem.isEditable">
+                                <a class="ml-2" style="pointer-events: auto;" *ngIf="isAllowed('Edit')" (click)="getChartOfAccountDetail(dataItem.id)"><i class="zmdi zmdi-edit zmdi-hc-lg"></i></a>
+                            </div>
+                        </div>
+                    </ng-template>
+                </kendo-treeview>
+            </div>
+        </div>
+    </div>
+
+    <!-- Form View -->
+    <div class="col-12 col-md-8 col-lg-9 col-xl-10">
+        <!-- Add chart of account -->
+        <div class="rct-block" [hidden]="!isAddChartOfAccountFormVisible">
+            <div class="rct-block-title border-bottom bg-light">
+                <h4 class="mb-0">{{'FinanceManagement.ChartOfAccount.AddChartOfAccounts'|translate}}</h4>
+            </div>
+            <div class="rct-block-content">
+                <form class="row">
+                    <mat-form-field class="col-12 col-lg-6">
+                        <input type="text" matInput placeholder="{{'FinanceManagement.ChartOfAccount.Code'|translate}}" required [readonly]="!addedChartOfAccounts.isChartOfAccountCodeEditable"
+                               [(ngModel)]="addedChartOfAccounts.code" #ChartOfAccountCodeModel="ngModel" [ngModelOptions]="{standalone: true}"
+                               maxlength="20" (keyup)="checkWhiteSpace()" (keydown)="checkWhiteSpace(); resetError()" />
+
+                        <mat-error *ngIf="ChartOfAccountCodeModel.invalid && ChartOfAccountCodeModel.touched">
+                            <span *ngIf="ChartOfAccountCodeModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                        </mat-error>
+
+                        <mat-hint class="mat-error" *ngIf="isEmptyCodeError">
+                            <span>{{'FinanceManagement.ChartOfAccount.EmptyChartOfAccountsCode'|translate}}</span>
+                        </mat-hint>
+                    </mat-form-field>
+
+                    <mat-form-field class="col-12 col-lg-6">
+                        <input type="text" matInput placeholder="{{'FinanceManagement.ChartOfAccount.Name'|translate}}" required
+                               [(ngModel)]="addedChartOfAccounts.name" #NameModel="ngModel" [ngModelOptions]="{standalone: true}"
+                               maxlength="20" (keyup)="checkWhiteSpace()" (keydown)="checkWhiteSpace(); resetError()" />
+
+                        <mat-error *ngIf="NameModel.invalid && NameModel.touched">
+                            <span *ngIf="NameModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                        </mat-error>
+
+                        <mat-hint class="mat-error" *ngIf="isEmptyNameError">
+                            <span>{{'FinanceManagement.ChartOfAccount.EmptyChartOfAccountsName'|translate}}</span>
+                        </mat-hint>
+
+                        <mat-hint class="mat-error" *ngIf="errorMessage !== ''">
+                            <span>{{errorMessage}}</span>
+                        </mat-hint>
+                    </mat-form-field>
+
+                    <mat-form-field class="col-12 col-lg-6">
+                        <input type="text" matInput placeholder="{{'FinanceManagement.ChartOfAccount.AliasName'|translate}}" required
+                               [(ngModel)]="addedChartOfAccounts.aliasName" #AliasNameModel="ngModel" [ngModelOptions]="{standalone: true}"
+                               maxlength="20" (keyup)="checkWhiteSpace()" (keydown)="checkWhiteSpace(); resetError()" />
+
+                        <mat-error *ngIf="AliasNameModel.invalid && AliasNameModel.touched">
+                            <span *ngIf="AliasNameModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                        </mat-error>
+
+                        <mat-hint class="mat-error" *ngIf="isEmptyAliasNameError">
+                            <span>{{'FinanceManagement.ChartOfAccount.EmptyChartOfAccountsAlias'|translate}}</span>
+                        </mat-hint>
+                    </mat-form-field>
+
+                    <mat-form-field class="col-12 col-lg-6">
+                        <input type="text" matInput placeholder="{{'Common.Description'|translate}}"
+                               [(ngModel)]="addedChartOfAccounts.description" #descriptionModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="150" />
+                    </mat-form-field>
+
+                    <div class="form-group col-12 col-lg-6">
+                        <mat-slide-toggle [(ngModel)]="addedChartOfAccounts.isActive" #isActiveModel="ngModel" [ngModelOptions]="{standalone: true}">{{'FinanceManagement.ChartOfAccount.IsActive'|translate}}</mat-slide-toggle>
+                    </div>
+
+                    <div class="form-group col-12 col-lg-6">
+                        <mat-slide-toggle [(ngModel)]="addedChartOfAccounts.isParent" #isActiveModel="ngModel" [ngModelOptions]="{standalone: true}">{{'FinanceManagement.ChartOfAccount.IsParent'|translate}}</mat-slide-toggle>
+                    </div>
+
+                    <mat-form-field class="col-12 col-lg-6">
+                        <mat-select placeholder="{{'FinanceManagement.ChartOfAccount.AccountType'|translate}}" [(ngModel)]="addedChartOfAccounts.accountType"
+                                    #AccountTypeModel="ngModel" [ngModelOptions]="{standalone: true}" required (keyup)="checkWhiteSpace()" (keydown)="resetError()"
+                                    [disabled]="!addedChartOfAccounts.isParent">
+                            <mat-option *ngFor="let chartOfAccountTypeEnum of chartOfAccountTypeEnumDetails" [value]="chartOfAccountTypeEnum.key">
+                                {{chartOfAccountTypeEnum.value}}
+                            </mat-option>
+                        </mat-select>
+
+                        <mat-error *ngIf="AccountTypeModel.invalid && AccountTypeModel.touched">
+                            <span *ngIf="AccountTypeModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="col-12 col-lg-6" [hidden]="addedChartOfAccounts.isParent">
+                        <mat-select placeholder="{{'FinanceManagement.ChartOfAccount.ParentGroup'|translate}}" [(ngModel)]="addedChartOfAccounts.parentGroupId"
+                                    #ParentGroupModel="ngModel" [ngModelOptions]="{standalone: true}" required (keyup)="checkWhiteSpace()" (keydown)="resetError()"
+                                    (selectionChange)="setParentAccountType()">
+                            <mat-option *ngFor="let parentChartOfAccount of parentChartOfAccountsList" [value]="parentChartOfAccount.id">
+                                {{parentChartOfAccount.name}}
+                            </mat-option>
+                        </mat-select>
+
+                        <mat-error *ngIf="ParentGroupModel.invalid && ParentGroupModel.touched">
+                            <span *ngIf="ParentGroupModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                        </mat-error>
+                    </mat-form-field>
+
+                    <div class="col-12">
+                        <button class="btn-icon-rounded btn-primary" (click)="addChartOfAccount()"
+                                [disabled]="!(ChartOfAccountCodeModel.valid && NameModel.valid && AliasNameModel.valid
+                        && !isEmptyCodeError && !isEmptyNameError && !isEmptyAliasNameError)
+                        || (!addedChartOfAccounts.isParent && !ParentGroupModel.valid)
+                        || (addedChartOfAccounts.isParent && !AccountTypeModel.valid)">
+                            <i class="zmdi zmdi-floppy"></i>
+                        </button>
+                        <button class="ml-2 btn-icon-rounded btn-outline-secondary" (click)="hideChartOfAccountForm()"><i class="zmdi zmdi-close"></i></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Edit chart of account -->
+        <div class="rct-block" [hidden]="!isEditChartOfAccountFormVisible">
+            <div class="rct-block-title border-bottom bg-light">
+                <h4 class="mb-0">{{'FinanceManagement.ChartOfAccount.EditChartOfAccounts'|translate}}</h4>
+            </div>
+            <div class="rct-block-content">
+                <form class="row">
+                    <mat-form-field class="col-12 col-lg-6">
+                        <input type="text" matInput placeholder="{{'FinanceManagement.ChartOfAccount.Code'|translate}}" required [readonly]="true"
+                               [(ngModel)]="addedChartOfAccounts.code" #ChartOfAccountCodeModel="ngModel" [ngModelOptions]="{standalone: true}"
+                               maxlength="20" (keyup)="checkWhiteSpace()" (keydown)="checkWhiteSpace(); resetError()" />
+
+                        <mat-error *ngIf="ChartOfAccountCodeModel.invalid && ChartOfAccountCodeModel.touched">
+                            <span *ngIf="ChartOfAccountCodeModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                        </mat-error>
+
+                        <mat-hint class="mat-error" *ngIf="isEmptyCodeError">
+                            <span>{{'FinanceManagement.ChartOfAccount.EmptyChartOfAccountsCode'|translate}}</span>
+                        </mat-hint>
+                    </mat-form-field>
+
+                    <mat-form-field class="col-12 col-lg-6">
+                        <input type="text" matInput placeholder="{{'FinanceManagement.ChartOfAccount.Name'|translate}}" required
+                               [(ngModel)]="addedChartOfAccounts.name" #NameModel="ngModel" [ngModelOptions]="{standalone: true}"
+                               maxlength="20" (keyup)="checkWhiteSpace()" (keydown)="checkWhiteSpace(); resetError()" />
+
+                        <mat-error *ngIf="NameModel.invalid && NameModel.touched">
+                            <span *ngIf="NameModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                        </mat-error>
+
+                        <mat-hint class="mat-error" *ngIf="isEmptyNameError">
+                            <span>{{'FinanceManagement.ChartOfAccount.EmptyChartOfAccountsName'|translate}}</span>
+                        </mat-hint>
+
+                        <mat-hint class="mat-error" *ngIf="errorMessage !== ''">
+                            <span>{{errorMessage}}</span>
+                        </mat-hint>
+                    </mat-form-field>
+
+                    <mat-form-field class="col-12 col-lg-6">
+                        <input type="text" matInput placeholder="{{'FinanceManagement.ChartOfAccount.AliasName'|translate}}" required
+                               [(ngModel)]="addedChartOfAccounts.aliasName" #AliasNameModel="ngModel" [ngModelOptions]="{standalone: true}"
+                               maxlength="20" (keyup)="checkWhiteSpace()" (keydown)="checkWhiteSpace(); resetError()" />
+
+                        <mat-error *ngIf="AliasNameModel.invalid && AliasNameModel.touched">
+                            <span *ngIf="AliasNameModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                        </mat-error>
+
+                        <mat-hint class="mat-error" *ngIf="isEmptyAliasNameError">
+                            <span>{{'FinanceManagement.ChartOfAccount.EmptyChartOfAccountsAlias'|translate}}</span>
+                        </mat-hint>
+                    </mat-form-field>
+
+                    <mat-form-field class="col-12 col-lg-6">
+                        <input type="text" matInput placeholder="{{'Common.Description'|translate}}"
+                               [(ngModel)]="addedChartOfAccounts.description" #descriptionModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="150" />
+                    </mat-form-field>
+
+                    <div class="form-group col-12 col-lg-6">
+                        <mat-slide-toggle [(ngModel)]="addedChartOfAccounts.isActive" #isActiveModel="ngModel" [ngModelOptions]="{standalone: true}">{{'FinanceManagement.ChartOfAccount.IsActive'|translate}}</mat-slide-toggle>
+                    </div>
+
+                    <div class="form-group col-12 col-lg-6">
+                        <mat-slide-toggle [(ngModel)]="addedChartOfAccounts.isParent" #isActiveModel="ngModel" [ngModelOptions]="{standalone: true}" [disabled]="addedChartOfAccounts.childChartOfAccounts.length > 0">
+                            {{'FinanceManagement.ChartOfAccount.IsParent'|translate}}
+                        </mat-slide-toggle>
+                    </div>
+
+                    <mat-form-field class="col-12 col-lg-6">
+                        <mat-select placeholder="{{'FinanceManagement.ChartOfAccount.AccountType'|translate}}" [(ngModel)]="addedChartOfAccounts.accountType"
+                                    #AccountTypeModel="ngModel" [ngModelOptions]="{standalone: true}" required (keyup)="checkWhiteSpace()" (keydown)="resetError()"
+                                    [disabled]="!addedChartOfAccounts.isParent">
+                            <mat-option *ngFor="let chartOfAccountTypeEnum of chartOfAccountTypeEnumDetails" [value]="chartOfAccountTypeEnum.key">
+                                {{chartOfAccountTypeEnum.value}}
+                            </mat-option>
+                        </mat-select>
+
+                        <mat-error *ngIf="AccountTypeModel.invalid && AccountTypeModel.touched">
+                            <span *ngIf="AccountTypeModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="col-12 col-lg-6" [hidden]="addedChartOfAccounts.isParent">
+                        <mat-select placeholder="{{'FinanceManagement.ChartOfAccount.ParentGroup'|translate}}" [(ngModel)]="addedChartOfAccounts.parentGroupId"
+                                    #ParentGroupModel="ngModel" [ngModelOptions]="{standalone: true}" required (keyup)="checkWhiteSpace()" (keydown)="resetError()"
+                                    (selectionChange)="setParentAccountType()">
+                            <mat-option *ngFor="let parentChartOfAccount of parentChartOfAccountsList" [value]="parentChartOfAccount.id">
+                                {{parentChartOfAccount.name}}
+                            </mat-option>
+                        </mat-select>
+
+                        <mat-error *ngIf="ParentGroupModel.invalid && ParentGroupModel.touched">
+                            <span *ngIf="ParentGroupModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                        </mat-error>
+                    </mat-form-field>
+
+                    <div class="col-12">
+                        <button class="btn-icon-rounded btn-primary" (click)="updateChartOfAccount()"
+                                [disabled]="!(ChartOfAccountCodeModel.valid && NameModel.valid && AliasNameModel.valid
+                        && !isEmptyCodeError && !isEmptyNameError && !isEmptyAliasNameError)
+                        || (!addedChartOfAccounts.isParent && !ParentGroupModel.valid)
+                        || (addedChartOfAccounts.isParent && !AccountTypeModel.valid)">
+                            <i class="zmdi zmdi-floppy"></i>
+                        </button>
+                        <button class="ml-2 btn-icon-rounded btn-outline-secondary" (click)="hideChartOfAccountForm()"><i class="zmdi zmdi-close"></i></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

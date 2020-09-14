@@ -1,0 +1,43 @@
+<div class="page-title d-flex justify-content-between align-items-center">
+  <div class="page-title-wrap">
+      <h2 class="mb-0">{{'Library.Issuebook.Title'|translate}}</h2>
+  </div>
+  <a class="btn-icon-rounded btn-outline-primary" *ngIf="isAllowed('Add')"
+     matTooltip="{{'Library.Issuebook.Add'|translate}}" matTooltipPosition="before"
+     routerLink="/library/issuebook/add" routerLinkActive="active"><i class="zmdi zmdi-plus"></i></a>
+</div>
+
+<div class="rct-block">
+  <div class="rct-full-block">
+      <div class="table-responsive">
+          <table class="table mb-0">
+              <thead>
+                  <tr>
+                      <th>{{'Library.Issuebook.UserType'|translate}}</th>
+                      <th>{{'Library.Issuebook.Student'|translate}}</th>
+                      <th>{{'Library.Issuebook.BookNo'|translate}}</th>
+                      <th>{{'Library.Issuebook.Status'|translate}}</th>
+                      <th></th>
+                      <th></th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr *ngFor="let issueBook of list">
+                      <td>{{userTypeList[issueBook.userType].label}}</td>
+                      <td>{{(issueBook.userType==0)?(fullName(issueBook.student)):(fullName(issueBook.staff))}}</td>
+                      <td>{{issueBook.book.name}}</td>
+                      <td>{{statusList[issueBook.status].label}}</td>
+                      <td> <a class="nav-link" routerLink="/library/issuebook/{{issueBook.id}}" *ngIf="isAllowed('Edit')"
+                              matTooltip="{{'Library.Issuebook.Edit'|translate}}" matTooltipPosition="above" 
+                              routerLinkActive="active"><i class="zmdi zmdi-edit zmdi-hc-lg"></i></a></td>
+                        <td> <a class="nav-link" (click)="delete(issueBook.id)" *ngIf="isAllowed('Delete')"
+                            matTooltip="{{'Library.Issuebook.Delete'|translate}}" matTooltipPosition="above"><i class="zmdi zmdi-delete zmdi-hc-lg"></i></a></td>
+                    </tr>
+              </tbody>
+          </table>
+          <div class="rct-block-title text-center" *ngIf="list.length==0">
+              {{'Library.Issuebook.NoIssuebook'|translate}}
+          </div>
+      </div>
+  </div>
+</div>

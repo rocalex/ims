@@ -1,0 +1,887 @@
+﻿    <div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Student.Information.AddStudent'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" matTooltip="{{'Student.Information.Students'|translate}}" matTooltipPosition="above" (click)="backPage()" routerLinkActive="active"><i class="zmdi zmdi-view-list"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-block-content">
+        <mat-tab-group [selectedIndex]="selectedTab">
+            <mat-tab label="{{'Student.Information.PersonalInfo'|translate}}" disabled>
+                <div class="row mx-0">
+                    <fieldset class="col-12 col-lg-6">
+                        <mat-form-field>
+                            <input type="text" matInput placeholder="{{'Student.Information.RollNumber'|translate}}" required [readonly]="!rollNumberEditable"
+                                   [(ngModel)]="addStudent.RollNumber" #RollNumberModel="ngModel" [ngModelOptions]="{standalone: true}"
+                                   maxlength="20" (keyup)="checkWhiteSpace(RollNumberModel, addStudent.RollNumber)"
+                                   (keydown)="checkWhiteSpace(RollNumberModel, addStudent.RollNumber); resetError('RollNumber')" />
+                            <mat-error *ngIf="RollNumberModel.invalid && RollNumberModel.touched">
+                                <span *ngIf="RollNumberModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                            </mat-error>
+                            <mat-hint class="mat-error" *ngIf="(!RollNumberModel.hasError('required') && RollNumberModel.whiteSpaceError)">
+                                <span>Roll number can't be empty</span>
+                            </mat-hint>
+                            <mat-hint class="mat-error" *ngIf="hasError('RollNumber')" [hidden]="(errorMessage === '')">
+                                <span>{{error.Message}}</span>
+                            </mat-hint>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input matInput [matDatepicker]="admissionDate" placeholder="{{'Student.Information.AdmissionDate'|translate}} *"
+                                   (dateChange)="addStudent.AdmissionDate = $event.value" disabled required>
+                            <mat-datepicker-toggle matSuffix [for]="admissionDate"></mat-datepicker-toggle>
+                            <mat-datepicker #admissionDate disabled="false"></mat-datepicker>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input type="text" matInput placeholder="{{'Student.Information.AdmissionNumber'|translate}}" required
+                                   [(ngModel)]="addStudent.AdmissionNumber" #AdmissionNumberModel="ngModel" [ngModelOptions]="{standalone: true}"
+                                   maxlength="20" (keyup)="checkWhiteSpace(AdmissionNumberModel, addStudent.AdmissionNumber)"
+                                   (keydown)="checkWhiteSpace(AdmissionNumberModel, addStudent.AdmissionNumber); resetError('AdmissionNumber')" />
+                            <mat-error *ngIf="AdmissionNumberModel.invalid && AdmissionNumberModel.touched">
+                                <span *ngIf="AdmissionNumberModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                            </mat-error>
+                            <mat-hint class="mat-error" *ngIf="(!AdmissionNumberModel.hasError('required') && AdmissionNumberModel.whiteSpaceError)">
+                                <span>Admission number can't be empty</span>
+                            </mat-hint>
+                            <mat-hint class="mat-error" *ngIf="hasError('AdmissionNumber')" [hidden]="(errorMessage === '')">
+                                <span>{{error.Message}}</span>
+                            </mat-hint>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-select placeholder="Select {{'Student.Information.AdmissionClass'|translate}}" [(ngModel)]="addStudent.AdmissionClassId"
+                                        #AdmissionClassId="ngModel" [ngModelOptions]="{standalone: true}" required>
+                                <mat-option *ngFor="let class of initialData.classes" [value]="class.id">
+                                    {{class.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-select placeholder="Select {{'Student.Information.CurrentClass'|translate}}" [(ngModel)]="addStudent.CurrentClassId"
+                                        #CurrentClassId="ngModel" [ngModelOptions]="{standalone: true}" required>
+                                <mat-option *ngFor="let class of initialData.classes" [value]="class.id">
+                                    {{class.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-select placeholder="Select {{'Student.Information.Section'|translate}}" [(ngModel)]="addStudent.SectionId"
+                                        #Section="ngModel" [ngModelOptions]="{standalone: true}" required>
+                                <mat-option *ngFor="let section of initialData.sections" [value]="section.id">
+                                    {{section.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-select placeholder="Select {{'Student.Information.CurrentAcademicYear'|translate}}" [(ngModel)]="addStudent.CurrentAcademicYearId"
+                                        #CurrentAcademicYearId="ngModel" [ngModelOptions]="{standalone: true}" required>
+                                <mat-option *ngFor="let academicYear of initialData.academicYears" [value]="academicYear.id">
+                                    {{academicYear.academicYearCode}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-select placeholder="Select {{'Student.Information.FirstLanguage'|translate}}" [(ngModel)]="addStudent.FirstLanguageId"
+                                        #FirstLanguageId="ngModel" [ngModelOptions]="{standalone: true}" required>
+                                <mat-option *ngFor="let language of initialData.languages" [value]="language.id">
+                                    {{language.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-select placeholder="Select {{'Student.Information.SecondLanguage'|translate}}" [(ngModel)]="addStudent.SecondLanguageId"
+                                        #SecondLanguageId="ngModel" [ngModelOptions]="{standalone: true}" required>
+                                <mat-option *ngFor="let language of initialData.languages" [value]="language.id">
+                                    {{language.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </fieldset>
+                    <fieldset class="col-12 col-lg-6">
+                        <mat-form-field>
+                            <input type="text" matInput placeholder="{{'Student.Information.FirstName'|translate}}" required
+                                   [(ngModel)]="addStudent.FirstName" #FirstNameModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20"
+                                   (keyup)="checkWhiteSpace(FirstNameModel, addStudent.FirstName)" (keydown)="checkWhiteSpace(FirstNameModel, addStudent.FirstName); resetError('FirstName')" />
+                            <mat-error *ngIf="FirstNameModel.invalid && FirstNameModel.touched">
+                                <span *ngIf="FirstNameModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                            </mat-error>
+                            <mat-hint class="mat-error" *ngIf="(!FirstNameModel.hasError('required') && FirstNameModel.whiteSpaceError)">
+                                <span>First name can't be empty</span>
+                            </mat-hint>
+                            <mat-hint class="mat-error" *ngIf="hasError('FirstName')" [hidden]="(errorMessage === '')">
+                                <span>{{error.Message}}</span>
+                            </mat-hint>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input type="text" matInput placeholder="{{'Student.Information.MiddleName'|translate}}" [(ngModel)]="addStudent.MiddleName"
+                                   #MiddleNameModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20"
+                                   (keyup)="checkWhiteSpace(MiddleNameModel, addStudent.MiddleName)" (keydown)="checkWhiteSpace(MiddleNameModel, addStudent.MiddleName); resetError('MiddleName')" />
+                            <mat-hint class="mat-error" *ngIf="(!MiddleNameModel.hasError('required') && MiddleNameModel.whiteSpaceError)">
+                                <span>Middle name can't be empty</span>
+                            </mat-hint>
+                            <mat-hint class="mat-error" *ngIf="hasError('MiddleName')" [hidden]="(errorMessage === '')">
+                                <span>{{error.Message}}</span>
+                            </mat-hint>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input type="text" matInput placeholder="{{'Student.Information.LastName'|translate}}" required
+                                   [(ngModel)]="addStudent.LastName" #LastNameModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20"
+                                   (keyup)="checkWhiteSpace(LastNameModel, addStudent.LastName)" (keydown)="checkWhiteSpace(LastNameModel, addStudent.LastName); resetError('LastName')" />
+                            <mat-error *ngIf="LastNameModel.invalid && LastNameModel.touched">
+                                <span *ngIf="LastNameModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                            </mat-error>
+                            <mat-hint class="mat-error" *ngIf="(!LastNameModel.hasError('required') && LastNameModel.whiteSpaceError)">
+                                <span>Last name can't be empty</span>
+                            </mat-hint>
+                            <mat-hint class="mat-error" *ngIf="hasError('LastName')" [hidden]="(errorMessage === '')">
+                                <span>{{error.Message}}</span>
+                            </mat-hint>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input matInput [matDatepicker]="dateOfBirth" placeholder="{{'Student.Information.DateofBirth'|translate}} *"
+                                   [max]="currentDate" (dateChange)="addStudent.DateOfBirth = $event.value" disabled required>
+                            <mat-datepicker-toggle matSuffix [for]="dateOfBirth"></mat-datepicker-toggle>
+                            <mat-datepicker #dateOfBirth disabled="false"></mat-datepicker>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-select placeholder="Select {{'Student.Information.Gender'|translate}}" [(ngModel)]="addStudent.GenderId" #GenderId="ngModel" [ngModelOptions]="{standalone: true}" required>
+                                <mat-option *ngFor="let gender of initialData.genders" [value]="gender.id">
+                                    {{gender.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-select placeholder="Select {{'Student.Information.Nationality'|translate}}" [(ngModel)]="addStudent.NationalityId" [ngModelOptions]="{standalone: true}">
+                                <mat-option *ngFor="let nationality of initialData.nationalities" [value]="nationality.id">
+                                    {{nationality.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-select placeholder="Select {{'Student.Information.Relation'|translate}}" [(ngModel)]="selectedFamilyRelationType"
+                                        #FamilyRelationType="ngModel" [ngModelOptions]="{standalone: true}" required>
+                                <mat-option *ngFor="let familyRelationType of familyRelationTypes" [value]="familyRelationType">
+                                    {{familyRelationType}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input type="text" matInput placeholder="{{'Student.Information.FamilyRelationName'|translate}}" required
+                                   [(ngModel)]="addStudent.FamilyRelationName" #FamilyRelationNameModel="ngModel" [ngModelOptions]="{standalone: true}"
+                                   maxlength="20" (keyup)="checkWhiteSpace(FamilyRelationNameModel, addStudent.FamilyRelationName)"
+                                   (keydown)="checkWhiteSpace(FamilyRelationNameModel, addStudent.FamilyRelationName); resetError('FamilyRelationName')" />
+                            <mat-error *ngIf="FamilyRelationNameModel.invalid && FamilyRelationNameModel.touched">
+                                <span *ngIf="FamilyRelationNameModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                            </mat-error>
+                            <mat-hint class="mat-error" *ngIf="(!FamilyRelationNameModel.hasError('required') && FamilyRelationNameModel.whiteSpaceError)">
+                                <span>Name can't be empty</span>
+                            </mat-hint>
+                            <mat-hint class="mat-error" *ngIf="hasError('FamilyRelationName')" [hidden]="(errorMessage === '')">
+                                <span>{{error.Message}}</span>
+                            </mat-hint>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input type="text" matInput placeholder="{{'Student.Information.MotherName'|translate}}" required
+                                   [(ngModel)]="addStudent.MotherName" #MotherNameModel="ngModel" [ngModelOptions]="{standalone: true}"
+                                   maxlength="20" (keyup)="checkWhiteSpace(MotherNameModel, addStudent.MotherName)"
+                                   (keydown)="checkWhiteSpace(MotherNameModel, addStudent.MotherName); resetError('MotherName')" />
+                            <mat-error *ngIf="MotherNameModel.invalid && MotherNameModel.touched">
+                                <span *ngIf="MotherNameModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                            </mat-error>
+                            <mat-hint class="mat-error" *ngIf="(!MotherNameModel.hasError('required') && MotherNameModel.whiteSpaceError)">
+                                <span>Mother name can't be empty</span>
+                            </mat-hint>
+                            <mat-hint class="mat-error" *ngIf="hasError('MotherName')" [hidden]="(errorMessage === '')">
+                                <span>{{error.Message}}</span>
+                            </mat-hint>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input type="text" matInput placeholder="{{'Student.Information.FamilyRelationEmail'|translate}}"
+                                   pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                                   [(ngModel)]="addStudent.FamilyRelationEmail" #FamilyRelationEmailModel="ngModel" [ngModelOptions]="{standalone: true}"
+                                   (keyup)="checkWhiteSpace(FamilyRelationEmailModel, addStudent.FamilyRelationEmail)"
+                                   (keydown)="checkWhiteSpace(FamilyRelationEmailModel, addStudent.FamilyRelationEmail); resetError('FamilyRelationEmail')" />
+                            <mat-error *ngIf="FamilyRelationEmailModel.invalid && FamilyRelationEmailModel.touched">
+                                <span *ngIf="FamilyRelationEmailModel.hasError('pattern')">{{'UserManagement.User.Emailformatshouldbe'|translate}}<strong>joe@abc.com</strong></span>
+                            </mat-error>
+                            <mat-hint class="mat-error" *ngIf="(!FamilyRelationEmailModel.hasError('required') && FamilyRelationEmailModel.whiteSpaceError)">
+                                <span>Email can't be empty</span>
+                            </mat-hint>
+                            <mat-hint class="mat-error" *ngIf="hasError('FamilyRelationEmail')" [hidden]="(errorMessage === '')">
+                                <span>{{error.Message}}</span>
+                            </mat-hint>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input type="text" pattern="[0-9]*" minlength="10" maxlength="10" matInput placeholder="{{'Student.Information.FamilyRelationMobileNumber'|translate}}" required
+                                   [(ngModel)]="addStudent.FamilyRelationMobileNumber" #FamilyRelationMobileNumberModel="ngModel" [ngModelOptions]="{standalone: true}"
+                                   (keyup)="checkWhiteSpace(FamilyRelationMobileNumberModel, addStudent.FamilyRelationMobileNumber)"
+                                   (keydown)="checkWhiteSpace(FamilyRelationMobileNumberModel, addStudent.FamilyRelationMobileNumber); resetError('FamilyRelationMobileNumber')" />
+                            <mat-error *ngIf="FamilyRelationMobileNumberModel.invalid && FamilyRelationMobileNumberModel.touched">
+                                <span *ngIf="FamilyRelationMobileNumberModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                                <span [hidden]="!FamilyRelationMobileNumberModel.hasError('pattern')">Mobile number should be only numbers</span>
+                            </mat-error>
+                            <mat-hint class="mat-error" *ngIf="(!FamilyRelationMobileNumberModel.hasError('required') && FamilyRelationMobileNumberModel.whiteSpaceError)">
+                                <span>Mother name can't be empty</span>
+                            </mat-hint>
+                            <mat-hint class="mat-error" *ngIf="hasError('FamilyRelationMobileNumber')" [hidden]="(errorMessage === '')">
+                                <span>{{error.Message}}</span>
+                            </mat-hint>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-select placeholder="Select {{'Student.Information.Occupation'|translate}}" [(ngModel)]="addStudent.FamilyRelationOccupationId"
+                                        #FamilyRelationOccupationId="ngModel" [ngModelOptions]="{standalone: true}">
+                                <mat-option *ngFor="let occupation of initialData.occupations" [value]="occupation.id">
+                                    {{occupation.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input type="text" matInput placeholder="{{'Student.Information.FamilyRelationMonthlyIncome'|translate}}"
+                                   [(ngModel)]="addStudent.FamilyRelationMonthlyIncome" #FamilyRelationMonthlyIncomeModel="ngModel" [ngModelOptions]="{standalone: true}"
+                                   maxlength="20" (keyup)="checkWhiteSpace(FamilyRelationMonthlyIncomeModel, addStudent.FamilyRelationMonthlyIncome)"
+                                   (keydown)="checkWhiteSpace(FamilyRelationMonthlyIncomeModel, addStudent.FamilyRelationMonthlyIncome); resetError('FamilyRelationMonthlyIncome')" />
+                            <mat-hint class="mat-error" *ngIf="(!FamilyRelationMonthlyIncomeModel.hasError('required') && FamilyRelationMonthlyIncomeModel.whiteSpaceError)">
+                                <span>Email can't be empty</span>
+                            </mat-hint>
+                            <mat-hint class="mat-error" *ngIf="hasError('FamilyRelationMonthlyIncome')" [hidden]="(errorMessage === '')">
+                                <span>{{error.Message}}</span>
+                            </mat-hint>
+                        </mat-form-field>
+                    </fieldset>
+                    <!--<fieldset class="col-12 col-lg-6">
+                        <mat-form-field>
+                            <input matInput [matDatepicker]="relievingDate" placeholder="{{'Student.Information.RelievingDate'|translate}}"
+                                   (dateChange)="addStudent.RelievingDate = $event.value" disabled>
+                            <mat-datepicker-toggle matSuffix [for]="relievingDate"></mat-datepicker-toggle>
+                            <mat-datepicker #relievingDate disabled="false"></mat-datepicker>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-select placeholder="Select {{'Student.Information.RelievingClass'|translate}}" [(ngModel)]="addStudent.RelievingClassId"
+                                        #RelievingClassId="ngModel" [ngModelOptions]="{standalone: true}">
+                                <mat-option *ngFor="let class of initialData.classes" [value]="class.id">
+                                    {{class.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input type="text" matInput placeholder="{{'Student.Information.TCNumber'|translate}}"
+                                   [(ngModel)]="addStudent.TCNumber" #TCNumberModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20"
+                                   (keyup)="checkWhiteSpace(TCNumberModel, addStudent.TCNumber)"
+                                   (keydown)="checkWhiteSpace(TCNumberModel, addStudent.TCNumber); resetError('TCNumber')" />
+                            <mat-hint class="mat-error" *ngIf="(!TCNumberModel.hasError('required') && TCNumberModel.whiteSpaceError)">
+                                <span>TC number can't be empty</span>
+                            </mat-hint>
+                            <mat-hint class="mat-error" *ngIf="hasError('TCNumber')" [hidden]="(errorMessage === '')">
+                                <span>{{error.Message}}</span>
+                            </mat-hint>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input matInput [matDatepicker]="TCDate" placeholder="{{'Student.Information.TCDate'|translate}}"
+                                   (dateChange)="addStudent.TCDate = $event.value" disabled>
+                            <mat-datepicker-toggle matSuffix [for]="TCDate"></mat-datepicker-toggle>
+                            <mat-datepicker #TCDate disabled="false"></mat-datepicker>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-select placeholder="Select {{'Student.Information.RelievingType'|translate}}" [(ngModel)]="selectedRelievingType"
+                                        #RelievingClassId="ngModel" [ngModelOptions]="{standalone: true}">
+                                <mat-option *ngFor="let relievingType of relievingTypes" [value]="relievingType">
+                                    {{relievingType}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input type="text" matInput placeholder="{{'Student.Information.RelievingReason'|translate}}"
+                                   [(ngModel)]="addStudent.RelievingReason" #RelievingReasonModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20"
+                                   (keyup)="checkWhiteSpace(RelievingReasonModel, addStudent.RelievingReason)"
+                                   (keydown)="checkWhiteSpace(RelievingReasonModel, addStudent.RelievingReason); resetError('RelievingReason')" />
+                            <mat-hint class="mat-error" *ngIf="(!RelievingReasonModel.hasError('required') && RelievingReasonModel.whiteSpaceError)">
+                                <span>Relieving reason can't be empty</span>
+                            </mat-hint>
+                            <mat-hint class="mat-error" *ngIf="hasError('RelievingReason')" [hidden]="(errorMessage === '')">
+                                <span>{{error.Message}}</span>
+                            </mat-hint>
+                        </mat-form-field>
+                    </fieldset>-->
+                    <div class="col-12">
+                        <button class="btn-icon-rounded btn-primary" matTooltip="Next" matTooltipPosition="above" (click)="selectTab(1)" [disabled]="!(FamilyRelationType.valid
+                        && MotherNameModel.valid && !MotherNameModel.whiteSpaceError && FamilyRelationNameModel.valid
+                        && !FamilyRelationNameModel.whiteSpaceError && FamilyRelationMobileNumberModel.valid
+                        && !FamilyRelationMobileNumberModel.whiteSpaceError && RollNumberModel.valid && !RollNumberModel.whiteSpaceError
+                                && (addStudent.AdmissionDate !== undefined && addStudent.AdmissionDate !==null)
+                                && AdmissionNumberModel.valid && !AdmissionNumberModel.whiteSpaceError && AdmissionClassId.valid
+                                && CurrentClassId.valid && Section.valid && CurrentAcademicYearId.valid
+                                && FirstLanguageId.valid && SecondLanguageId.valid && FirstNameModel.valid && !FirstNameModel.whiteSpaceError
+                                && LastNameModel.valid && !LastNameModel.whiteSpaceError
+                                && (addStudent.DateOfBirth !== undefined && addStudent.DateOfBirth !==null) && GenderId.valid)">
+                            <i class="zmdi zmdi-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab label="{{'Student.Information.ContactInformation'|translate}}" disabled>
+                <div class="row mx-0">
+                    <fieldset class="col-12 col-lg-6">
+                        <mat-form-field>
+                            <input type="number" matInput placeholder="{{'Student.Information.SocialSecurityNumber'|translate}}"
+                                   [(ngModel)]="addStudent.SocialSecurityNumber" #SocialSecurityNumberModel="ngModel" 
+                                   [ngModelOptions]="{standalone: true}" maxlength="20" />
+                            <mat-error *ngIf="SocialSecurityNumberModel.invalid && SocialSecurityNumberModel.touched">
+                                <span>Social security number can't be empty</span>
+                            </mat-error>
+                            <mat-hint class="mat-error" *ngIf="hasError('SocialSecurityNumber')" [hidden]="(errorMessage === '')">
+                                <span>{{error.Message}}</span>
+                            </mat-hint>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-select placeholder="Select {{'Student.Information.MotherTongue'|translate}}" [(ngModel)]="addStudent.MotherTongueId" [ngModelOptions]="{standalone: true}">
+                                <mat-option *ngFor="let motherTongue of initialData.motherTongues" [value]="motherTongue.id">
+                                    {{motherTongue.language}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-select placeholder="Select {{'Student.Information.Religion'|translate}}" [(ngModel)]="addStudent.ReligionId" [ngModelOptions]="{standalone: true}">
+                                <mat-option *ngFor="let religion of initialData.religions" [value]="religion.id">
+                                    {{religion.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-select placeholder="Select {{'Student.Information.Caste'|translate}}" [(ngModel)]="addStudent.CasteId" [ngModelOptions]="{standalone: true}">
+                                <mat-option *ngFor="let caste of initialData.castes" [value]="caste.id">
+                                    {{caste.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-select placeholder="Select {{'Student.Information.BloodGroup'|translate}}" [(ngModel)]="addStudent.BloodGroupId" [ngModelOptions]="{standalone: true}">
+                                <mat-option *ngFor="let bloodGroup of initialData.bloodGroups" [value]="bloodGroup.id">
+                                    {{bloodGroup.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <textarea type="text" matInput placeholder="{{'Student.Information.IdentificationMarks'|translate}}" maxlength="50"
+                                      [(ngModel)]="addStudent.IdentificationMarks" [ngModelOptions]="{standalone: true}"></textarea>
+                        </mat-form-field>
+                    </fieldset>
+                    <fieldset class="col-12 col-lg-6">
+                        <mat-form-field>
+                            <textarea type="text" matInput placeholder="{{'Student.Information.PermanentAddress'|translate}}" required #PermanentAddressModel="ngModel" maxlength="100"
+                                      [(ngModel)]="addStudent.PermanentAddress" [ngModelOptions]="{standalone: true}" (keyup)="checkWhiteSpace(PermanentAddressModel, addStudent.PermanentAddress)"
+                                      (keydown)="checkWhiteSpace(PermanentAddressModel, addStudent.PermanentAddress); resetError('PermanentAddress')"></textarea>
+                            <mat-error *ngIf="PermanentAddressModel.invalid && PermanentAddressModel.touched">
+                                <span *ngIf="PermanentAddressModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                            </mat-error>
+                            <mat-hint class="mat-error" *ngIf="(!PermanentAddressModel.hasError('required') && PermanentAddressModel.whiteSpaceError)">
+                                <span>First name can't be empty</span>
+                            </mat-hint>
+                            <mat-hint class="mat-error" *ngIf="hasError('PermanentAddress')" [hidden]="(errorMessage === '')">
+                                <span>{{error.Message}}</span>
+                            </mat-hint>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-select placeholder="Select {{'Student.Information.PermanentCity'|translate}}" [(ngModel)]="addStudent.PermanentCityId" #PermanentCityId="ngModel"
+                                        [ngModelOptions]="{standalone: true}" required (selectionChange)="isSameAsPermanent()">
+                                <mat-option *ngFor="let city of initialData.cities" [value]="city.id">
+                                    {{city.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input type="text" matInput placeholder="{{'Student.Information.PermanentZipcode'|translate}}"
+                                   [(ngModel)]="addStudent.PermanentZipcode" #PermanentZipcodeModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20"
+                                   (keyup)="checkWhiteSpace(PermanentZipcodeModel, addStudent.PermanentZipcode)" (keydown)="checkWhiteSpace(PermanentZipcodeModel, addStudent.PermanentZipcode); resetError('PermanentZipcode')" />
+                            <mat-hint class="mat-error" *ngIf="(!PermanentZipcodeModel.hasError('required') && PermanentZipcodeModel.whiteSpaceError)">
+                                <span>First name can't be empty</span>
+                            </mat-hint>
+                            <mat-hint class="mat-error" *ngIf="hasError('PermanentZipcode')" [hidden]="(errorMessage === '')">
+                                <span>{{error.Message}}</span>
+                            </mat-hint>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input type="text" matInput placeholder="{{'Student.Information.MobileNumber'|translate}}" [(ngModel)]="addStudent.MobileNumber" required
+                                   #MobileNumberModel="ngModel" [ngModelOptions]="{standalone: true}" pattern="[0-9]*" minlength="10" maxlength="10"
+                                   (keyup)="checkWhiteSpace(MobileNumberModel, addStudent.MobileNumber)" (keydown)="checkWhiteSpace(MobileNumberModel, addStudent.MobileNumber); resetError('MobileNumber')" />
+                            <mat-error *ngIf="MobileNumberModel.invalid && MobileNumberModel.touched">
+                                <span *ngIf="MobileNumberModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                                <span [hidden]="!MobileNumberModel.hasError('pattern')">Mobile number should be only numbers</span>
+                            </mat-error>
+                            <mat-hint class="mat-error" *ngIf="(!MobileNumberModel.hasError('required') && MobileNumberModel.whiteSpaceError)">
+                                <span>Middle name can't be empty</span>
+                            </mat-hint>
+                            <mat-hint class="mat-error" *ngIf="hasError('MobileNumber')" [hidden]="(errorMessage === '')">
+                                <span>{{error.Message}}</span>
+                            </mat-hint>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input type="text" matInput placeholder="{{'Student.Information.AlternatePhoneNumber'|translate}}" pattern="[0-9]*"
+                                   [(ngModel)]="addStudent.AlternatePhoneNumber" #AlternatePhoneNumberModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20"
+                                   (keyup)="checkWhiteSpace(AlternatePhoneNumberModel, addStudent.AlternatePhoneNumber)"
+                                   (keydown)="checkWhiteSpace(AlternatePhoneNumberModel, addStudent.AlternatePhoneNumber); resetError('AlternatePhoneNumber')" />
+                            <mat-error *ngIf="AlternatePhoneNumberModel.invalid && AlternatePhoneNumberModel.touched">
+                                <span *ngIf="AlternatePhoneNumberModel.hasError('pattern')">Mobile number should be only numbers</span>
+                            </mat-error>
+                            <mat-hint class="mat-error" *ngIf="(!AlternatePhoneNumberModel.hasError('required') && AlternatePhoneNumberModel.whiteSpaceError)">
+                                <span>Last name can't be empty</span>
+                            </mat-hint>
+                            <mat-hint class="mat-error" *ngIf="hasError('AlternatePhoneNumber')" [hidden]="(errorMessage === '')">
+                                <span>{{error.Message}}</span>
+                            </mat-hint>
+                        </mat-form-field>
+                    </fieldset>
+                    <fieldset class="col-12 col-lg-6">
+                        <mat-form-field>
+                            <input type="text" matInput placeholder="{{'Student.Information.PassportNumber'|translate}}"
+                                   [(ngModel)]="addStudent.PassportNumber" #PassportNumberModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20"
+                                   (keyup)="checkWhiteSpace(PassportNumberModel, addStudent.PassportNumber)" (keydown)="checkWhiteSpace(PassportNumberModel, addStudent.PassportNumber); resetError('PassportNumber')" />
+                            <mat-hint class="mat-error" *ngIf="(!PassportNumberModel.hasError('required') && PassportNumberModel.whiteSpaceError)">
+                                <span>Passport number can't be empty</span>
+                            </mat-hint>
+                            <mat-hint class="mat-error" *ngIf="hasError('PassportNumber')" [hidden]="(errorMessage === '')">
+                                <span>{{error.Message}}</span>
+                            </mat-hint>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-select placeholder="Select {{'Student.Information.IssuedCountry'|translate}}" [(ngModel)]="addStudent.PassportIssuedCountryId" [ngModelOptions]="{standalone: true}">
+                                <mat-option *ngFor="let country of initialData.countries" [value]="country.id">
+                                    {{country.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input matInput [matDatepicker]="passportIssuedDate" placeholder="{{'Student.Information.IssueDate'|translate}}" [max]="currentDate"
+                                   [value]="addStudent.PassportIssuedDate" disabled (dateChange)="addStudent.PassportIssuedDate =$event.value;changeIssueDate()">
+                            <mat-datepicker-toggle matSuffix [for]="passportIssuedDate"></mat-datepicker-toggle>
+                            <mat-datepicker #passportIssuedDate disabled="false"></mat-datepicker>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input matInput [matDatepicker]="passportExpireDate" placeholder="{{'Student.Information.ExpiryDate'|translate}}"
+                                   [value]="addStudent.PassportExpireDate" disabled (dateChange)="addStudent.PassportExpireDate =$event.value" [min]="addStudent.PassportIssuedDate">
+                            <mat-datepicker-toggle matSuffix [for]="passportExpireDate"></mat-datepicker-toggle>
+                            <mat-datepicker #passportExpireDate disabled="false"></mat-datepicker>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-select placeholder="Select {{'Student.Information.MaritalStatus'|translate}}" [(ngModel)]="addStudent.MaritalStatusId" #MartialStatus="ngModel" [ngModelOptions]="{standalone: true}" required>
+                                <mat-option *ngFor="let status of initialData.maritalStatuses" [value]="status.id">
+                                    {{status.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <div class="form-group">
+                            <mat-slide-toggle [(ngModel)]="addStudent.IsPhysicallyHandicapped" [ngModelOptions]="{standalone: true}">
+                                {{'Student.Information.IsPhysicallyHandicapped'|translate}}
+                            </mat-slide-toggle>
+                        </div>
+                    </fieldset>
+                    <fieldset class="col-12 col-lg-6">
+                        <mat-form-field>
+                            <input type="text" matInput placeholder="{{'Student.Information.SchoolApplicationNumber'|translate}}"
+                                   [(ngModel)]="addStudent.SchoolApplicationNumber" #SchoolApplicationNumberModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20"
+                                   (keyup)="checkWhiteSpace(SchoolApplicationNumberModel, addStudent.SchoolApplicationNumber)"
+                                   (keydown)="checkWhiteSpace(SchoolApplicationNumberModel, addStudent.SchoolApplicationNumber); resetError('SchoolApplicationNumber')" />
+                            <mat-hint class="mat-error" *ngIf="(!SchoolApplicationNumberModel.hasError('required') && SchoolApplicationNumberModel.whiteSpaceError)">
+                                <span>School application number can't be empty</span>
+                            </mat-hint>
+                            <mat-hint class="mat-error" *ngIf="hasError('SchoolApplicationNumber')" [hidden]="(errorMessage === '')">
+                                <span>{{error.Message}}</span>
+                            </mat-hint>
+                        </mat-form-field>
+                    </fieldset>
+                    <fieldset class="col-12 col-lg-6">
+                        <div class="form-group">
+                            <mat-slide-toggle [(ngModel)]="addStudent.IsPresentAddressIsSameAsPermanent" (change)="isSameAsPermanent()" [ngModelOptions]="{standalone: true}">
+                                {{'Student.Information.IsPresentAddressIsSameAsPermanent'|translate}}
+                            </mat-slide-toggle>
+                        </div>
+                        <div [hidden]="addStudent.IsPresentAddressIsSameAsPermanent">
+                            <mat-form-field>
+                                <textarea type="text" matInput placeholder="{{'Student.Information.PresentAddress'|translate}}" required #PresentAddressModel="ngModel" maxlength="100"
+                                          [(ngModel)]="addStudent.PresentAddress" [ngModelOptions]="{standalone: true}" (keyup)="checkWhiteSpace(PresentAddressModel, addStudent.PresentAddress)"
+                                          (keydown)="checkWhiteSpace(PresentAddressModel, addStudent.PresentAddress); resetError('PresentAddress')"></textarea>
+                                <mat-error *ngIf="PresentAddressModel.invalid && PresentAddressModel.touched">
+                                    <span *ngIf="PresentAddressModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                                </mat-error>
+                                <mat-hint class="mat-error" *ngIf="(!PresentAddressModel.hasError('required') && PresentAddressModel.whiteSpaceError)">
+                                    <span>First name can't be empty</span>
+                                </mat-hint>
+                                <mat-hint class="mat-error" *ngIf="hasError('PresentAddress')" [hidden]="(errorMessage === '')">
+                                    <span>{{error.Message}}</span>
+                                </mat-hint>
+                            </mat-form-field>
+                            <mat-form-field>
+                                <mat-select placeholder="Select {{'Student.Information.PresentCity'|translate}}" [(ngModel)]="addStudent.PresentCityId" #PresentCityId="ngModel" [ngModelOptions]="{standalone: true}" required>
+                                    <mat-option *ngFor="let city of initialData.cities" [value]="city.id">
+                                        {{city.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field>
+                                <input type="text" matInput placeholder="{{'Student.Information.PresentZipcode'|translate}}"
+                                       [(ngModel)]="addStudent.PresentZipcode" #PresentZipcodeModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20"
+                                       (keyup)="checkWhiteSpace(PresentZipcodeModel, addStudent.PresentZipcode)"
+                                       (keydown)="checkWhiteSpace(PresentZipcodeModel, addStudent.PresentZipcode); resetError('PresentZipcode')" />
+                                <mat-hint class="mat-error" *ngIf="(!PresentZipcodeModel.hasError('required') && PresentZipcodeModel.whiteSpaceError)">
+                                    <span>First name can't be empty</span>
+                                </mat-hint>
+                                <mat-hint class="mat-error" *ngIf="hasError('PresentZipcode')" [hidden]="(errorMessage === '')">
+                                    <span>{{error.Message}}</span>
+                                </mat-hint>
+                            </mat-form-field>
+                        </div>
+                    </fieldset>
+                    <fieldset class="col-12 col-lg-6">
+                        <mat-form-field>
+                            <input type="text" matInput placeholder="{{'Student.Information.FeeChallanNumber'|translate}}" required
+                                   [(ngModel)]="addStudent.FeeChallanNumber" #FeeChallanNumberModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20"
+                                   (keyup)="checkWhiteSpace(FeeChallanNumberModel, addStudent.FeeChallanNumber)"
+                                   (keydown)="checkWhiteSpace(FeeChallanNumberModel, addStudent.FeeChallanNumber); resetError('FeeChallanNumber')" />
+                            <mat-error *ngIf="FeeChallanNumberModel.invalid && FeeChallanNumberModel.touched">
+                                <span *ngIf="FeeChallanNumberModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                            </mat-error>
+                            <mat-hint class="mat-error" *ngIf="(!FeeChallanNumberModel.hasError('required') && FeeChallanNumberModel.whiteSpaceError)">
+                                <span>Fee challan number can't be empty</span>
+                            </mat-hint>
+                            <mat-hint class="mat-error" *ngIf="hasError('FeeChallanNumber')" [hidden]="(errorMessage === '')">
+                                <span>{{error.Message}}</span>
+                            </mat-hint>
+                        </mat-form-field>
+                    </fieldset>
+                    <div class="col-12">
+                        <button class="btn-icon-rounded btn-primary" matTooltip="Back" matTooltipPosition="above" (click)="selectTab(0)"><i class="zmdi zmdi-chevron-left"></i></button>
+                        <button class="ml-2 btn-icon-rounded btn-primary" matTooltip="Next" matTooltipPosition="above" (click)="selectTab(2)" [disabled]="!(PermanentAddressModel.valid && !PermanentAddressModel.whiteSpaceError
+                                && PermanentCityId.valid && MobileNumberModel.valid && !MobileNumberModel.whiteSpaceError && PresentCityId.valid
+                                && PresentAddressModel.valid && !PresentAddressModel.whiteSpaceError && FeeChallanNumberModel.valid && !FeeChallanNumberModel.whiteSpaceError && MartialStatus.valid)">
+                            <i class="zmdi zmdi-chevron-right"></i>
+                        </button>
+                        <button class="ml-2 btn-icon-rounded btn-primary" matTooltip="Save" matTooltipPosition="above" (click)="addStudentDetail()"
+                                [disabled]="!(PermanentAddressModel.valid && !PermanentAddressModel.whiteSpaceError
+                                && PermanentCityId.valid && MobileNumberModel.valid && !MobileNumberModel.whiteSpaceError && PresentCityId.valid
+                                && PresentAddressModel.valid && !PresentAddressModel.whiteSpaceError && FeeChallanNumberModel.valid && !FeeChallanNumberModel.whiteSpaceError && MartialStatus.valid)">
+                            <i class="zmdi zmdi-floppy"></i>
+                        </button>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab label="{{'Student.Information.StudentPriorEducation'|translate}}" disabled>
+                <div class="row mx-0">
+                    <fieldset class="col-12 col-lg-6 form-group">
+                        <div *ngFor="let studentPriorEducation of studentPriorEducations">
+                            <div *ngIf="studentPriorEducation.IsEdit">
+                                <mat-form-field>
+                                    <input type="text" matInput placeholder="{{'Student.Information.InstituteName'|translate}}" required
+                                           [(ngModel)]="studentPriorEducation.InstituteName" #InstituteNameModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20"
+                                           (keyup)="checkWhiteSpace(InstituteNameModel, studentPriorEducation.InstituteName)" (keydown)="checkWhiteSpace(InstituteNameModel, studentPriorEducation.InstituteName); resetError('InstituteName')" />
+                                    <mat-error *ngIf="InstituteNameModel.invalid && InstituteNameModel.touched">
+                                        <span *ngIf="InstituteNameModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                                    </mat-error>
+                                    <mat-hint class="mat-error" *ngIf="(!InstituteNameModel.hasError('required') && InstituteNameModel.whiteSpaceError)">
+                                        <span>First name can't be empty</span>
+                                    </mat-hint>
+                                    <mat-hint class="mat-error" *ngIf="hasError('InstituteName')" [hidden]="(errorMessage === '')">
+                                        <span>{{error.Message}}</span>
+                                    </mat-hint>
+                                </mat-form-field>
+                                <mat-form-field>
+                                    <input matInput [matDatepicker]="startDate" placeholder="{{'Student.Information.StartDate'|translate}} *"
+                                           [value]="studentPriorEducation.StartDate" [max]="currentDate"
+                                           (dateChange)="studentPriorEducation.StartDate = $event.value" disabled required>
+                                    <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+                                    <mat-datepicker #startDate disabled="false"></mat-datepicker>
+                                </mat-form-field>
+                                <mat-form-field>
+                                    <input matInput [matDatepicker]="endDate" placeholder="{{'Student.Information.EndDate'|translate}} *"
+                                           [value]="studentPriorEducation.EndDate" [max]="currentDate"
+                                           (dateChange)="studentPriorEducation.EndDate = $event.value" disabled required>
+                                    <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+                                    <mat-datepicker #endDate disabled="false"></mat-datepicker>
+                                </mat-form-field>
+                                <button class="btn-icon-rounded btn-primary" matTooltip="Save" matTooltipPosition="above" (click)="saveStudentPriorEducation(studentPriorEducation)" [disabled]="!(InstituteNameModel.valid
+                                                    && !InstituteNameModel.whiteSpaceError && studentPriorEducation.StartDate && studentPriorEducation.EndDate)">
+                                    <i class="zmdi zmdi-floppy"></i>
+                                </button>
+                                <button class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="Cancel" matTooltipPosition="above" (click)="unEditStudentPriorEducation(studentPriorEducation)"><i class="zmdi zmdi-close"></i></button>
+                            </div>
+                            <div class="card" *ngIf="!studentPriorEducation.IsEdit">
+                                <div class="px-3 py-1 d-flex align-items-center">
+                                    <div class="flex-grow-1">
+                                        {{studentPriorEducation.InstituteName}}
+                                        {{studentPriorEducation.StartDate|date}}
+                                        {{studentPriorEducation.EndDate|date}}
+                                    </div>
+                                    <button matTooltip="Edit" matTooltipPosition="above" mat-icon-button (click)="editStudentPriorEducation(studentPriorEducation)" [disabled]="!isAllowedToSaveStudentPriorEducation()"><i class="zmdi zmdi-edit zmdi-hc-lg"></i></button>
+                                    <button matTooltip="Delete" matTooltipPosition="above" mat-icon-button class="ml-1" (click)="removeStudentPriorEducation(studentPriorEducation)"><i class="zmdi zmdi-delete zmdi-hc-lg"></i></button>
+
+                                </div>
+                            </div>
+                        </div>
+                        <span class="mt-2" *ngIf="errorMessageForStudentPriorEducation">{{errorMessageForStudentPriorEducation}}</span>
+                        <button class="btn btn-secondary mt-2" [disabled]="!isAllowedToSaveStudentPriorEducation()"
+                                (click)="addStudentPriorEducationCard()">
+                            {{'Student.Information.AddStudentPriorEducation'|translate}}
+                        </button>
+                    </fieldset>
+                    <div class="col-12">
+                        <button class="btn-icon-rounded btn-primary" matTooltip="Back" matTooltipPosition="above" (click)="selectTab(1)"><i class="zmdi zmdi-chevron-left"></i></button>
+                        <button class="ml-2 btn-icon-rounded btn-primary" matTooltip="Next" matTooltipPosition="above" (click)="selectTab(3)" [disabled]="!isAllowedToSaveStudentPriorEducation()"><i class="zmdi zmdi-chevron-right"></i></button>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab label="{{'Student.Information.StudentSportsandAwards'|translate}}" disabled>
+                <div class="row mx-0">
+                    <fieldset class="col-12 col-lg-6 form-group">
+                        <div *ngFor="let studentSport of studentSports">
+                            <div *ngIf="studentSport.IsEdit">
+                                <mat-form-field>
+                                    <mat-select placeholder="Select {{'Student.Information.Sport'|translate}}" [(ngModel)]="studentSport.SportId"
+                                                #SportId="ngModel" [ngModelOptions]="{standalone: true}" required>
+                                        <mat-option *ngFor="let sport of initialData.sports" [value]="sport.id">
+                                            {{sport.name}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field>
+                                    <mat-select placeholder="Select {{'Student.Information.Level'|translate}}" [(ngModel)]="studentSport.LevelId"
+                                                #LevelId="ngModel" [ngModelOptions]="{standalone: true}" required>
+                                        <mat-option *ngFor="let level of initialData.levels" [value]="level.id">
+                                            {{level.name}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <button class="btn-icon-rounded btn-primary" matTooltip="Save" matTooltipPosition="above" (click)="saveStudentSport(studentSport)" [disabled]="!(SportId.valid
+                                            && LevelId.valid)">
+                                    <i class="zmdi zmdi-floppy"></i>
+                                </button>
+                                <button class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="Cancel" matTooltipPosition="above" (click)="unEditStudentSport(studentSport)"><i class="zmdi zmdi-close"></i></button>
+                            </div>
+                            <div class="card" *ngIf="!studentSport.IsEdit">
+                                <div class="px-3 py-1 d-flex align-items-center">
+                                    <div class="flex-grow-1">
+                                        {{getSportAndLevelNameById(studentSport.SportId, true)}}
+                                        {{getSportAndLevelNameById(studentSport.LevelId, false)}}
+                                    </div>
+                                    <button matTooltip="Edit" matTooltipPosition="above" mat-icon-button (click)="editStudentSport(studentSport)" [disabled]="!isAllowedToSaveStudentSport()"><i class="zmdi zmdi-edit zmdi-hc-lg"></i></button>
+                                    <button matTooltip="Delete" matTooltipPosition="above" mat-icon-button class="ml-1" (click)="removeStudentSport(studentSport)"><i class="zmdi zmdi-delete zmdi-hc-lg"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="mt-2" *ngIf="errorMessageForStudentSport">{{errorMessageForStudentSport}}</span>
+                        <button class="btn btn-secondary mt-2" [disabled]="!isAllowedToSaveStudentSport()" (click)="addStudentSportCard()">{{'Student.Information.AddStudentSport'|translate}}</button>
+                    </fieldset>
+                    <fieldset class="col-12 col-lg-6 form-control">
+                        <div *ngFor="let studentAward of studentAwards">
+                            <div *ngIf="studentAward.IsEdit">
+                                <mat-form-field>
+                                    <input type="text" matInput placeholder="{{'Student.Information.InstituteName'|translate}}" required
+                                           [(ngModel)]="studentAward.InstituteName" #InstituteNameModel="ngModel" [ngModelOptions]="{standalone: true}"
+                                           maxlength="20" (keyup)="checkWhiteSpace(InstituteNameModel, studentAward.InstituteName)"
+                                           (keydown)="checkWhiteSpace(InstituteNameModel, studentAward.InstituteName); resetError('InstituteName')" />
+                                    <mat-error *ngIf="InstituteNameModel.invalid && InstituteNameModel.touched">
+                                        <span *ngIf="InstituteNameModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                                    </mat-error>
+                                    <mat-hint class="mat-error" *ngIf="(!InstituteNameModel.hasError('required') && InstituteNameModel.whiteSpaceError)">
+                                        <span>Institute name can't be empty</span>
+                                    </mat-hint>
+                                    <mat-hint class="mat-error" *ngIf="hasError('InstituteName')" [hidden]="(errorMessage === '')">
+                                        <span>{{error.Message}}</span>
+                                    </mat-hint>
+                                </mat-form-field>
+                                <mat-form-field>
+                                    <input type="text" matInput placeholder="{{'Student.Information.AwardName'|translate}}" required
+                                           [(ngModel)]="studentAward.AwardName" #AwardNameModel="ngModel" [ngModelOptions]="{standalone: true}"
+                                           maxlength="20" (keyup)="checkWhiteSpace(AwardNameModel, studentAward.AwardName)"
+                                           (keydown)="checkWhiteSpace(AwardNameModel, studentAward.AwardName); resetError('AwardName')" />
+                                    <mat-error *ngIf="AwardNameModel.invalid && AwardNameModel.touched">
+                                        <span *ngIf="AwardNameModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                                    </mat-error>
+                                    <mat-hint class="mat-error" *ngIf="(!AwardNameModel.hasError('required') && AwardNameModel.whiteSpaceError)">
+                                        <span>Award name can't be empty</span>
+                                    </mat-hint>
+                                    <mat-hint class="mat-error" *ngIf="hasError('AwardName')" [hidden]="(errorMessage === '')">
+                                        <span>{{error.Message}}</span>
+                                    </mat-hint>
+                                </mat-form-field>
+                                <button class="btn-icon-rounded btn-primary" matTooltip="Save" matTooltipPosition="above" (click)="saveStudentAward(studentAward)" [disabled]="!(InstituteNameModel.valid
+                                                && !InstituteNameModel.whiteSpaceError && AwardNameModel.valid && !AwardNameModel.whiteSpaceError)">
+                                    <i class="zmdi zmdi-floppy"></i>
+                                </button>
+                                <button class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="Cancel" matTooltipPosition="above" (click)="unEditStudentAward(studentAward)"><i class="zmdi zmdi-close"></i></button>
+                            </div>
+                            <div class="card" *ngIf="!studentAward.IsEdit">
+                                <div class="px-3 py-1 d-flex align-items-center">
+                                    <div class="flex-grow-1">
+                                        {{studentAward.InstituteName}}
+                                        {{studentAward.AwardName}}
+                                    </div>
+                                    <button matTooltip="Edit" matTooltipPosition="above" mat-icon-button (click)="editStudentAward(studentAward)" [disabled]="!isAllowedToSaveStudentAward()"><i class="zmdi zmdi-edit zmdi-hc-lg"></i></button>
+                                    <button matTooltip="Delete" matTooltipPosition="above" mat-icon-button class="ml-1" (click)="removeStudentAward(studentAward)"><i class="zmdi zmdi-delete zmdi-hc-lg"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="mt-2" *ngIf="errorMessageForStudentAward">{{errorMessageForStudentAward}}</span>
+                        <button class="btn btn-secondary mt-2" [disabled]="!isAllowedToSaveStudentAward()" (click)="addStudentAwardCard()">{{'Student.Information.AddStudentAward'|translate}}</button>
+                    </fieldset>
+                    <div class="col-12">
+                        <button class="btn-icon-rounded btn-primary" matTooltip="Back" matTooltipPosition="above" (click)="selectTab(2)"><i class="zmdi zmdi-chevron-left"></i></button>
+                        <button class="ml-2 btn-icon-rounded btn-primary" matTooltip="Next" matTooltipPosition="above" (click)="selectTab(4)" [disabled]="!(isAllowedToSaveStudentAward() && isAllowedToSaveStudentSport())">
+                            <i class="zmdi zmdi-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab label="{{'Student.Information.StudentDiscipline'|translate}}" disabled>
+                <div class="row mx-0">
+                    <fieldset class="col-12 col-lg-6 form-group">
+                        <div *ngFor="let studentDiscipline of studentDisciplines">
+                            <div *ngIf="studentDiscipline.IsEdit">
+                                <mat-form-field class="form-group col-12 col-lg-6">
+                                    <mat-select placeholder="{{'Staff.Disciplinary.SelectStatus'|translate}}" [(ngModel)]="studentDiscipline.StatusId"
+                                                #StatusId="ngModel" [ngModelOptions]="{standalone: true}" required>
+                                        <mat-option *ngFor="let status of initialData.statuses" [value]="status.id">
+                                            {{status.name}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field class="form-group col-12 col-lg-6">
+                                    <input type="text" matInput placeholder="{{'Staff.Disciplinary.Subject'|translate}}" required NoSpaces
+                                           [(ngModel)]="studentDiscipline.Subject" #SubjectModel="ngModel" [ngModelOptions]="{standalone: true}"
+                                           maxlength="50" />
+                                    <mat-error *ngIf="SubjectModel.invalid && SubjectModel.touched">
+                                        <span *ngIf="SubjectModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                                        <span *ngIf="(!SubjectModel.hasError('required') && SubjectModel.hasError('whitespace'))">{{'Common.WhiteSpace'|translate}}</span>
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field class="form-group col-12 col-lg-6">
+                                    <input matInput [matDatepicker]="dateDis" placeholder="{{'Staff.Disciplinary.Date'|translate}} *" [max]="currentDate"
+                                           (dateChange)="studentDiscipline.Date = $event.value" [value]="studentDiscipline.Date" disabled required>
+                                    <mat-datepicker-toggle matSuffix [for]="dateDis"></mat-datepicker-toggle>
+                                    <mat-datepicker #dateDis disabled="false"></mat-datepicker>
+                                </mat-form-field>
+                                <mat-form-field class="form-group col-12 col-lg-6">
+                                    <input type="text" matInput placeholder="{{'Staff.Disciplinary.Description'|translate}}" required NoSpaces
+                                           [(ngModel)]="studentDiscipline.Description" #DescriptionModel="ngModel" [ngModelOptions]="{standalone: true}"
+                                           maxlength="50" />
+                                    <mat-error *ngIf="DescriptionModel.invalid && DescriptionModel.touched">
+                                        <span *ngIf="DescriptionModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                                        <span *ngIf="(!DescriptionModel.hasError('required') && DescriptionModel.hasError('whitespace'))">{{'Common.WhiteSpace'|translate}}</span>
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field class="form-group col-12 col-lg-6">
+                                    <input type="text" matInput placeholder="{{'Staff.Disciplinary.Remarks'|translate}}" [disabled]="isRemarkDisbale(studentDiscipline)"
+                                           [(ngModel)]="studentDiscipline.Remarks" #RemarksModel="ngModel" [ngModelOptions]="{standalone: true}"
+                                           maxlength="50" />
+                                </mat-form-field>
+                                <div class="col-12">
+                                    <button class="btn-icon-rounded btn-primary" matTooltip="Save" matTooltipPosition="above" (click)="saveStudentDiscipline(studentDiscipline)"
+                                            [disabled]="!(StatusId.valid && SubjectModel.valid && studentDiscipline.Date
+                                        && DescriptionModel.valid)">
+                                        <i class="zmdi zmdi-floppy"></i>
+                                    </button>
+                                    <button class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="Cancel" matTooltipPosition="above" (click)="unEditStudentDiscipline(studentDiscipline)"><i class="zmdi zmdi-close"></i></button>
+                                </div>
+                            </div>
+                            <div class="card" *ngIf="!studentDiscipline.IsEdit">
+                                <div class="px-3 py-1 d-flex align-items-center">
+                                    <div class="flex-grow-1">
+                                        {{studentDiscipline.Subject}}
+                                        {{studentDiscipline.Date|date}}
+                                    </div>
+                                    <button matTooltip="Edit" matTooltipPosition="above" mat-icon-button (click)="editStudentDiscipline(studentDiscipline)" [disabled]="!isAllowedToSaveStudentDiscipline()"><i class="zmdi zmdi-edit zmdi-hc-lg"></i></button>
+                                    <button matTooltip="Delete" matTooltipPosition="above" mat-icon-button class="ml-1" (click)="removeStudentDiscipline(studentDiscipline)"><i class="zmdi zmdi-delete zmdi-hc-lg"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="mt-2" *ngIf="errorMessageForStudentDiscipline">{{errorMessageForStudentDiscipline}}</span>
+                        <button class="btn btn-secondary mt-2" [disabled]="!isAllowedToSaveStudentDiscipline()" (click)="addStudentDisciplineCard()">{{'Student.Information.AddStudentDiscipline'|translate}}</button>
+                    </fieldset>
+                    <div class="col-12">
+                        <button class="btn-icon-rounded btn-primary" matTooltip="Back" matTooltipPosition="above" (click)="selectTab(3)"><i class="zmdi zmdi-chevron-left"></i></button>
+                        <button class="ml-2 btn-icon-rounded btn-primary" matTooltip="Next" matTooltipPosition="above" (click)="selectTab(5)" [disabled]="!isAllowedToSaveStudentDiscipline()"><i class="zmdi zmdi-chevron-right"></i></button>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab label="{{'Student.Information.Photo'|translate}}" disabled>
+                <div class="row mx-0">
+                    <div class="col-12 col-lg-6 form-group">
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="fileInput" aria-describedby="fileInput" #fileInput (change)="preview(fileInput.files)" accept=".jpg, .jpeg, .png" />
+                            <label class="custom-file-label" for="fileInput">Choose file</label>
+                        </div>
+                        <img class="img-thumbnail mt-2" [src]="imgURL" height="200" *ngIf="imgURL" />
+                    </div>
+                    <div class="col-12">
+                        <button class="btn-icon-rounded btn-primary" matTooltip="Back" matTooltipPosition="above" (click)="selectTab(4)"><i class="zmdi zmdi-chevron-left"></i></button>
+                        <button class="ml-2 btn-icon-rounded btn-primary" matTooltip="Next" matTooltipPosition="above" (click)="selectTab(6)"><i class="zmdi zmdi-chevron-right"></i></button>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab label="{{'Student.Information.Gallery'|translate}}" disabled>
+                <div class="row mx-0">
+                    <div class="col-12 col-lg-6 form-group">
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="gallery" aria-describedby="gallery" #gallery multiple (change)="previewGallery()" accept=".jpg, .jpeg, .png" />
+                            <label class="custom-file-label" for="gallery">Choose file</label>
+                        </div>
+                        <div class="d-flex mt-2">
+                            <div class="flex-shrink-1 mr-1 gallery-item" *ngFor="let imgUrl of gallerys">
+                                <img class="img-thumbnail" [src]="imgUrl.image" height="200" *ngIf="imgUrl">
+                                <em class="zmdi zmdi-close close" (click)="removeImage(imgUrl.id)"></em>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <button class="btn-icon-rounded btn-primary" matTooltip="Back" matTooltipPosition="above" (click)="selectTab(5)"><i class="zmdi zmdi-chevron-left"></i></button>
+                        <button class="ml-2 btn-icon-rounded btn-primary" matTooltip="Next" matTooltipPosition="above" (click)="selectTab(7)"><i class="zmdi zmdi-chevron-right"></i></button>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab label="{{'Student.Information.Documents'|translate}}" disabled>
+                <div class="row mx-0">
+                    <div class="col-12 form-group">
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="document" aria-describedby="document" #document multiple
+                                   (change)="previewDocument()" />
+                            <label class="custom-file-label" for="document">Choose file</label>
+                        </div>
+                        <div class="row mt-2" *ngFor="let document of documents; let i = index">
+                            <mat-form-field class="form-group col-12 col-lg-6">
+                                <input type="text" matInput placeholder="{{'Student.Information.File'|translate}}" readonly
+                                       [(ngModel)]="document.File" [ngModelOptions]="{standalone: true}" maxlength="250" />
+                            </mat-form-field>
+                            <mat-form-field class="form-group col-12 col-lg-6">
+                                <input type="text" matInput placeholder="{{'Student.Information.Name'|translate}}"
+                                       [(ngModel)]="document.Name" [ngModelOptions]="{standalone: true}" maxlength="250" />
+                            </mat-form-field>
+                            <mat-form-field class="form-group col-12 col-lg-6">
+                                <input matInput [matDatepicker]="expiredDate" placeholder="{{'Student.Information.ExpiredDate'|translate}} *"
+                                       (dateChange)="document.ExpiredDate = $event.value" [value]="document.ExpiredDate" disabled required>
+                                <mat-datepicker-toggle matSuffix [for]="expiredDate"></mat-datepicker-toggle>
+                                <mat-datepicker #expiredDate disabled="false"></mat-datepicker>
+                            </mat-form-field>
+                            <mat-form-field class="form-group col-12 col-lg-6">
+                                <input type="text" matInput placeholder="{{'Student.Information.MetaData'|translate}}"
+                                       [(ngModel)]="document.MetaData" [ngModelOptions]="{standalone: true}" maxlength="250" />
+                            </mat-form-field>
+                            <mat-form-field class="form-group col-12 col-lg-6">
+                                <mat-select placeholder="{{'Student.Information.SelectFileType'|translate}}" [(ngModel)]="document.FileType"
+                                            #FileType="ngModel" [ngModelOptions]="{standalone: true}">
+                                    <mat-option *ngFor="let fileType of fileTypes" [value]="fileType">
+                                        {{fileType}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <div class="col-12">
+                                <button class="btn-icon-rounded btn-primary" matTooltip="Remove" matTooltipPosition="above" (click)="removeDocument(i)">
+                                    <i class="zmdi zmdi-close"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <button class="btn-icon-rounded btn-primary" matTooltip="Back" matTooltipPosition="above" (click)="selectTab(6)"><i class="zmdi zmdi-chevron-left"></i></button>
+                        <button class="ml-2 btn-icon-rounded btn-primary" matTooltip="Save" matTooltipPosition="above" (click)="addStudentDetail()"><i class="zmdi zmdi-floppy"></i></button>
+                        <a class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="Cancel" matTooltipPosition="above" routerLink="/student/information/list" routerLinkActive="active"><i class="zmdi zmdi-close"></i></a>
+                    </div>
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>

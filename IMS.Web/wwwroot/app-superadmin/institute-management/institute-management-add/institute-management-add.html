@@ -1,0 +1,160 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Admin.Institute.AddInstitute'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" matTooltip="Details" matTooltipPosition="above" routerLink="/institute/list" routerLinkActive="active"><i class="zmdi zmdi-view-list"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-block-content">
+        <form class="row">
+            <mat-form-field class="col-12 col-lg-6">
+                <input type="text" matInput placeholder="{{'Admin.Institute.InstituteName'|translate}}" required specialIsAlphaNumeric
+                       [(ngModel)]="institute.InstituteName" #InstituteNameModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20"
+                       (keyup)="checkWhiteSpace(InstituteNameModel, institute.InstituteName)"
+                       (keydown)="checkWhiteSpace(InstituteNameModel, institute.InstituteName); resetError('FirstName')" />
+                <mat-error *ngIf="InstituteNameModel.invalid && InstituteNameModel.touched">
+                    <span *ngIf="InstituteNameModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                </mat-error>
+                <mat-hint class="mat-error" *ngIf="(!InstituteNameModel.hasError('required') && InstituteNameModel.whiteSpaceError)">
+                    <span>Institute name can't be empty</span>
+                </mat-hint>
+                <mat-hint class="mat-error" *ngIf="hasError('InstituteName')">
+                    <span>{{error.Message}}</span>
+                </mat-hint>
+            </mat-form-field>
+            <mat-form-field class="col-12 col-lg-6">
+                <input type="text" matInput placeholder="{{'Admin.Institute.InstituteCode'|translate}}" required
+                       [(ngModel)]="institute.Code" #CodeModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20"
+                       (keyup)="checkWhiteSpace(CodeModel, institute.Code)"
+                       (keydown)="checkWhiteSpace(CodeModel, institute.Code); resetError('FirstName')" />
+                <mat-error *ngIf="CodeModel.invalid && CodeModel.touched">
+                    <span *ngIf="CodeModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                </mat-error>
+                <mat-hint class="mat-error" *ngIf="(!CodeModel.hasError('required') && CodeModel.whiteSpaceError)">
+                    <span>Institute code can't be empty</span>
+                </mat-hint>
+                <mat-hint class="mat-error" *ngIf="hasError('Code')">
+                    <span>{{error.Message}}</span>
+                </mat-hint>
+            </mat-form-field>
+            <mat-form-field class="col-12 col-lg-6">
+                <input matInput type="text" placeholder="{{'Admin.Institute.InstituteAdminEmail'|translate}}" required [(ngModel)]="institute.InstituteAdminEmail" #instituteAdminEmail="ngModel"
+                       pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" [ngModelOptions]="{standalone: true}" />
+                <mat-error *ngIf="instituteAdminEmail.invalid && instituteAdminEmail.touched">
+                    <span *ngIf="instituteAdminEmail.hasError('required')">{{'Common.Required'|translate}}</span>
+                    <span *ngIf="instituteAdminEmail.hasError('pattern')">
+                        Email format should be
+                        <strong>joe@abc.com</strong>
+                    </span>
+                </mat-error>
+                <mat-hint class="mat-error" *ngIf="hasError('InstituteAdminEmail')">
+                    <span>{{error.Message}}</span>
+                </mat-hint>
+            </mat-form-field>
+            <mat-form-field class="col-12 col-lg-6">
+                <textarea matInput type="text" placeholder="{{'Admin.Institute.InstituteAddress'|translate}}" [(ngModel)]="institute.Address" #Address="ngModel"
+                          [ngModelOptions]="{standalone: true}"></textarea>
+            </mat-form-field>
+            <mat-form-field class="col-12 col-lg-6">
+                <input matInput type="text" placeholder="{{'Admin.Institute.InstituteLocation'|translate}}" [(ngModel)]="institute.Location" #Location="ngModel"
+                       [ngModelOptions]="{standalone: true}" maxlength="250" />
+            </mat-form-field>
+            <mat-form-field class="col-12 col-lg-6">
+                <mat-select placeholder="Map User with Institute" [(ngModel)]="institute.Users" [ngModelOptions]="{standalone: true}" multiple>
+                    <mat-option *ngFor="let user of users" [value]="user.id">
+                        {{user.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div class="col-12 pb-3" *ngFor="let bcc of listOfBcc">
+                <div class="row" *ngIf="bcc.IsEdit">
+                    <mat-form-field class="col-12 col-lg-6">
+                        <input type="text" matInput placeholder="{{'Admin.Institute.BccEmail'|translate}}" required
+                               pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                               [(ngModel)]="bcc.Email" #EmailModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="30" />
+                        <mat-error *ngIf="EmailModel.invalid && EmailModel.touched">
+                            <span *ngIf="EmailModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                            <span *ngIf="EmailModel.hasError('pattern')">
+                                Email format should be
+                                <strong>joe@abc.com</strong>
+                            </span>
+                        </mat-error>
+                    </mat-form-field>
+                    <div class="col-12">
+                        <button class="btn-icon-rounded btn-primary" matTooltip="Save" matTooltipPosition="above" (click)="saveBcc(bcc)" [disabled]="!(EmailModel.valid)">
+                            <i class="zmdi zmdi-floppy"></i>
+                        </button>
+                        <button class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="Cancel" matTooltipPosition="above" (click)="unEditBcc(bcc)"><i class="zmdi zmdi-close"></i></button>
+                    </div>
+                </div>
+                <div class="card mt-3" *ngIf="!bcc.IsEdit">
+                    <div class="px-3 py-1 d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            {{bcc.Email}}
+                        </div>
+                        <button matTooltip="Edit" matTooltipPosition="above" mat-icon-button (click)="editBcc(bcc)" [disabled]="!isAllowedToSaveBcc()"><i class="zmdi zmdi-edit zmdi-hc-lg"></i></button>
+                        <button matTooltip="Delete" matTooltipPosition="above" mat-icon-button class="ml-1" (click)="removeBcc(bcc)"><i class="zmdi zmdi-delete zmdi-hc-lg"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 pb-3">
+                <span *ngIf="errorMessageForBcc">{{errorMessageForBcc}}</span>
+                <button class="btn btn-secondary" [disabled]="!isAllowedToSaveBcc()" (click)="addBccCard()">{{'Admin.Institute.AddBcc'|translate}}</button>
+            </div>
+            <div class="col-12 pb-3" *ngFor="let cc of listOfcc">
+                <div class="row" *ngIf="cc.IsEdit">
+                    <mat-form-field class="col-12 col-lg-6">
+                        <input type="text" matInput placeholder="{{'Admin.Institute.CcEmail'|translate}}" required
+                               pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                               [(ngModel)]="cc.Email" #EmailModelCC="ngModel" [ngModelOptions]="{standalone: true}" maxlength="30" />
+                        <mat-error *ngIf="EmailModelCC.invalid && EmailModelCC.touched">
+                            <span *ngIf="EmailModelCC.hasError('required')">{{'Common.Required'|translate}}</span>
+                            <span *ngIf="EmailModelCC.hasError('pattern')">
+                                Email format should be
+                                <strong>joe@abc.com</strong>
+                            </span>
+                        </mat-error>
+                    </mat-form-field>
+                    <div class="col-12">
+                        <button class="btn-icon-rounded btn-primary" matTooltip="Save" matTooltipPosition="above" (click)="saveCc(cc)" [disabled]="!(EmailModelCC.valid)">
+                            <i class="zmdi zmdi-floppy"></i>
+                        </button>
+                        <button class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="Cancel" matTooltipPosition="above" (click)="unEditCc(cc)"><i class="zmdi zmdi-close"></i></button>
+                    </div>
+                </div>
+                <div class="card mt-3" *ngIf="!cc.IsEdit">
+                    <div class="px-3 py-1 d-flex align-items-center">
+                        <div class="flex-grow-1">{{cc.Email}}</div>
+                        <button matTooltip="Edit" matTooltipPosition="above" mat-icon-button (click)="editCc(cc)" [disabled]="!isAllowedToSaveCc()"><i class="zmdi zmdi-edit zmdi-hc-lg"></i></button>
+                        <button matTooltip="Delete" matTooltipPosition="above" mat-icon-button class="ml-1" (click)="removeCc(cc)"><i class="zmdi zmdi-delete zmdi-hc-lg"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 pb-3">
+                <span *ngIf="errorMessageForCc">{{errorMessageForCc}}</span>
+                <button class="btn btn-secondary" [disabled]="!isAllowedToSaveCc()" (click)="addCcCard()">{{'Admin.Institute.AddCc'|translate}}</button>
+            </div>
+            <mat-form-field class="col-12 col-lg-6">
+                <input matInput ngx-google-places-autocomplete #placesRef="ngx-places"
+                       placeholder="{{'TransportManagement.Stage.PlaceName'|translate}}" (onAddressChange)="handleAddressChange($event)" />
+            </mat-form-field>
+            <div class="col-12 col-lg-6">
+                <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" [disableDefaultUI]="false" [zoomControl]="false"
+                         (mapClick)="mapClicked($event)">
+                    <agm-marker [latitude]="markers.lat" [longitude]="markers.lng" [label]="markers.label"
+                                [markerDraggable]="markers.draggable">
+                    </agm-marker>
+                </agm-map>
+            </div>
+
+            <div class="col-12">
+                <button class="btn-icon-rounded btn-primary" matTooltip="Save" matTooltipPosition="above" (click)="addInstitute()" [disabled]="!(InstituteNameModel.valid && !InstituteNameModel.whiteSpaceError
+                            && instituteAdminEmail.valid && !instituteAdminEmail.whiteSpaceError
+                            && CodeModel.valid && !CodeModel.whiteSpaceError && isAllowedToSaveBcc() && isAllowedToSaveCc())">
+                    <i class="zmdi zmdi-floppy"></i>
+                </button>
+                <a class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="Cancel" matTooltipPosition="above" routerLink="/institute/list" routerLinkActive="active"><i class="zmdi zmdi-close"></i></a>
+            </div>
+        </form>
+    </div>
+</div>

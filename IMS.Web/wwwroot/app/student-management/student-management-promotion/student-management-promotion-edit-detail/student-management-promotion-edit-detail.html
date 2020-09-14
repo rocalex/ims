@@ -1,0 +1,55 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'StudentManagement.Promotion.EditPromotion'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" matTooltip="Details" matTooltipPosition="above" routerLink="/student/promotion/list" routerLinkActive="active"><i class="zmdi zmdi-view-list"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-block-content">
+        <form class="row">
+            <mat-form-field class="form-group col-12 col-lg-6">
+                <mat-select placeholder="{{'Common.Select'|translate}} {{'StudentManagement.Promotion.CurrentClass'|translate}}" [(ngModel)]="student.currentClassId"
+                            #CurrentSelectedClassModel="ngModel" [ngModelOptions]="{standalone: true}" disabled>
+                    <mat-option *ngFor="let class of initialData.classes" [value]="class.id">
+                        {{class.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="form-group col-12 col-lg-6">
+                <mat-select placeholder="{{'Common.Select'|translate}} {{'StudentManagement.Promotion.CurrentSection'|translate}}" [(ngModel)]="student.currentSectionId"
+                            #CurrentSelectedSectionModel="ngModel" [ngModelOptions]="{standalone: true}" disabled>
+                    <mat-option *ngFor="let section of initialData.sections" [value]="section.id">
+                        {{section.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="form-group col-12 col-lg-6">
+                <mat-select placeholder="{{'Common.Select'|translate}} {{'StudentManagement.Promotion.PromotionClass'|translate}}" [(ngModel)]="student.promotedToClassId"
+                            #PromotionSelectedClassModel="ngModel" [ngModelOptions]="{standalone: true}" required>
+                    <mat-option *ngFor="let class of promotionClassesList" [value]="class.id">
+                        {{class.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="form-group col-12 col-lg-6">
+                <mat-select placeholder="{{'Common.Select'|translate}} {{'StudentManagement.Promotion.PromotionSection'|translate}}" [(ngModel)]="student.promotedToSectionId"
+                            #PromotionSelectedSectionModel="ngModel" [ngModelOptions]="{standalone: true}" required>
+                    <mat-option *ngFor="let section of initialData.sections" [value]="section.id">
+                        {{section.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="col-12 col-lg-6">
+                <input type="text" matInput placeholder="{{'StudentManagement.Promotion.Remark'|translate}}" maxlength="50"
+                       [(ngModel)]="student.remark" [ngModelOptions]="{standalone: true}" />
+            </mat-form-field>
+            <div class="col-12">
+                <button class="btn-icon-rounded btn-primary" matTooltip="Save" matTooltipPosition="above" (click)="updateStudent()" [disabled]="!(PromotionSelectedClassModel.valid
+                                && PromotionSelectedSectionModel.valid)">
+                    <i class="zmdi zmdi-floppy"></i>
+                </button>
+                <a class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="Cancel" matTooltipPosition="above" routerLink="/student/promotion/list" routerLinkActive="active"><i class="zmdi zmdi-close"></i></a>
+            </div>
+        </form>
+    </div>
+</div>

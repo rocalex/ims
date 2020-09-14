@@ -1,0 +1,144 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'MarkManagement.ExamScoreEntry.ExamScoreEntry'|translate}}</h2>
+    </div>
+</div>
+<div class="rct-block">
+    <div class="rct-block-content">
+        <form class="row">
+            <mat-form-field class="col-12 col-lg-6">
+                <mat-select placeholder="{{'MarkManagement.ClassExam.SelectClass'|translate}}" [(ngModel)]="class"
+                            #ClassId="ngModel" [ngModelOptions]="{standalone: true}" (selectionChange)="resetExam()" required>
+                    <mat-option *ngFor="let class of initialData.classes" [value]="class">
+                        {{class?.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="col-12 col-lg-6">
+                <mat-select placeholder="{{'MarkManagement.ClassExam.SelectSection'|translate}}" [(ngModel)]="section"
+                            #SectionId="ngModel" [ngModelOptions]="{standalone: true}" (selectionChange)="resetExam()" required>
+                    <mat-option *ngFor="let section of initialData.sections" [value]="section">
+                        {{section?.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="col-12 col-lg-6">
+                <mat-select placeholder="{{'MarkManagement.ClassExam.SelectGradeType'|translate}}" [(ngModel)]="selectedType"
+                            [ngModelOptions]="{standalone: true}" required>
+                    <mat-option *ngFor="let reportType of reportTypes" [value]="reportType">
+                        {{reportType}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div class="col-12">
+                <button class="btn-icon-rounded btn-primary" matTooltip="Search" matTooltipPosition="above" (click)="getClassExamByClassAndSectionId()">
+                    <i class="zmdi zmdi-search"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="rct-block" *ngIf="classExams.length">
+    <div class="rct-block-content">
+        <form class="row">
+            <mat-form-field class="col-12 col-lg-6">
+                <mat-select placeholder="{{'MarkManagement.ExamScoreEntry.Exam'|translate}}" [(ngModel)]="exam" required
+                            #Exam="ngModel" [ngModelOptions]="{standalone: true}" (selectionChange)="getExamScoreEntries()">
+                    <mat-option *ngFor="let classExam of classExams" [value]="classExam">
+                        {{classExam.exam.name}} - {{classExam.createdOn|date}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </form>
+    </div>
+</div>
+<div class="rct-block" *ngIf="exam.id">
+    <div class="rct-full-block">
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th>{{'StudentManagement.Attendance.Image'|translate}}</th>
+                        <th>{{'Student.Information.RollNumber'|translate}}</th>
+                        <th>{{'StudentManagement.LookUp.Name'|translate}}</th>
+                        <th *ngFor="let subject of initialData.subjects">{{subject.name}}</th>
+                        <th *ngIf="selectedType === 'Marks'">{{'MarkManagement.ExamScoreEntry.Total'|translate}}</th>
+                        <th>{{'MarkManagement.ExamScoreEntry.SGPA'|translate}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of tempData">
+                        <td>
+                            <div class="embed-responsive embed-responsive-1by1" style="width:50px;">
+                                <img [src]="((item.Student.personalImage)?item.Student.personalImage:'/assets/img/default_user.png')" class="embed-responsive-item rounded-circle" />
+                            </div>
+                        </td>
+                        <td>
+                            <a class="btn-outline-primary" routerLink="/student/information/{{item.Student.id}}" routerLinkActive="active">
+                                {{item.Student.rollNumber}}
+                            </a>
+                        </td>
+                        <td>{{item.Student.firstName}} {{item.Student.lastName}}</td>
+                        <td *ngFor="let subject of initialData.subjects">
+                            <div *ngIf="selectedType === 'Marks'">
+                                <mat-form-field>
+                                    <input type="number" [(ngModel)]="item[subject.id]" #Marks="ngModel" matInput
+                                           [ngModelOptions]="{standalone: true}" pattern="^[0-9]\d*$" [min]="0" maxlength="3" [max]="100" required
+                                           placeholder="{{'MarkManagement.ExamScoreEntry.Marks'|translate}}" />
+                                    <mat-error *ngIf="Marks.invalid && Marks.touched">
+                                        <span *ngIf="Marks.hasError('pattern')">{{'Common.NumberShouldBePositive'|translate}}. </span>
+                                        <span *ngIf="Marks.hasError('max')">{{'MarkManagement.ExamScoreEntry.Max'|translate}}</span>
+                                        <span *ngIf="Marks.hasError('min')">{{'MarkManagement.ExamScoreEntry.Min'|translate}}</span>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div *ngIf="selectedType === 'Letter'">
+                                <mat-form-field class="col-12 col-lg-6">
+                                    <mat-select placeholder="{{'MarkManagement.ClassExam.SelectGradeType'|translate}}" [value]="getGradeByMark(item[subject.id])"
+                                                (selectionChange)="assignValueByGrade(item, subject.id, $event.value)" required>
+                                        <mat-option *ngFor="let grade of grades" [value]="grade.name">
+                                            {{grade.name}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </td>
+                        <td *ngIf="selectedType === 'Marks'">{{getTotal(item)}}</td>
+                        <td>{{getGradeByMark(getTotal(item)/initialData.subjects.length)}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-12">
+            <div class="rct-block-title text-center" *ngIf="tempData.length==0">
+                {{'MarkManagement.ExamScoreEntry.NoExamScoreEntry'|translate}}
+            </div>
+            <button class="btn-icon-rounded btn-primary" matTooltip="Save" matTooltipPosition="above" (click)="addOrUpdateExamScoreEntry()">
+                <i class="zmdi zmdi-floppy"></i>
+            </button>
+            <button class="btn-icon-rounded btn-primary" matTooltip="Cancel" matTooltipPosition="above" (click)="ngOnInit()">
+                <i class="zmdi zmdi-close"></i>
+            </button>
+        </div>
+    </div>
+</div>
+<div class="rct-block" *ngIf="exam.id">
+    <div class="rct-full-block">
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th>{{'StudentManagement.Attendance.Score'|translate}}</th>
+                        <th>{{'StudentManagement.Attendance.Grade'|translate}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let grade of grades">
+                        <td>{{grade.minScore}} - {{grade.maxScore}}</td>
+                        <td>{{grade.name}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

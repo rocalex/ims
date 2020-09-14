@@ -1,0 +1,85 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'StudentManagement.Promotion.AddPromotion'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" matTooltip="Details" matTooltipPosition="above" routerLink="/student/promotion/list" routerLinkActive="active"><i class="zmdi zmdi-view-list"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-block-content">
+        <form class="row">
+            <mat-form-field class="form-group col-12 col-lg-6">
+                <mat-select placeholder="{{'Common.Select'|translate}} {{'StudentManagement.Promotion.CurrentClass'|translate}}" [(ngModel)]="currentSelectedClass"
+                            #CurrentSelectedClassModel="ngModel" [ngModelOptions]="{standalone: true}" (selectionChange)="promotionClasses()" required>
+                    <mat-option *ngFor="let class of initialData.classes" [value]="class">
+                        {{class.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="form-group col-12 col-lg-6">
+                <mat-select placeholder="{{'Common.Select'|translate}} {{'StudentManagement.Promotion.CurrentSection'|translate}}" [(ngModel)]="currentSelectedSection"
+                            #CurrentSelectedSectionModel="ngModel" [ngModelOptions]="{standalone: true}" required>
+                    <mat-option *ngFor="let section of initialData.sections" [value]="section">
+                        {{section.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="form-group col-12 col-lg-6">
+                <mat-select placeholder="{{'Common.Select'|translate}} {{'StudentManagement.Promotion.PromotionClass'|translate}}" [(ngModel)]="promotionSelectedClass"
+                            #PromotionSelectedClassModel="ngModel" [ngModelOptions]="{standalone: true}" required>
+                    <mat-option *ngFor="let class of promotionClassesList" [value]="class">
+                        {{class.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="form-group col-12 col-lg-6">
+                <mat-select placeholder="{{'Common.Select'|translate}} {{'StudentManagement.Promotion.PromotionSection'|translate}}" [(ngModel)]="promotionSelectedSection"
+                            #PromotionSelectedSectionModel="ngModel" [ngModelOptions]="{standalone: true}" required>
+                    <mat-option *ngFor="let section of initialData.sections" [value]="section">
+                        {{section.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div class="col-12">
+                <button class="btn-icon-rounded btn-primary" matTooltip="Search" matTooltipPosition="above" (click)="getStudentByClassId()" [disabled]="!(CurrentSelectedClassModel.valid &&
+                            CurrentSelectedSectionModel.valid)">
+                    <i class="zmdi zmdi-search"></i>
+                </button>
+                <button class="ml-2 btn-icon-rounded btn-primary" matTooltip="Save" matTooltipPosition="above" (click)="addStudentDetail()" [disabled]="!(CurrentSelectedClassModel.valid &&
+                            CurrentSelectedSectionModel.valid && PromotionSelectedClassModel.valid && PromotionSelectedSectionModel.valid && students.length && isAllowedToSave())">
+                    <i class="zmdi zmdi-floppy"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="rct-block" [hidden]="!students.length">
+    <div class="rct-full-block">
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th>
+                            <mat-checkbox [(ngModel)]="allSelected" (change)="selectAll()" [indeterminate]="indeterminate">
+                            </mat-checkbox>
+                        </th>
+                        <th>{{'StudentManagement.Promotion.PromotionFromClass'|translate}}</th>
+                        <th>{{'StudentManagement.Promotion.PromotionToClass'|translate}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let student of students">
+                        <td><mat-checkbox [(ngModel)]="student.isSelected" [ngModelOptions]="{standalone: true}" (change)="checkboxChange()">
+                            </mat-checkbox></td>
+                        <td>{{student.rollNumber}} - {{student.firstName}} {{student.lastName}}</td>
+                        <td>
+                            <mat-form-field class="col-12 col-lg-6">
+                                <input type="text" matInput placeholder="{{'StudentManagement.Promotion.Remark'|translate}}" maxlength="50"
+                                       [(ngModel)]="student.remark" [ngModelOptions]="{standalone: true}" />
+                            </mat-form-field>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,23 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'RoleManagement.AddRole'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" matTooltip="Details" matTooltipPosition="above" routerLink="/role/list" routerLinkActive="active"><i class="zmdi zmdi-view-list"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-block-content">
+        <form class="row">
+            <mat-form-field class="col-12 col-lg-6">
+                <input matInput type="text" placeholder="{{'RoleManagement.RoleName'|translate}}" required [(ngModel)]="roleName" #roleNameModel="ngModel"
+                       [ngModelOptions]="{standalone: true}" maxlength="25" />
+                <mat-error *ngIf="roleNameModel.invalid && roleNameModel.touched">
+                    <span *ngIf="roleNameModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                </mat-error>
+            </mat-form-field>
+            <div class="col-12">
+                <button class="btn-icon-rounded btn-primary" matTooltip="Save" matTooltipPosition="above" (click)="addRole()" [disabled]="!(roleNameModel.valid)"><i class="zmdi zmdi-floppy"></i></button>
+                <a class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="Cancel" matTooltipPosition="above" routerLink="/role/list" routerLinkActive="active"><i class="zmdi zmdi-close"></i></a>
+            </div>
+        </form>
+    </div>
+</div>

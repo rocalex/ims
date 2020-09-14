@@ -1,0 +1,41 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'TransportManagement.Stage.Stages'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" *ngIf="isAllowed('Add')" matTooltip="{{'TransportManagement.Stage.AddStage'|translate}}" matTooltipPosition="before" routerLink="/transportmanagement/stage/add" routerLinkActive="active"><i class="zmdi zmdi-plus"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-full-block">
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th>{{'TransportManagement.Stage.Code'|translate}}</th>
+                        <th>{{'TransportManagement.Stage.Name'|translate}}</th>
+                        <th>{{'TransportManagement.Stage.Slab'|translate}}</th>
+                        <th>{{'TransportManagement.Stage.Term1'|translate}}</th>
+                        <th>{{'TransportManagement.Stage.Term2'|translate}}</th>
+                        <th>{{'TransportManagement.Stage.Term3'|translate}}</th>
+                        <th>{{'Common.CreatedOn'|translate}}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of stages">
+                        <td>{{item.code}}</td>
+                        <td>{{item.name}}</td>
+                        <td>{{item.slab.name}}</td>
+                        <td>{{item.term1}}</td>
+                        <td>{{item.term2}}</td>
+                        <td>{{item.term3}}</td>
+                        <td>{{item.createdOn|date}}</td>
+                        <td><a matTooltip="Edit" matTooltipPosition="above" *ngIf="isAllowed('Edit')" routerLink="/transportmanagement/stage/{{item.id}}" routerLinkActive="active"><i class="zmdi zmdi-edit zmdi-hc-lg"></i></a></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="rct-block-title text-center" *ngIf="stages.length==0">
+                {{'TransportManagement.Stage.NoStageAdded'|translate}}
+            </div>
+        </div>
+    </div>
+</div>

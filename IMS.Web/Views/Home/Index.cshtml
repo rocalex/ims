@@ -1,0 +1,58 @@
+﻿@{
+
+}
+<base href="/">
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB_oQm9oRpoPDV2bPgjDsJii9hn8_9J4U8&libraries=places&language=en"></script>
+@if (ViewData["Role"].ToString() == "SuperAdmin")
+{
+    <superadmin-app-root>
+        <div class="page-loder">
+            <div class="loader"></div>
+        </div>
+    </superadmin-app-root>
+    <script type="text/javascript" src="~/dist/superadmin/runtime.js"></script>
+    <script type="text/javascript" src="~/dist/superadmin/polyfills.js"></script>
+    <script type="text/javascript" src="~/dist/superadmin/vendor.js"></script>
+    <script type="text/javascript" src="~/dist/superadmin/main.js"></script>
+
+}
+@if (ViewData["Role"].ToString() == "Admin")
+{
+    <app-root>
+        <div class="page-loder">
+            <div class="loader"></div>
+        </div>
+    </app-root>
+    <script type="text/javascript" src="~/dist/web/runtime.js"></script>
+    <script type="text/javascript" src="~/dist/web/polyfills.js"></script>
+    <script type="text/javascript" src="~/dist/web/vendor.js"></script>
+    <script type="text/javascript" src="~/dist/web/main.js"></script>
+    <link rel="stylesheet" href="~/dist/web/styles.css" />
+}
+
+@if (ViewData["Role"].ToString() == "User")
+{
+    <user-app-root>
+        <div class="page-loder">
+            <div class="loader"></div>
+        </div>
+    </user-app-root>
+    <script type="text/javascript" src="~/dist/user/runtime.js"></script>
+    <script type="text/javascript" src="~/dist/user/polyfills.js"></script>
+    <script type="text/javascript" src="~/dist/user/vendor.js"></script>
+    <script type="text/javascript" src="~/dist/user/main.js"></script>
+    <link rel="stylesheet" href="~/dist/user/styles.css" />
+}
+
+@if (ViewData["Role"].ToString() == "Driver")
+{
+    <driver-app-root>
+        <div class="page-loder">
+            <div class="loader"></div>
+        </div>
+    </driver-app-root>
+    <script type="text/javascript" src="~/dist/driver/runtime.js"></script>
+    <script type="text/javascript" src="~/dist/driver/polyfills.js"></script>
+    <script type="text/javascript" src="~/dist/driver/vendor.js"></script>
+    <script type="text/javascript" src="~/dist/driver/main.js"></script>
+}

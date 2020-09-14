@@ -1,0 +1,117 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Student.Report.Reports'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" routerLink="/student/feemanagement/report/list" matTooltip="Details" matTooltipPosition="above" routerLinkActive="active"><i class="zmdi zmdi-view-list"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-block-content">
+        <!--<mat-form-field class="col-12 col-lg-6">
+            <mat-select placeholder="{{'Student.Report.FilterByClass'|translate}}" (selectionChange)="filterData()"
+                        [(ngModel)]="classFilterId" [ngModelOptions]="{standalone: true}">
+                <mat-option *ngFor="let class of initialData.classes" [value]="class.id">
+                    {{class.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <button class="ml-2 btn-icon-rounded btn-outline-secondary" (click)="reset('Class')"><i class="zmdi zmdi-refresh"></i></button>
+
+        <div *ngIf="selectedOrder === 1">
+            <mat-form-field class="col-12 col-lg-6">
+                <mat-select placeholder="{{'Student.Report.FilterBySection'|translate}}" (selectionChange)="filterData()"
+                            [(ngModel)]="sectionFilterId" [ngModelOptions]="{standalone: true}">
+                    <mat-option *ngFor="let section of initialData.sections" [value]="section.id">
+                        {{section.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <button class="ml-2 btn-icon-rounded btn-outline-secondary" (click)="reset('Section')"><i class="zmdi zmdi-refresh"></i></button>
+        </div>
+
+        <div *ngIf="selectedOrder === 3">
+            <mat-form-field class="col-12 col-lg-6">
+                <mat-select placeholder="{{'Student.Report.FilterByReligion'|translate}}" (selectionChange)="filterData()"
+                            [(ngModel)]="religionFilterId" [ngModelOptions]="{standalone: true}">
+                    <mat-option *ngFor="let religion of initialData.religions" [value]="religion.id">
+                        {{religion.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <button class="ml-2 btn-icon-rounded btn-outline-secondary" (click)="reset('Religion')"><i class="zmdi zmdi-refresh"></i></button>
+        </div>
+
+        <div *ngIf="selectedOrder === 4">
+            <mat-form-field class="col-12 col-lg-6">
+                <mat-select placeholder="{{'Student.Report.FilterByGender'|translate}}" (selectionChange)="filterData()"
+                            [(ngModel)]="genderFilterId" [ngModelOptions]="{standalone: true}">
+                    <mat-option *ngFor="let gender of initialData.genders" [value]="gender.id">
+                        {{gender.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <button class="ml-2 btn-icon-rounded btn-outline-secondary" (click)="reset('Gender')"><i class="zmdi zmdi-refresh"></i></button>
+        </div>
+
+        <mat-form-field class="col-12 col-lg-6">
+            <mat-select placeholder="{{'Student.Report.FilterByAcademicYear'|translate}}" disabled
+                        [(ngModel)]="academicYearFilterId" [ngModelOptions]="{standalone: true}">
+                <mat-option *ngFor="let academicYear of initialData.academicYears" [value]="academicYear.id">
+                    {{academicYear.academicYearCode}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>-->
+        <mat-accordion *ngFor="let item of paymentsGrid">
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        {{item.name}}
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="rct-block">
+                    <div class="rct-full-block">
+                        <div class="table-responsive">
+                            <table class="table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>{{'Student.Report.RollNumber'|translate}}</th>
+                                        <th>{{'Student.Report.Name'|translate}}</th>
+                                        <th>{{'Student.Report.Class'|translate}}</th>
+                                        <th *ngIf="selectedOrder !== 4">{{'StudentFeeManagement.Report.RecieptDate'|translate}}</th>
+                                        <th *ngIf="selectedOrder === 4">{{'StudentFeeManagement.Report.RefundDate'|translate}}</th>
+                                        <th>{{'StudentFeeManagement.Report.Amount'|translate}}</th>
+                                        <th>{{'StudentFeeManagement.Report.CollectedBy'|translate}}</th>
+                                        <th>{{'StudentFeeManagement.Report.ChallanNumber'|translate}}</th>
+                                        <th>{{'StudentFeeManagement.Report.Term'|translate}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let payment of item.payments">
+                                        <td>
+                                            <div class="embed-responsive embed-responsive-1by1" style="width:50px;">
+                                                <img [src]="((payment.student.personalImage)?payment.student.personalImage:'/assets/img/default_user.png')" alt="student" class="embed-responsive-item rounded-circle" />
+                                            </div>
+                                        </td>
+                                        <td>{{payment.student.rollNumber}}</td>
+                                        <td>{{payment.student.firstName}} {{payment.student.lastName}}</td>
+                                        <td>{{payment.student.currentClass?.name}}</td>
+                                        <td *ngIf="selectedOrder !== 4">{{payment.receiptDate|date}}</td>
+                                        <td *ngIf="selectedOrder === 4">{{payment.refundDate|date}}</td>
+                                        <td *ngIf="selectedOrder !== 4">{{payment.total}}</td>
+                                        <td *ngIf="selectedOrder === 4">{{payment.amount}}</td>
+                                        <td>{{payment.updatedBy.name}}</td>
+                                        <td>{{payment.challanNumber}}</td>
+                                        <td>N/A</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="rct-block-title text-center" *ngIf="item.payments.length==0">
+                                {{'StudentFeeManagement.Report.NoPaymentAdded'|translate}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </div>
+</div>

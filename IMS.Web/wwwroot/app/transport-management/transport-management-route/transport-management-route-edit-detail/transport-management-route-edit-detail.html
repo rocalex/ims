@@ -1,0 +1,142 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'TransportManagement.Route.EditRoute'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" matTooltip="Details" matTooltipPosition="above" routerLink="/transportmanagement/route/list" routerLinkActive="active"><i class="zmdi zmdi-view-list"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-block-content">
+        <mat-form-field class="col-12 col-lg-6">
+            <input type="text" matInput placeholder="{{'TransportManagement.Route.Code'|translate}}" required NoSpaces
+                   [(ngModel)]="addRoute.Code" #CodeModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20"
+                   (keydown)="resetError('Code')" />
+            <mat-error *ngIf="CodeModel.invalid && CodeModel.touched">
+                <span *ngIf="CodeModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                <span *ngIf="(!CodeModel.hasError('required') && CodeModel.hasError('whitespace'))">{{'Common.WhiteSpace'|translate}}</span>
+            </mat-error>
+            <mat-hint class="mat-error" *ngIf="hasError('Code')">
+                <span>{{error.Message}}</span>
+            </mat-hint>
+        </mat-form-field>
+
+        <mat-form-field class="col-12 col-lg-6">
+            <input type="text" matInput placeholder="{{'TransportManagement.Route.Name'|translate}}" required NoSpaces
+                   [(ngModel)]="addRoute.Name" #NameModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20"
+                   (keydown)="resetError('Name')" />
+            <mat-error *ngIf="NameModel.invalid && NameModel.touched">
+                <span *ngIf="NameModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                <span *ngIf="(!NameModel.hasError('required') && NameModel.hasError('whitespace'))">{{'Common.WhiteSpace'|translate}}</span>
+            </mat-error>
+            <mat-hint class="mat-error" *ngIf="hasError('Name')">
+                <span>{{error.Message}}</span>
+            </mat-hint>
+        </mat-form-field>
+
+        <mat-form-field class="col-12 col-lg-6">
+            <input matInput [matDatepicker]="startDate" placeholder="{{'TransportManagement.Route.StartDate'|translate}} *"
+                   (dateChange)="addRoute.StartDate = $event.value" [value]="addRoute.StartDate" disabled>
+            <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+            <mat-datepicker #startDate disabled="false"></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field class="col-12 col-lg-6">
+            <input type="text" matInput placeholder="{{'TransportManagement.Route.TotalKMs'|translate}}"
+                   [value]="getTotalKm()" readonly />
+        </mat-form-field>
+
+        <mat-form-field class="col-12 col-lg-6">
+            <input type="text" matInput placeholder="{{'TransportManagement.Route.FromPlace'|translate}}"
+                   [value]="getFromPlace()" readonly />
+        </mat-form-field>
+
+        <mat-form-field class="col-12 col-lg-6">
+            <input type="text" matInput placeholder="{{'TransportManagement.Route.ToPlace'|translate}}"
+                   [value]="getToPlace()" readonly />
+        </mat-form-field>
+
+        <div class="rct-block">
+            <div class="rct-full-block">
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead>
+                            <tr>
+                                <th>{{'TransportManagement.Route.FromPlace'|translate}}</th>
+                                <th>{{'TransportManagement.Route.ToPlace'|translate}}</th>
+                                <th>{{'TransportManagement.Route.Distance'|translate}}</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of addRoute.RouteStageMappings">
+                                <td>{{getStageName(item.FromPlaceId)}}</td>
+                                <td>{{getStageName(item.ToPlaceId)}}</td>
+                                <td>{{item.Distance}}</td>
+                                <td>
+                                    <button class="btn-icon-rounded btn-primary" matTooltip="Edit" matTooltipPosition="above" (click)="editModal(item.DemoId, routeDialog)">
+                                        <i class="zmdi zmdi-edit zmdi-hc-lg"></i>
+                                    </button>
+                                    <button class="ml-2 btn-icon-rounded btn-primary" matTooltip="Delete" matTooltipPosition="above" (click)="deleteFromList(item.DemoId)">
+                                        <i class="zmdi zmdi-delete"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button class="btn-icon-rounded btn-primary" matTooltip="{{'UserManagement.User.AddUser'|translate}}" matTooltipPosition="before" (click)="addList(routeDialog)">
+                        <i class="zmdi zmdi-plus"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <button class="btn-icon-rounded btn-primary" matTooltip="Save" matTooltipPosition="above" (click)="updateRoute()"
+                    [disabled]="!(CodeModel.valid && NameModel.valid && addRoute.RouteStageMappings.length
+                    && (addRoute.StartDate !== null && addRoute.StartDate !== undefined))">
+                <i class="zmdi zmdi-floppy"></i>
+            </button>
+            <a class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="Cancel" matTooltipPosition="above" routerLink="/transportmanagement/route/list" routerLinkActive="active"><i class="zmdi zmdi-close"></i></a>
+        </div>
+    </div>
+</div>
+<ng-template #routeDialog>
+    <div>
+        <h5>Add Route</h5>
+    </div>
+    <mat-form-field class="col-12 col-lg-6">
+        <mat-select placeholder="{{'TransportManagement.Route.FromPlace'|translate}}" [(ngModel)]="tempData.FromPlaceId"
+                    #FromPlaceId="ngModel" [ngModelOptions]="{standalone: true}" (selectionChange)="assignStage()" required>
+            <mat-option *ngFor="let from of fromList" [value]="from.id">
+                {{from.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="col-12 col-lg-6">
+        <mat-select placeholder="{{'TransportManagement.Route.ToPlace'|translate}}" [(ngModel)]="tempData.ToPlaceId"
+                    #ToPlaceId="ngModel" [ngModelOptions]="{standalone: true}" (selectionChange)="assignStage()" required>
+            <mat-option *ngFor="let to of toList" [value]="to.id">
+                {{to.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+        <input type="number" matInput placeholder="{{'TransportManagement.Route.Distance'|translate}}" required pattern="\d+"
+               [(ngModel)]="tempData.Distance" #DistanceModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20" />
+        <mat-error *ngIf="DistanceModel.invalid && DistanceModel.touched">
+            <span *ngIf="DistanceModel.hasError('required')">{{'Common.Required'|translate}}</span>
+            <span *ngIf="DistanceModel.hasError('pattern')">{{'TransportManagement.Route.DistanceError'|translate}}</span>
+        </mat-error>
+    </mat-form-field>
+
+    <div class="col-12">
+        <button class="btn-icon-rounded btn-primary" matTooltip="Save" matTooltipPosition="above" (click)="saveModal()"
+                [disabled]="!(FromPlaceId.valid && ToPlaceId.valid && DistanceModel.valid)">
+            <i class="zmdi zmdi-floppy"></i>
+        </button>
+        <button class="ml-2 btn-icon-rounded btn-secondary" matTooltip="Cancel" matTooltipPosition="above" (click)="closeModal()">
+            <i class="zmdi zmdi-close"></i>
+        </button>
+    </div>
+</ng-template>

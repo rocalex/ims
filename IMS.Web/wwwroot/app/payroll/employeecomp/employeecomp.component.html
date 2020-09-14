@@ -1,0 +1,104 @@
+<div class="page-title d-flex justify-content-between align-items-center">
+  <div class="page-title-wrap">
+    <h2 class="mb-0">{{'Staff.Master.Staffs'|translate}}</h2>
+  </div>
+</div>
+<div class="Shop-grid-wrapper">
+  <div class="shop-head row mb-20">
+    <div class="col-12 col-md-6">
+      <div class="has-wrapper mb-0 form-group">
+        <input name="search" id="search-todo" (keyup)="searchStaff()" [(ngModel)]="search"
+          [ngModelOptions]="{standalone: true}" placeholder="{{'Staff.Master.Staffs'|translate}}" type="search"
+          class="has-input-right input-lg-icon pl-15 form-control">
+        <i class="zmdi zmdi-search search-icon"></i>
+      </div>
+    </div>
+    <button matTooltip="Filter" matTooltipPosition="above" class="ml-2 btn-icon-rounded btn-outline-primary"
+      (click)="openFilter(filterStaff)"><i class="zmdi zmdi-filter-list"></i></button>
+  </div>
+</div>
+<div class="shop-grid">
+  <div class="row">
+    <div class="col-12 col-md-6 col-lg-4 col-xl-3" *ngFor="let staff of filteredData">
+      <div class="rct-block overflow-hidden">
+        <div class="rct-block-content">
+          <div class="product-image mb-20 embed-responsive embed-responsive-1by1">
+            <img [src]="((staff.personalImage)?staff.personalImage:'/assets/img/default_user.png')" alt="staff"
+              class="embed-responsive-item rounded-circle" />
+          </div>
+          <div class="rpoduct-detail row">
+            <h4 class="col-12 mb-15">{{staff.firstName}} {{staff.lastName}}</h4>
+            <div class="col-6 p-2 text-grey">
+              <i class="mr-3 zmdi zmdi-cake zmdi-hc-lg"></i>
+              <span>{{staff.dateOfBirth|date}}</span>
+            </div>
+            <div class="col-6 p-2 text-grey">
+              <i class="mr-3 zmdi zmdi-male-female zmdi-hc-lg"></i>
+              <span>{{staff.maritalStatusMap?.name}}</span>
+            </div>
+            <div class="col-6 p-2 text-grey">
+              <i class="mr-3 zmdi zmdi-calendar-alt zmdi-hc-lg"></i>
+              <span>{{staff.dateOfJoining|date}}</span>
+            </div>
+            <div class="col-6 p-2 text-grey">
+              <i class="mr-3 zmdi zmdi-assignment-account zmdi-hc-lg"></i>
+              <span>{{staff.employeeId}}</span>
+            </div>
+            <div class="col-6 p-2 text-grey">
+              <i class="mr-3 zmdi zmdi-graduation-cap zmdi-hc-lg"></i>
+              <span>{{staff.isTeachingStaff ? 'Yes':'No'}}</span>
+            </div>
+            <div class="col-6 p-2 text-grey">
+              <i class="mr-3 zmdi zmdi-calendar-alt zmdi-hc-lg"></i>
+              <span>{{staff.createdOn|date}}</span>
+            </div>
+          </div>
+          <div class="rct-block-footer-drawer">
+            <a class="btn-icon-rounded btn-outline-primary" *ngIf="isAllowed('Edit')" matTooltip="Edit"
+              matTooltipPosition="above" [hidden]="staff.isArchived" routerLink="/payroll/employeecomponents/mapping/{{staff.id}}"
+              routerLinkActive="active"><i class="zmdi zmdi-edit"></i></a>
+            <a class="btn-icon-rounded btn-outline-primary" *ngIf="isAllowed('Edit')" matTooltip="Edit"
+              matTooltipPosition="above" [hidden]="staff.isArchived" routerLink="/staff/master/{{staff.id}}"
+              routerLinkActive="active"><i class="zmdi zmdi-edit"></i></a>
+            <button class="ml-2 btn-icon-rounded btn-outline-primary" matTooltip="Download Payslip"
+              matTooltipPosition="above" [hidden]="staff.isArchived" (click)="archiveStaff(staff.id)"><i
+                class="zmdi zmdi-archive"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 rct-block rct-block-title text-center" *ngIf="staffs.length==0">
+      {{'Staff.Master.NoStaffAdded'|translate}}
+    </div>
+  </div>
+</div>
+
+<ng-template #filterStaff>
+  <div>
+    <h5>Filter Staff</h5>
+  </div>
+  <mat-form-field>
+    <mat-select placeholder="{{'Staff.Master.SelectGender'|translate}}" [(ngModel)]="genderId" #GenderId="ngModel"
+      [ngModelOptions]="{standalone: true}">
+      <mat-option *ngFor="let gender of initialData.genders" [value]="gender.id">
+        {{gender.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-select placeholder="{{'Staff.Master.SelectTeachingStaff'|translate}}" [(ngModel)]="teachingTypeId"
+      [ngModelOptions]="{standalone: true}">
+      <mat-option *ngFor="let status of initialData.teachingStaffs" [value]="status.id">
+        {{status.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <button class="btn-icon-rounded btn-primary" matTooltip="Search" matTooltipPosition="above"
+    (click)="filterData(); search=''">
+    <i class="zmdi zmdi-search"></i>
+  </button>
+  <button class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="Cancel" matTooltipPosition="above"
+    (click)="closeModal(); search=''">
+    <i class="zmdi zmdi-close"></i>
+  </button>
+</ng-template>

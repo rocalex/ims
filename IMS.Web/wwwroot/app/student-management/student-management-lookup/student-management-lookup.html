@@ -1,0 +1,12 @@
+﻿<div class="horizontal-menu mb-4 d-flex">
+    <ul class="list-unstyled nav">
+        <li *ngFor="let lookUp of lookUps">
+            <a class="nav-link" routerLinkActive="active"
+               [routerLink]="lookUp.Url">
+                <i *ngIf="lookUp.Icon" [class]="lookUp.Icon"></i>
+                <span class="menu-title">{{lookUp.Name}}</span>
+            </a>
+        </li>
+    </ul>
+</div>
+<router-outlet></router-outlet>

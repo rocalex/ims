@@ -1,0 +1,9 @@
+.mat-hostel-card-image {
+    width: 35% !important;
+    height: 200px !important;
+    float: right;
+    position: absolute;
+    margin-right: 10px !important;
+    right: 0;
+    top: 10px;
+}

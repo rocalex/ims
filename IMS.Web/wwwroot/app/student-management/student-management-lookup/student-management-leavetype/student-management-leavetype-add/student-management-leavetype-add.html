@@ -1,0 +1,76 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'StudentManagement.LeaveType.AddLeaveType'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" matTooltip="{{'StudentManagement.LeaveType.LeaveTypes'|translate}}"
+       matTooltipPosition="above" routerLink="/student/lookup/leavetype/list" routerLinkActive="active"><i class="zmdi zmdi-view-list"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-block-content">
+        <mat-form-field class="form-group col-12 col-lg-6">
+            <input type="text" matInput placeholder="{{'StudentManagement.LeaveType.Code'|translate}}" required NoSpaces
+                   [(ngModel)]="baseModel.Code" #CodeModel="ngModel" [ngModelOptions]="{standalone: true}"
+                   maxlength="20" (keydown)="resetError('Code')" />
+            <mat-error *ngIf="CodeModel.invalid && CodeModel.touched">
+                <span *ngIf="CodeModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                <span *ngIf="(!CodeModel.hasError('required') && CodeModel.hasError('whitespace'))">{{'Common.WhiteSpace'|translate}}</span>
+            </mat-error>
+        </mat-form-field>
+        <mat-hint class="mat-error" *ngIf="hasError('Code')">
+            <span>{{error.Message}}</span>
+        </mat-hint>
+        <mat-form-field class="form-group col-12 col-lg-6">
+            <input type="text" matInput placeholder="{{'StudentManagement.LeaveType.Name'|translate}}" required NoSpaces
+                   [(ngModel)]="baseModel.Name" #NameModel="ngModel" [ngModelOptions]="{standalone: true}"
+                   maxlength="20" (keydown)="resetError('Name')" />
+            <mat-error *ngIf="NameModel.invalid && NameModel.touched">
+                <span *ngIf="NameModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                <span *ngIf="(!NameModel.hasError('required') && NameModel.hasError('whitespace'))">{{'Common.WhiteSpace'|translate}}</span>
+            </mat-error>
+        </mat-form-field>
+        <mat-hint class="mat-error" *ngIf="hasError('Name')">
+            <span>{{error.Message}}</span>
+        </mat-hint>
+        <mat-form-field class="form-group col-12 col-lg-6">
+            <input type="number" matInput placeholder="{{'StudentManagement.LeaveType.NumberOfAllowedLeave'|translate}}" required
+                   [(ngModel)]="baseModel.NumberOfAllowedLeave" #NumberOfAllowedLeaveModel="ngModel" [ngModelOptions]="{standalone: true}"
+                   maxlength="2" pattern="^\d*(\.\d{0,0})?$" [min]="1" [max]="99" />
+            <mat-error *ngIf="NumberOfAllowedLeaveModel.invalid && NumberOfAllowedLeaveModel.touched">
+                <span *ngIf="NumberOfAllowedLeaveModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                <span *ngIf="NumberOfAllowedLeaveModel.hasError('pattern')">{{'Institute.Class.DecimalOrNegativeValue'|translate}}</span>
+                <span *ngIf="NumberOfAllowedLeaveModel.hasError('max') || NumberOfAllowedLeaveModel.hasError('min')">{{'StudentManagement.LeaveType.Range'|translate}}</span>
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field class="form-group col-12 col-lg-6">
+            <mat-select placeholder="{{'StudentManagement.LeaveType.SelectType'|translate}}" [(ngModel)]="baseModel.LeaveAssignedTypeEnumDescription"
+                        #LeaveAssignedTypeEnumDescription="ngModel" [ngModelOptions]="{standalone: true}" (selectionChange)="assignUser()" required>
+                <mat-option *ngFor="let assignedType of assignedTypes" [value]="assignedType">
+                    {{assignedType}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="form-group col-12 col-lg-6">
+            <mat-select placeholder="{{'StudentManagement.LeaveType.SelectUser'|translate}}" [(ngModel)]="baseModel.LeaveAssignedTos"
+                        #LeaveAssignedTos="ngModel" [ngModelOptions]="{standalone: true}" multiple required>
+                <mat-optgroup *ngFor="let user of users" [label]="user.name">
+                    <mat-option *ngFor="let item of user.list" [value]="item.id">
+                        {{item.name}}
+                    </mat-option>
+                </mat-optgroup>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="form-group col-12 col-lg-6">
+            <textarea matInput placeholder="{{'StudentManagement.LeaveType.Description'|translate}}"
+                      [(ngModel)]="baseModel.Description" [ngModelOptions]="{standalone: true}"
+                      maxlength="50"></textarea>
+        </mat-form-field>
+        <div class="col-12">
+            <button class="btn-icon-rounded btn-primary" matTooltip="{{'StudentManagement.LeaveType.Save'|translate}}" matTooltipPosition="above" (click)="addInstituteLeaveType()"
+                    [disabled]="!(CodeModel.valid && NameModel.valid && NumberOfAllowedLeaveModel.valid
+                    && LeaveAssignedTypeEnumDescription.valid && LeaveAssignedTos.valid)">
+                <i class="zmdi zmdi-floppy"></i>
+            </button>
+            <a class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="{{'StudentManagement.LeaveType.Cancel'|translate}}" matTooltipPosition="above" routerLink="/student/lookup/leavetype/list" routerLinkActive="active"><i class="zmdi zmdi-close"></i></a>
+        </div>
+    </div>
+</div>

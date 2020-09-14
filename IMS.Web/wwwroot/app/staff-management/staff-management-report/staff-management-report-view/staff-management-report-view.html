@@ -1,0 +1,296 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Staff.Report.Reports'|translate}}</h2>
+    </div>
+    <button class="btn-icon-rounded btn-primary" matTooltip="{{'Common.ExportAsExcel'|translate}}" *ngIf="selectedOrder !== 7 && selectedOrder !== 6"
+            matTooltipPosition="before" [disabled]="!classWiseStaff.length" (click)="exportExcel()">
+        <i class="zmdi zmdi-download"></i>
+    </button>
+    <a class="btn-icon-rounded btn-outline-primary" matTooltip="Details" matTooltipPosition="above" routerLink="/staff/report/list" routerLinkActive="active"><i class="zmdi zmdi-view-list"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-block-content">
+        <div *ngIf="selectedOrder === 1">
+            <mat-form-field class="col-12 col-lg-6">
+                <mat-select placeholder="{{'Staff.Report.FilterByTeachingStaff'|translate}}" (selectionChange)="filterData()"
+                            [(ngModel)]="teachingStaffFilterId" [ngModelOptions]="{standalone: true}">
+                    <mat-option *ngFor="let teachingStaff of initialData.teachingStaffs" [value]="teachingStaff.id">
+                        {{teachingStaff.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <button class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="Refresh" matTooltipPosition="above" (click)="reset('TeachingStaff')"><i class="zmdi zmdi-refresh"></i></button>
+        </div>
+
+        <div *ngIf="selectedOrder === 2">
+            <mat-form-field class="col-12 col-lg-6">
+                <mat-select placeholder="{{'Staff.Report.FilterByClass'|translate}}" (selectionChange)="filterData()"
+                            [(ngModel)]="classFilterId" [ngModelOptions]="{standalone: true}">
+                    <mat-option *ngFor="let class of initialData.classes" [value]="class.id">
+                        {{class.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <button class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="Refresh" matTooltipPosition="above" (click)="reset('Class')"><i class="zmdi zmdi-refresh"></i></button>
+        </div>
+
+        <div *ngIf="selectedOrder === 3">
+            <mat-form-field class="col-12 col-lg-6">
+                <mat-select placeholder="{{'Staff.Report.FilterByReligion'|translate}}" (selectionChange)="filterData()"
+                            [(ngModel)]="religionFilterId" [ngModelOptions]="{standalone: true}">
+                    <mat-option *ngFor="let religion of initialData.religions" [value]="religion.id">
+                        {{religion.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <button class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="Refresh" matTooltipPosition="above" (click)="reset('Religion')"><i class="zmdi zmdi-refresh"></i></button>
+        </div>
+
+        <div *ngIf="selectedOrder === 5">
+            <mat-form-field class="col-12 col-lg-6">
+                <mat-select placeholder="{{'Student.Report.FilterByAttendanceType'|translate}}" (selectionChange)="filterData()"
+                            [(ngModel)]="attendanceTypeSelect" [ngModelOptions]="{standalone: true}">
+                    <mat-option *ngFor="let attendanceType of attendanceTypes" [value]="attendanceType">
+                        {{attendanceType}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <button class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="Reset" matTooltipPosition="above" (click)="reset('AttendanceType')"><i class="zmdi zmdi-refresh"></i></button>
+        </div>
+
+        <div *ngIf="selectedOrder === 7">
+            <mat-form-field class="col-12 col-lg-6">
+                <mat-select placeholder="{{'Student.Report.FilterByStaff'|translate}}" (selectionChange)="filterData()"
+                            [(ngModel)]="staffIdFilter" [ngModelOptions]="{standalone: true}">
+                    <mat-option *ngFor="let staff of staffs" [value]="staff.id">
+                        {{staff.employeeId}} - {{staff.firstName}} {{staff.lastName}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <button class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="Reset" matTooltipPosition="above" (click)="reset('Staff')"><i class="zmdi zmdi-refresh"></i></button>
+        </div>
+
+        <div *ngIf="selectedOrder === 6">
+            <mat-form-field class="col-12 col-lg-6">
+                <mat-select placeholder="{{'Student.Report.FilterByMonth'|translate}}" (selectionChange)="filterData()"
+                            [(ngModel)]="selectedMonth" [ngModelOptions]="{standalone: true}">
+                    <mat-option *ngFor="let monthName of monthNames" [value]="monthName">
+                        {{monthName}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <button class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="Reset" matTooltipPosition="above" (click)="reset('Month')"><i class="zmdi zmdi-refresh"></i></button>
+        </div>
+
+        <mat-form-field class="col-12 col-lg-6">
+            <mat-select placeholder="{{'Staff.Report.FilterByAcademicYear'|translate}}" disabled
+                        [(ngModel)]="academicYearFilterId" [ngModelOptions]="{standalone: true}">
+                <mat-option *ngFor="let academicYear of initialData.academicYears" [value]="academicYear.id">
+                    {{academicYear.academicYearCode}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-accordion *ngFor="let item of classWiseStaff">
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        {{item.name}}
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="rct-block" *ngIf="selectedOrder !== 7 && selectedOrder !== 6">
+                    <div class="rct-full-block">
+                        <div class="table-responsive" *ngIf="selectedOrder !== 5">
+                            <table class="table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>{{'Staff.Master.EmployeeId'|translate}}</th>
+                                        <th>{{'Staff.Report.Name'|translate}}</th>
+                                        <th>{{'Staff.Report.Religion'|translate}}</th>
+                                        <th>{{'Staff.Report.Gender'|translate}}</th>
+                                        <th>{{'Staff.Report.Experience'|translate}}</th>
+                                        <th>{{'Staff.Master.DateOfBirth'|translate}}</th>
+                                        <th>{{'Staff.Master.MobileNumber'|translate}}</th>
+                                        <th>{{'Staff.Master.Email'|translate}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let staff of item.staffs">
+                                        <td>
+                                            <div class="embed-responsive embed-responsive-1by1" style="width:50px;">
+                                                <img [src]="((staff.personalImage)?staff.personalImage:'/assets/img/default_user.png')" alt="staff" class="embed-responsive-item rounded-circle" />
+                                            </div>
+                                        </td>
+                                        <td>{{staff.employeeId}}</td>
+                                        <td>{{staff.firstName}} {{staff.lastName}}</td>
+                                        <td>{{staff.religion?.name}}</td>
+                                        <td>{{staff.gender?.name}}</td>
+                                        <td>0</td>
+                                        <td>{{staff.dateOfBirth|date}}</td>
+                                        <td>{{staff.mobileNumber}}</td>
+                                        <td>{{staff.email}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="rct-block-title text-center" *ngIf="item.staffs.length==0">
+                                {{'Staff.Master.NoStaffAdded'|translate}}
+                            </div>
+                        </div>
+                        <div class="table-responsive" *ngIf="selectedOrder === 5">
+                            <table class="table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>{{'Staff.Report.RollNumber'|translate}}</th>
+                                        <th>{{'Staff.Report.Name'|translate}}</th>
+                                        <th>{{'Staff.Report.Dates'|translate}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let staff of item.staffs">
+                                        <td>
+                                            <div class="embed-responsive embed-responsive-1by1" style="width:50px;">
+                                                <img [src]="((staff.personalImage)?staff.personalImage:'/assets/img/default_user.png')" alt="staff" class="embed-responsive-item rounded-circle" />
+                                            </div>
+                                        </td>
+                                        <td>{{staff.employeeId}}</td>
+                                        <td>{{staff.firstName}} {{staff.lastName}}</td>
+                                        <td>
+                                            <ul *ngFor="let attendance of staff.attendances">
+                                                <li>{{attendance.attendanceDate|date}}</li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="rct-block-title text-center" *ngIf="item.staffs.length==0">
+                                {{'Staff.Report.NoStaffAdded'|translate}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="selectedOrder === 7">
+                    <mat-accordion *ngFor="let staff of item.staffs">
+                        <mat-expansion-panel>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    {{staff.employeeId}} - {{staff.firstName}} {{staff.lastName}}
+                                </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <div class="rct-block" *ngIf="item.name === 'Homework'">
+                                <div class="rct-full-block">
+                                    <div class="table-responsive">
+                                        <table class="table mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>{{'Staff.Report.Date'|translate}}</th>
+                                                    <th>{{'Staff.Report.Message'|translate}}</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let homework of staff.homework">
+                                                    <td>{{homework.date|date}}</td>
+                                                    <td>
+                                                        <ul *ngFor="let message of homework.messages">
+                                                            <li>{{message}}</li>
+                                                        </ul>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <div class="rct-block-title text-center" *ngIf="staff.homework.length==0">
+                                            {{'Staff.Report.NoHomeworkAdded'|translate}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="rct-block" *ngIf="item.name === 'Notice'">
+                                <div class="rct-full-block">
+                                    <div class="table-responsive">
+                                        <table class="table mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>{{'Staff.Report.Date'|translate}}</th>
+                                                    <th>{{'Staff.Report.Message'|translate}}</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let notice of staff.notices">
+                                                    <td>{{notice.noticeDate|date}}</td>
+                                                    <td>{{notice.message}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <div class="rct-block-title text-center" *ngIf="staff.notices.length==0">
+                                            {{'Staff.Report.NoNoticeAdded'|translate}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-expansion-panel>
+                    </mat-accordion>
+                </div>
+                <div class="rct-block" *ngIf="selectedOrder === 6">
+                    <div class="rct-full-block">
+                        <div class="table-responsive">
+                            <table class="table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>{{'Staff.Master.EmployeeId'|translate}}</th>
+                                        <th>{{'Student.Report.Name'|translate}}</th>
+                                        <th *ngFor="let month of allowedMonths">
+                                            {{month}}<br />
+                                            -----------------
+                                            Total Classes<br />
+                                            -----------------
+                                            Attended<br />
+                                            -----------------
+                                            In %
+                                        </th>
+                                        <th>
+                                            Total no. of Classes held<br />
+                                            -----------------
+                                            No. of Classes Attended<br />
+                                            -----------------
+                                            In %
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let staff of item.staffs">
+                                        <td>
+                                            <div class="embed-responsive embed-responsive-1by1" style="width:50px;">
+                                                <img [src]="staff.personalImage" alt="staff" class="embed-responsive-item rounded-circle" />
+                                            </div>
+                                        </td>
+                                        <td>{{staff.employeeId}}</td>
+                                        <td>{{staff.firstName}} {{staff.lastName}}</td>
+                                        <td *ngFor="let month of allowedMonths; let i = index">
+                                            {{staff.attendances[i].total}}<br />
+                                            -----------------<br />
+                                            {{staff.attendances[i].present}}<br />
+                                            -----------------<br />
+                                            {{staff.attendances[i].percentage| number : '.2-2'}}
+                                        </td>
+                                        <td>
+                                            {{getTotalClasses(staff.attendances)}}<br />
+                                            ------------------<br />
+                                            {{getTotalClass()}}<br />
+                                            ------------------<br />
+                                            {{(getTotalClasses(staff.attendances)/getTotalClass()*100)| number : '.2-2'}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="rct-block-title text-center" *ngIf="item.staffs.length==0">
+                                {{'Staff.Report.NoStaffAdded'|translate}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </div>
+</div>

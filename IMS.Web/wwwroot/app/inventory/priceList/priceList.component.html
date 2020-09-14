@@ -1,0 +1,107 @@
+<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Inventory.PriceList.AddPriceList'|translate}}</h2>
+    </div>
+</div>
+<div class="rct-block">
+    <div class="rct-block-content">
+        <mat-form-field class="col-12 col-lg-6">
+            <input type="text" matInput placeholder="{{'Inventory.PriceList.Name'|translate}}" required
+                NoSpaces [(ngModel)]="addPriceList.Name" #RemainingQuantityModel="ngModel"
+                [ngModelOptions]="{standalone: true}" maxlength="20" />
+        </mat-form-field>
+        <mat-form-field class="col-12 col-lg-6">
+            <mat-select placeholder="{{'Inventory.PriceList.Type'|translate}}" [(ngModel)]="addPriceList.typeId"
+                #hostel="ngModel" [ngModelOptions]="{standalone: true}">
+                <mat-option *ngFor="let type of typeList" [value]="type.id">
+                    {{type.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="col-12 col-lg-6">
+            <mat-select placeholder="{{'Inventory.PriceList.Currency'|translate}}" [(ngModel)]="addPriceList.currencyId"
+                #hostel="ngModel" [ngModelOptions]="{standalone: true}">
+                <mat-option *ngFor="let currency of currencyList" [value]="currency.id">
+                    {{currency.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="col-12 col-lg-6">
+            <textarea type="text" matInput placeholder="{{'Inventory.PriceList.Description'|translate}}"
+                #PresentAddressModel="ngModel" [(ngModel)]="addPriceList.description"
+                [ngModelOptions]="{standalone: true}"></textarea>
+        </mat-form-field>
+        <mat-form-field class="col-12 col-lg-6">
+            <mat-select placeholder="{{'Inventory.PriceList.RateType'|translate}}" [(ngModel)]="addPriceList.rateTypeId"
+                #hostel="ngModel" [ngModelOptions]="{standalone: true}">
+                <mat-option *ngFor="let rateType of rateTypeList" [value]="rateType.id">
+                    {{rateType.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="col-12 col-lg-6">
+            <div>
+                <mat-select placeholder="{{'Inventory.PriceList.CustomRate'|translate}}" [(ngModel)]="addPriceList.customRateTypeId"
+                #hostel="ngModel" [ngModelOptions]="{standalone: true}">
+                <mat-option *ngFor="let customRateType of customcustomRateTypeList" [value]="customRateType.id">
+                    {{customRateType.name}}
+                </mat-option>
+            </mat-select>
+            </div>
+            <div>
+                <input type="number" matInput placeholder="{{'Inventory.PriceList.CustomRateValue'|translate}}" required
+                NoSpaces [(ngModel)]="addPriceList.customRateValue" #RemainingQuantityModel="ngModel"
+                [ngModelOptions]="{standalone: true}" maxlength="20" />
+            </div>
+            <div>
+                <mat-select placeholder="{{'Inventory.PriceList.CalculationType'|translate}}" [(ngModel)]="addPriceList.calculationTypeId"
+                #hostel="ngModel" [ngModelOptions]="{standalone: true}">
+                <mat-option *ngFor="let calculationType of calculationTypeList" [value]="calculationType.id">
+                    {{calculationType.name}}
+                </mat-option>
+            </mat-select>
+            </div>
+        </mat-form-field>
+        <div class="col-12">
+            <button class="btn-icon-rounded btn-primary" matTooltip="{{'Inventory.PriceList.Save'|translate}}"
+                matTooltipPosition="above" (click)="save()">
+                <i class="zmdi zmdi-floppy"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="rct-block">
+    <div class="rct-block-content">
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>{{'Inventory.PriceList.Item'|translate}}</th>
+                        <th>{{'Inventory.PriceList.StandardValue'|translate}}</th>
+                        <th>{{'Inventory.PriceList.CustomRate'|translate}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of itemList;let indexOfElement=index;">
+                        <td>{{indexOfElement + 1}}</td>
+                        <td>{{item.description}}</td>
+                        <td>{{item.createdOn}}</td>
+                        <td>
+                            <input type="number" matInput placeholder="{{'Inventory.PriceList.CustomRate'|translate}}" required
+                            NoSpaces [(ngModel)]="item.customRateValue" #RemainingQuantityModel="ngModel"
+                            [ngModelOptions]="{standalone: true}" maxlength="20" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-12">
+            <button class="btn-icon-rounded btn-primary" matTooltip="{{'Inventory.PriceList.Save'|translate}}"
+                matTooltipPosition="above" (click)="save()">
+                <i class="zmdi zmdi-floppy"></i>
+            </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,54 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Staff.Report.Reports'|translate}}</h2>
+    </div>
+</div>
+<div class="rct-block">
+    <div class="table-responsive">
+        <table class="table mb-0">
+            <thead>
+                <tr>
+                    <th>{{'Common.Name'|translate}}</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let report of reports">
+                    <td>{{report.Name}}</td>
+                    <td class="text-right">
+                        <a matTooltip="View" matTooltipPosition="above" routerLink="/staff/report/{{report.Order}}" routerLinkActive="active"><i class="zmdi zmdi-eye zmdi-hc-lg"></i></a>
+                        <i matTooltip="Edit" matTooltipPosition="above" class="zmdi zmdi-edit zmdi-hc-lg ml-3"></i>
+                        <i matTooltip="User" matTooltipPosition="above" class="zmdi zmdi-accounts-outline zmdi-hc-lg ml-3"></i>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Staff.Report.Charts'|translate}}</h2>
+    </div>
+</div>
+<div class="rct-block">
+    <div class="table-responsive">
+        <table class="table mb-0">
+            <thead>
+                <tr>
+                    <th>{{'Common.Name'|translate}}</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let chart of charts">
+                    <td>{{chart.Name}}</td>
+                    <td class="text-right">
+                        <a matTooltip="View" matTooltipPosition="above" routerLink="/staff/report/chart/{{chart.Order}}" routerLinkActive="active"><i class="zmdi zmdi-eye zmdi-hc-lg"></i></a>
+                        <i matTooltip="Edit" matTooltipPosition="above" class="zmdi zmdi-edit zmdi-hc-lg ml-3"></i>
+                        <i matTooltip="User" matTooltipPosition="above" class="zmdi zmdi-accounts-outline zmdi-hc-lg ml-3"></i>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

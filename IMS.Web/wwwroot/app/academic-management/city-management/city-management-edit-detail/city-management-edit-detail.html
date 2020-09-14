@@ -1,0 +1,13 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Academic.City.CityEdit'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" matTooltip="{{'Academic.City.ViewCities'|translate}}" matTooltipPosition="above" routerLink="/academic/city/list" routerLinkActive="active"><i class="zmdi zmdi-view-list"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-block-content">
+        <academic-shared [lookUpData]="baseModel" (saveChanges)="updateInstituteCity($event)" [error]="error" [states]="states"
+                         [countries]="countries" [selectedUrl]="selectedUrl" [selectedState]="selectedState"
+                         [selectedCountry]="selectedCountry"></academic-shared>
+    </div>
+</div>

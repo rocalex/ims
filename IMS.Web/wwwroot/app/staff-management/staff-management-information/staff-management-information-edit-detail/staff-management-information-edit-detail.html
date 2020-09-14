@@ -1,0 +1,453 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Staff.Master.EditStaff'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" matTooltip="Details" matTooltipPosition="above" routerLink="/staff/master/list" routerLinkActive="active"><i class="zmdi zmdi-view-list"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-block-content">
+        <mat-tab-group [selectedIndex]="selectedTab">
+            <mat-tab label="{{'Staff.Master.PersonalInformation'|translate}}" disabled>
+                <div class="row mx-0">
+                    <fieldset class="col-12 col-lg-6">
+                        <mat-form-field>
+                            <input type="text" matInput placeholder="{{'Staff.Master.FirstName'|translate}}" required NoSpaces
+                                   [(ngModel)]="addStaff.FirstName" #FirstNameModel="ngModel" [ngModelOptions]="{standalone: true}"
+                                   maxlength="20" (keydown)="resetError('FirstName')" />
+                            <mat-error *ngIf="FirstNameModel.invalid && FirstNameModel.touched">
+                                <span *ngIf="FirstNameModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                                <span *ngIf="(!FirstNameModel.hasError('required') && FirstNameModel.hasError('whitespace'))">{{'Common.WhiteSpace'|translate}}</span>
+                            </mat-error>
+                            <mat-hint class="mat-error" *ngIf="hasError('FirstName')">
+                                <span>{{error.Message}}</span>
+                            </mat-hint>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input type="text" matInput placeholder="{{'Staff.Master.MiddleName'|translate}}" [(ngModel)]="addStaff.MiddleName"
+                                   #MiddleNameModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20"
+                                   (keydown)="resetError('MiddleName')" />
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input type="text" matInput placeholder="{{'Staff.Master.LastName'|translate}}" required NoSpaces
+                                   [(ngModel)]="addStaff.LastName" #LastNameModel="ngModel" [ngModelOptions]="{standalone: true}"
+                                   maxlength="20" (keydown)="resetError('LastName')" />
+                            <mat-error *ngIf="LastNameModel.invalid && LastNameModel.touched">
+                                <span *ngIf="LastNameModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                                <span *ngIf="(!LastNameModel.hasError('required') && LastNameModel.hasError('whitespace'))">{{'Common.WhiteSpace'|translate}}</span>
+                            </mat-error>
+                            <mat-hint class="mat-error" *ngIf="hasError('LastName')">
+                                <span>{{error.Message}}</span>
+                            </mat-hint>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input matInput [matDatepicker]="dateOfBirth" placeholder="{{'Staff.Master.DateofBirth'|translate}} *"
+                                   [value]="addStaff.DateOfBirth"
+                                   (dateChange)="addStaff.DateOfBirth = $event.value" disabled required>
+                            <mat-datepicker-toggle matSuffix [for]="dateOfBirth"></mat-datepicker-toggle>
+                            <mat-datepicker #dateOfBirth disabled="false"></mat-datepicker>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-select placeholder="{{'Staff.Master.SelectGender'|translate}}" [(ngModel)]="addStaff.GenderId" #GenderId="ngModel" [ngModelOptions]="{standalone: true}" required>
+                                <mat-option *ngFor="let gender of initialData.genders" [value]="gender.id">
+                                    {{gender.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-select placeholder="{{'Staff.Master.SelectMaritalStatus'|translate}}" [(ngModel)]="addStaff.MaritalStatusId" #MartialStatus="ngModel" [ngModelOptions]="{standalone: true}" required>
+                                <mat-option *ngFor="let status of initialData.maritalStatuses" [value]="status.id">
+                                    {{status.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input type="text" matInput placeholder="{{'Staff.Master.Qualification'|translate}}" [(ngModel)]="addStaff.Qualification"
+                                   #QualificationModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20" />
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input matInput [matDatepicker]="dateOfJoining" placeholder="{{'Staff.Master.DateofJoining'|translate}} *"
+                                   [value]="addStaff.DateOfJoining"
+                                   (dateChange)="addStaff.DateOfJoining = $event.value" disabled required>
+                            <mat-datepicker-toggle matSuffix [for]="dateOfJoining"></mat-datepicker-toggle>
+                            <mat-datepicker #dateOfJoining disabled="false"></mat-datepicker>
+                        </mat-form-field>
+                        <div class="form-group">
+                            <mat-slide-toggle [(ngModel)]="addStaff.IsTeachingStaff" [ngModelOptions]="{standalone: true}">{{'Staff.Master.IsTeachingStaff'|translate}}</mat-slide-toggle>
+                        </div>
+                        <mat-form-field>
+                            <mat-select placeholder="{{'Staff.Master.SelectTeachingStaff'|translate}}" [(ngModel)]="addStaff.TeachingStaffId" [ngModelOptions]="{standalone: true}">
+                                <mat-option *ngFor="let status of initialData.teachingStaffs" [value]="status.id">
+                                    {{status.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input type="text" matInput placeholder="{{'Staff.Master.EmployeeId'|translate}}" required NoSpaces readonly
+                                   [(ngModel)]="addStaff.EmployeeId" #EmployeeIdModel="ngModel"
+                                   [ngModelOptions]="{standalone: true}" maxlength="20" (keydown)="resetError('EmployeeId')" />
+                            <mat-error *ngIf="EmployeeIdModel.invalid && EmployeeIdModel.touched">
+                                <span *ngIf="EmployeeIdModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                                <span *ngIf="(!EmployeeIdModel.hasError('required') && EmployeeIdModel.hasError('whitespace'))">{{'Common.WhiteSpace'|translate}}</span>
+                            </mat-error>
+                            <mat-hint class="mat-error" *ngIf="hasError('EmployeeId')">
+                                <span>{{error.Message}}</span>
+                            </mat-hint>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-select placeholder="{{'Staff.Master.SelectDesignation'|translate}}" [(ngModel)]="addStaff.DesignationId" #DesignationId="ngModel" [ngModelOptions]="{standalone: true}" required>
+                                <mat-option *ngFor="let designation of initialData.designations" [value]="designation.id">
+                                    {{designation.designationName}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field>
+                            <mat-select placeholder="{{'Staff.Master.SelectDepartment'|translate}}" [(ngModel)]="addStaff.DepartmentsIdList" #DepartmentIds="ngModel" [ngModelOptions]="{standalone: true}" required multiple>
+                                <mat-option *ngFor="let department of initialData.departments" [value]="department.id">
+                                    {{department.departmentName}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </fieldset>
+                    <fieldset class="col-12 col-lg-6">
+                        <mat-form-field>
+                            <mat-select placeholder="{{'Staff.Master.SelectNationality'|translate}}" [(ngModel)]="addStaff.NationalityId" [ngModelOptions]="{standalone: true}">
+                                <mat-option *ngFor="let nationality of initialData.nationalities" [value]="nationality.id">
+                                    {{nationality.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input type="text" matInput placeholder="{{'Staff.Master.SocialSecurityNumber'|translate}}"
+                                   [(ngModel)]="addStaff.SocialSecurityNumber" #SocialSecurityNumberModel="ngModel"
+                                   [ngModelOptions]="{standalone: true}" maxlength="20" />
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-select placeholder="{{'Staff.Master.SelectMotherTongue'|translate}}" [(ngModel)]="addStaff.MotherTongueId" [ngModelOptions]="{standalone: true}">
+                                <mat-option *ngFor="let motherTongue of initialData.motherTongues" [value]="motherTongue.id">
+                                    {{motherTongue.language}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-select placeholder="{{'Staff.Master.SelectReligion'|translate}}" [(ngModel)]="addStaff.ReligionId" [ngModelOptions]="{standalone: true}">
+                                <mat-option *ngFor="let religion of initialData.religions" [value]="religion.id">
+                                    {{religion.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-select placeholder="{{'Staff.Master.SelectCaste'|translate}}" [(ngModel)]="addStaff.CasteId" [ngModelOptions]="{standalone: true}">
+                                <mat-option *ngFor="let caste of initialData.castes" [value]="caste.id">
+                                    {{caste.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-select placeholder="{{'Staff.Master.SelectBloodGroup'|translate}}" [(ngModel)]="addStaff.BloodGroupId" [ngModelOptions]="{standalone: true}">
+                                <mat-option *ngFor="let bloodGroup of initialData.bloodGroups" [value]="bloodGroup.id">
+                                    {{bloodGroup.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <textarea type="text" matInput placeholder="{{'Staff.Master.IdentificationMarks'|translate}}" maxlength="50"
+                                      [(ngModel)]="addStaff.IdentificationMarks" [ngModelOptions]="{standalone: true}"></textarea>
+                        </mat-form-field>
+                    </fieldset>
+                    <fieldset class="col-12 col-lg-6">
+                        <mat-form-field>
+                            <input type="text" matInput placeholder="{{'Staff.Master.PassportNumber'|translate}}"
+                                   [(ngModel)]="addStaff.PassportNumber" #PassportNumberModel="ngModel"
+                                   [ngModelOptions]="{standalone: true}" maxlength="20" />
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-select placeholder="{{'Staff.Master.SelectIssuedCountry'|translate}}" [(ngModel)]="addStaff.PassportIssuedCountryId" [ngModelOptions]="{standalone: true}">
+                                <mat-option *ngFor="let country of initialData.countries" [value]="country.id">
+                                    {{country.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input matInput [matDatepicker]="passportIssuedDate" placeholder="{{'Staff.Master.IssueDate'|translate}}" [value]="addStaff.PassportIssuedDate"
+                                   (dateChange)="addStaff.PassportIssuedDate = $event.value;changeIssueDate()" disabled [max]="currentDate">
+                            <mat-datepicker-toggle matSuffix [for]="passportIssuedDate"></mat-datepicker-toggle>
+                            <mat-datepicker #passportIssuedDate disabled="false"></mat-datepicker>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input matInput [matDatepicker]="passportExpireDate" placeholder="{{'Staff.Master.ExpiryDate'|translate}}" [value]="addStaff.PassportExpireDate"
+                                   (dateChange)="addStaff.PassportExpireDate = $event.value" disabled [min]="addStaff.PassportIssuedDate">
+                            <mat-datepicker-toggle matSuffix [for]="passportExpireDate"></mat-datepicker-toggle>
+                            <mat-datepicker #passportExpireDate disabled="false"></mat-datepicker>
+                        </mat-form-field>
+                    </fieldset>
+                    <div class="col-12">
+                        <button class="ml-2 btn-icon-rounded btn-primary" matTooltip="Next" matTooltipPosition="above" (click)="selectTab(1)" [disabled]="!(FirstNameModel.valid
+                                && LastNameModel.valid && EmployeeIdModel.valid && (addStaff.DateOfBirth !== undefined
+                                && addStaff.DateOfBirth !==null) && GenderId.valid && MartialStatus.valid
+                                && (addStaff.DateOfJoining !== undefined && addStaff.DateOfJoining !==null) && DesignationId.valid
+                                && (DepartmentIds.valid && addStaff.DepartmentsIdList.length !== 0))">
+                            <i class="zmdi zmdi-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab label="{{'Staff.Master.ContactInformation'|translate}}" disabled>
+                <div class="row mx-0">
+                    <fieldset class="col-12 col-lg-6">
+                        <mat-form-field>
+                            <textarea type="text" matInput placeholder="{{'Staff.Master.PermanentAddress'|translate}}" required
+                                      #PermanentAddressModel="ngModel" [(ngModel)]="addStaff.PermanentAddress" NoSpaces maxlength="50"
+                                      [ngModelOptions]="{standalone: true}" (keydown)="resetError('PermanentAddress')"></textarea>
+                            <mat-error *ngIf="PermanentAddressModel.invalid && PermanentAddressModel.touched">
+                                <span *ngIf="PermanentAddressModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                                <span *ngIf="(!PermanentAddressModel.hasError('required') && PermanentAddressModel.hasError('whitespace'))">{{'Common.WhiteSpace'|translate}}</span>
+                            </mat-error>
+                            <mat-hint class="mat-error" *ngIf="hasError('PermanentAddress')">
+                                <span>{{error.Message}}</span>
+                            </mat-hint>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-select placeholder="{{'Staff.Master.SelectPermanentCity'|translate}}" [(ngModel)]="addStaff.PermanentCityId" #PermanentCityId="ngModel"
+                                        [ngModelOptions]="{standalone: true}" required (selectionChange)="isSameAsPermanent()">
+                                <mat-option *ngFor="let city of initialData.cities" [value]="city.id">
+                                    {{city.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input type="text" matInput placeholder="{{'Staff.Master.PermanentZipcode'|translate}}"
+                                   [(ngModel)]="addStaff.PermanentZipcode" #PermanentZipcodeModel="ngModel"
+                                   [ngModelOptions]="{standalone: true}" maxlength="20" />
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input type="text" matInput placeholder="{{'Staff.Master.MobileNumber'|translate}}"
+                                   [(ngModel)]="addStaff.MobileNumber" required #MobileNumberModel="ngModel"
+                                   [ngModelOptions]="{standalone: true}" pattern="[0-9]*" minlength="10" maxlength="10"
+                                   (keydown)="resetError('MobileNumber')" />
+                            <mat-error *ngIf="MobileNumberModel.invalid && MobileNumberModel.touched">
+                                <span *ngIf="MobileNumberModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                                <span *ngIf="MobileNumberModel.hasError('pattern')">{{'Staff.Master.MobileError'|translate}}</span>
+                            </mat-error>
+                            <mat-hint class="mat-error" *ngIf="hasError('MobileNumber')">
+                                <span>{{error.Message}}</span>
+                            </mat-hint>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input type="text" matInput placeholder="{{'Staff.Master.AlternatePhoneNumber'|translate}}"
+                                   [(ngModel)]="addStaff.AlternatePhoneNumber" #AlternatePhoneNumberModel="ngModel"
+                                   [ngModelOptions]="{standalone: true}" pattern="[0-9]*" minlength="10" maxlength="10"
+                                   (keydown)="resetError('AlternatePhoneNumber')" />
+                            <mat-error *ngIf="AlternatePhoneNumberModel.invalid && AlternatePhoneNumberModel.touched">
+                                <span *ngIf="AlternatePhoneNumberModel.hasError('pattern')">{{'Staff.Master.PhoneNumberError'|translate}}</span>
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input type="text" matInput readonly placeholder="{{'Staff.Master.Email'|translate}}" required
+                                   pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" [(ngModel)]="addStaff.Email"
+                                   #EmailModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="50"
+                                   (keydown)="resetError('Email')" />
+                            <mat-error *ngIf="EmailModel.invalid && EmailModel.touched">
+                                <span *ngIf="EmailModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                                <span *ngIf="EmailModel.hasError('pattern')">
+                                    {{'Staff.Master.EmailError'|translate}}
+                                    <strong> joe@abc.com</strong>
+                                </span>
+                            </mat-error>
+                            <mat-hint class="mat-error" *ngIf="hasError('Email')">
+                                <span>{{error.Message}}</span>
+                            </mat-hint>
+                        </mat-form-field>
+                    </fieldset>
+                    <fieldset class="col-12 col-lg-6">
+                        <div class="form-group">
+                            <mat-slide-toggle [(ngModel)]="addStaff.IsPresentAddressIsSameAsPermanent" (change)="isSameAsPermanent()" [ngModelOptions]="{standalone: true}">
+                                {{'Staff.Master.IsPresentAddressIsSameAsPermanent'|translate}}
+                            </mat-slide-toggle>
+                        </div>
+                        <div [hidden]="addStaff.IsPresentAddressIsSameAsPermanent">
+                            <mat-form-field>
+                                <textarea type="text" matInput placeholder="{{'Staff.Master.PresentAddress'|translate}}" required
+                                          #PresentAddressModel="ngModel" [(ngModel)]="addStaff.PresentAddress" NoSpaces maxlength="50"
+                                          [ngModelOptions]="{standalone: true}" (keydown)="resetError('PresentAddress')"></textarea>
+                                <mat-error *ngIf="PresentAddressModel.invalid && PresentAddressModel.touched">
+                                    <span *ngIf="PresentAddressModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                                    <span *ngIf="(!PresentAddressModel.hasError('required') && PresentAddressModel.hasError('whitespace'))">{{'Common.WhiteSpace'|translate}}</span>
+                                </mat-error>
+                                <mat-hint class="mat-error" *ngIf="hasError('PresentAddress')">
+                                    <span>{{error.Message}}</span>
+                                </mat-hint>
+                            </mat-form-field>
+                            <mat-form-field>
+                                <mat-select placeholder="{{'Staff.Master.SelectPresentCity'|translate}}" [(ngModel)]="addStaff.PresentCityId" #PresentCityId="ngModel" [ngModelOptions]="{standalone: true}" required>
+                                    <mat-option *ngFor="let city of initialData.cities" [value]="city.id">
+                                        {{city.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field>
+                                <input type="text" matInput placeholder="{{'Staff.Master.PresentZipcode'|translate}}"
+                                       [(ngModel)]="addStaff.PresentZipcode" #PresentZipcodeModel="ngModel"
+                                       [ngModelOptions]="{standalone: true}" maxlength="20" />
+                            </mat-form-field>
+                        </div>
+                    </fieldset>
+                    <div class="col-12">
+                        <button class="btn-icon-rounded btn-primary" matTooltip="Back" matTooltipPosition="above" (click)="selectTab(0)"><i class="zmdi zmdi-chevron-left"></i></button>
+                        <button class="ml-2 btn-icon-rounded btn-primary" matTooltip="Next" matTooltipPosition="above" (click)="selectTab(2)"
+                                [disabled]="!(PermanentAddressModel.valid && PermanentCityId.valid && MobileNumberModel.valid
+                                && AlternatePhoneNumberModel.valid && PresentCityId.valid && EmailModel.valid
+                                && PresentAddressModel.valid &&PermanentZipcodeModel.valid && PresentZipcodeModel.valid)">
+                            <i class="zmdi zmdi-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab label="{{'Staff.Master.ExperienceDetails'|translate}}" disabled>
+                <div class="row mx-0">
+                    <div class="col-12 col-lg-6 mb-2">
+                        <div class="list-group mb-2">
+                            <div class="list-group-item" *ngFor="let experience of experienceList">
+                                <ng-container *ngIf="experience.IsEdit">
+                                    <mat-form-field>
+                                        <input type="text" matInput placeholder="{{'Staff.Master.InstituteName'|translate}}" required
+                                               [(ngModel)]="experience.InstituteName" #InstituteNameModel="ngModel" NoSpaces
+                                               [ngModelOptions]="{standalone: true}" maxlength="250" (keydown)="resetError('InstituteName')" />
+                                        <mat-error *ngIf="InstituteNameModel.invalid && InstituteNameModel.touched">
+                                            <span *ngIf="InstituteNameModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                                            <span *ngIf="(!InstituteNameModel.hasError('required') && InstituteNameModel.hasError('whitespace'))">{{'Common.WhiteSpace'|translate}}</span>
+                                        </mat-error>
+                                        <mat-hint class="mat-error" *ngIf="hasError('InstituteName')">
+                                            <span>{{error.Message}}</span>
+                                        </mat-hint>
+                                    </mat-form-field>
+                                    <mat-form-field>
+                                        <input matInput [matDatepicker]="startDate" placeholder="{{'Staff.Master.StartDate'|translate}} *"
+                                               [value]="experience.StartDate" [max]="todayDate"
+                                               (dateChange)="(experience.StartDate = $event.value); checkStartDateEndDate(experience)" disabled required>
+                                        <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+                                        <mat-datepicker #startDate disabled="false"></mat-datepicker>
+                                    </mat-form-field>
+                                    <mat-form-field>
+                                        <input matInput [matDatepicker]="endDate" placeholder="{{'Staff.Master.EndDate'|translate}} *" [value]="experience.EndDate"
+                                               [min]="experience.StartDate" [max]="todayDate"
+                                               (dateChange)="experience.EndDate = $event.value" disabled required>
+                                        <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+                                        <mat-datepicker #endDate disabled="false"></mat-datepicker>
+                                    </mat-form-field>
+                                    <button class="btn-icon-rounded btn-primary" matTooltip="Save" matTooltipPosition="above" (click)="saveExperience(experience)"
+                                            [disabled]="!(InstituteNameModel.valid && experience.StartDate && experience.EndDate)">
+                                        <i class="zmdi zmdi-floppy"></i>
+                                    </button>
+                                    <button class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="Cancel" matTooltipPosition="above" (click)="unEditExperience(experience)"><i class="zmdi zmdi-close"></i></button>
+                                </ng-container>
+                                <div class="d-flex align-items-center" *ngIf="!experience.IsEdit">
+                                    <div class="flex-grow-1">
+                                        {{experience.InstituteName}}
+                                        {{experience.StartDate|date}}
+                                        {{experience.EndDate|date}}
+                                    </div>
+                                    <button mat-icon-button matTooltip="Edit" matTooltipPosition="above" (click)="editExperience(experience)" [disabled]="!isAllowedToSave()"><i class="zmdi zmdi-edit zmdi-hc-lg"></i></button>
+                                    <button mat-icon-button matTooltip="Delete" matTooltipPosition="above" class="ml-1" (click)="removeExperience(experience)"><i class="zmdi zmdi-delete zmdi-hc-lg"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-1" *ngIf="errorMessageForExperience">{{errorMessageForExperience}}</div>
+                        <button class="btn btn-secondary mt-2" [disabled]="!isAllowedToSave()" (click)="addExperienceCard()">{{'Staff.Master.AddExperience'|translate}}</button>
+                    </div>
+                    <div class="col-12">
+                        <button class="btn-icon-rounded btn-primary" matTooltip="Back" matTooltipPosition="above" (click)="selectTab(1)"><i class="zmdi zmdi-chevron-left"></i></button>
+                        <button class="ml-2 btn-icon-rounded btn-primary" matTooltip="Next" matTooltipPosition="above" (click)="selectTab(3)" [disabled]="!isAllowedToSave()"><i class="zmdi zmdi-chevron-right"></i></button>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab label="{{'Staff.Master.Photo'|translate}}" disabled>
+                <div class="row mx-0">
+                    <div class="col-12 col-lg-6 mb-2">
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="fileInput" aria-describedby="fileInput" #fileInput (change)="preview(fileInput.files)" accept=".jpg, .jpeg, .png" />
+                            <label class="custom-file-label" for="fileInput">Choose file</label>
+                        </div>
+                        <img class="img-thumbnail mt-2" [src]="imgURL" height="200" *ngIf="imgURL" />
+                    </div>
+                    <div class="col-12">
+                        <button class="btn-icon-rounded btn-primary" matTooltip="Back" matTooltipPosition="above" (click)="selectTab(2)"><i class="zmdi zmdi-chevron-left"></i></button>
+                        <button class="ml-2 btn-icon-rounded btn-primary" matTooltip="Next" matTooltipPosition="above" (click)="selectTab(4)"><i class="zmdi zmdi-chevron-right"></i></button>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab label="{{'Staff.Master.Gallery'|translate}}" disabled>
+                <div class="row mx-0">
+                    <div class="col-12 col-lg-6 mb-2">
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="gallery" aria-describedby="gallery" #gallery multiple (change)="previewGallery()" accept=".jpg, .jpeg, .png" />
+                            <label class="custom-file-label" for="gallery">Choose file</label>
+                        </div>
+                        <div class="d-flex mt-2">
+                            <div class="flex-shrink-1 mr-1 gallery-item" *ngFor="let imgUrl of gallerys">
+                                <img class="img-thumbnail" [src]="imgUrl.image" height="200" *ngIf="imgUrl">
+                                <em class="zmdi zmdi-close close" (click)="removeImage(imgUrl.id)"></em>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <button class="btn-icon-rounded btn-primary" matTooltip="Back" matTooltipPosition="above" (click)="selectTab(3)"><i class="zmdi zmdi-chevron-left"></i></button>
+                        <button class="ml-2 btn-icon-rounded btn-primary" matTooltip="Save" matTooltipPosition="above" (click)="selectTab(5)"><i class="zmdi zmdi-chevron-right"></i></button>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab label="{{'Student.Information.Documents'|translate}}" disabled>
+                <div class="row mx-0">
+                    <div class="col-12 form-group">
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="document" aria-describedby="document" #document multiple
+                                   (change)="previewDocument()" />
+                            <label class="custom-file-label" for="document">Choose file</label>
+                        </div>
+                        <div class="row mt-2" *ngFor="let document of documents; let i = index">
+                            <mat-form-field class="form-group col-12 col-lg-6">
+                                <input type="text" matInput placeholder="{{'Student.Information.File'|translate}}" readonly
+                                       [(ngModel)]="document.File" [ngModelOptions]="{standalone: true}" maxlength="250" />
+                            </mat-form-field>
+                            <mat-form-field class="form-group col-12 col-lg-6">
+                                <input type="text" matInput placeholder="{{'Student.Information.Name'|translate}}"
+                                       [(ngModel)]="document.Name" [ngModelOptions]="{standalone: true}" maxlength="250" />
+                            </mat-form-field>
+                            <mat-form-field class="form-group col-12 col-lg-6">
+                                <input matInput [matDatepicker]="expiredDate" placeholder="{{'Student.Information.ExpiredDate'|translate}} *"
+                                       (dateChange)="document.ExpiredDate = $event.value" [value]="document.ExpiredDate" disabled required>
+                                <mat-datepicker-toggle matSuffix [for]="expiredDate"></mat-datepicker-toggle>
+                                <mat-datepicker #expiredDate disabled="false"></mat-datepicker>
+                            </mat-form-field>
+                            <mat-form-field class="form-group col-12 col-lg-6">
+                                <input type="text" matInput placeholder="{{'Student.Information.MetaData'|translate}}"
+                                       [(ngModel)]="document.MetaData" [ngModelOptions]="{standalone: true}" maxlength="250" />
+                            </mat-form-field>
+                            <mat-form-field class="form-group col-12 col-lg-6">
+                                <mat-select placeholder="{{'Student.Information.SelectFileType'|translate}}" [(ngModel)]="document.FileType"
+                                            #FileType="ngModel" [ngModelOptions]="{standalone: true}">
+                                    <mat-option *ngFor="let fileType of fileTypes" [value]="fileType">
+                                        {{fileType}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <div class="col-12">
+                                <button class="btn-icon-rounded btn-primary" matTooltip="Remove" matTooltipPosition="above" (click)="removeDocument(i)">
+                                    <i class="zmdi zmdi-close"></i>
+                                </button>
+                                <button class="ml-2 btn-icon-rounded btn-primary" *ngIf="document.FileUrl" matTooltip="Download" matTooltipPosition="above" (click)="downloadFile(document.FileUrl)">
+                                    <i class="zmdi zmdi-download"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <button class="btn-icon-rounded btn-primary" matTooltip="Back" matTooltipPosition="above" (click)="selectTab(4)"><i class="zmdi zmdi-chevron-left"></i></button>
+                        <button class="ml-2 btn-icon-rounded btn-primary" matTooltip="Save" matTooltipPosition="above" (click)="updateStaff()"><i class="zmdi zmdi-floppy"></i></button>
+                        <a class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="{{'Common.Cancel'|translate}}" matTooltipPosition="above" routerLink="/staff/master/list" routerLinkActive="active"><i class="zmdi zmdi-close"></i></a>
+                    </div>
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>

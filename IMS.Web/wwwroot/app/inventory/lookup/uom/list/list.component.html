@@ -1,0 +1,41 @@
+<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Inventory.Lookup.UOM'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" *ngIf="isAllowed('Add')"
+        matTooltip="{{'Inventory.Lookup.Add'|translate}}" matTooltipPosition="before"
+        routerLink="/inventory/lookup/uom/add" routerLinkActive="active"><i class="zmdi zmdi-plus"></i></a>
+</div>
+
+<div class="rct-block">
+        <div class="rct-full-block">
+            <div class="table-responsive">
+                <table class="table mb-0">
+                    <thead>
+                        <tr>
+                            <th>{{'Inventory.Lookup.Code'|translate}}</th>
+                            <th>{{'Inventory.Lookup.Name'|translate}}</th>
+                            <th>{{'Inventory.Lookup.CreatedOn'|translate}}</th>
+                            <th>{{'Inventory.Lookup.Status'|translate}}</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let issueBook of list">
+                            <td>{{issueBook.code}}</td>
+                            <td>{{issueBook.name}}</td>
+                            <td>{{issueBook.createdOn | date}}</td>
+                            <td>{{issueBook.status}}</td>
+                            <td> <a class="nav-link" routerLink="/inventory/lookup/uom/{{issueBook.id}}"
+                                    *ngIf="isAllowed('Edit')" matTooltip="{{'Inventory.Lookup.Edit'|translate}}"
+                                    matTooltipPosition="above" routerLinkActive="active"><i
+                                        class="zmdi zmdi-edit zmdi-hc-lg"></i></a></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="rct-block-title text-center" *ngIf="list.length==0">
+                    {{'Inventory.Lookup.NoItemType'|translate}}
+                </div>
+            </div>
+    </div>
+</div>

@@ -1,0 +1,38 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'StudentManagement.LeaveType.LeaveTypes'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" *ngIf="isAllowed('Add')"
+       matTooltip="{{'StudentManagement.LeaveType.AddLeaveType'|translate}}" matTooltipPosition="before"
+       routerLink="/student/lookup/leavetype/add" routerLinkActive="active"><i class="zmdi zmdi-plus"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-full-block">
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th>{{'StudentManagement.LeaveType.Name'|translate}}</th>
+                        <th>{{'StudentManagement.LeaveType.NumberOfAllowedLeave'|translate}}</th>
+                        <th>{{'StudentManagement.LeaveType.AssignedType'|translate}}</th>
+                        <th>{{'Common.CreatedOn'|translate}}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of LeaveTypes">
+                        <td>{{item.name}}</td>
+                        <td>{{item.numberOfAllowedLeave}}</td>
+                        <td>{{item.leaveAssignedTypeEnumDescription}}</td>
+                        <td>{{item.createdOn|date}}</td>
+                        <td><a routerLink="/student/lookup/leavetype/{{item.id}}" matTooltip="Edit" matTooltipPosition="above" routerLinkActive="active"><i class="zmdi zmdi-edit zmdi-hc-lg"></i></a></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="rct-block-title text-center" *ngIf="LeaveTypes.length==0">
+                {{'StudentManagement.LeaveType.NoLeaveTypeAdded'|translate}}
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,14 @@
+{
+  "name": "ims.api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "apidoc": "apidoc -i Controllers/ -o wwwroot/"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "apidoc": "0.17.6"
+  }
+}

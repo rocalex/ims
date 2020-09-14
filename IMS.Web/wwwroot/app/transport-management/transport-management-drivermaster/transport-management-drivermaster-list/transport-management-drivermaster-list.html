@@ -1,0 +1,55 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'TransportManagement.DriverMaster.DriverMasters'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" *ngIf="isAllowed('Add')"
+       matTooltip="{{'TransportManagement.DriverMaster.AddDriverMaster'|translate}}" matTooltipPosition="before"
+       routerLink="/transportmanagement/drivermaster/add" routerLinkActive="active"><i class="zmdi zmdi-plus"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-full-block">
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th>{{'TransportManagement.DriverMaster.Name'|translate}}</th>
+                        <th>{{'TransportManagement.DriverMaster.Salary'|translate}}</th>
+                        <th>{{'TransportManagement.DriverMaster.DateOfBirth'|translate}}</th>
+                        <th>{{'TransportManagement.DriverMaster.MobileNumber'|translate}}</th>
+                        <th>{{'TransportManagement.DriverMaster.IsDriver'|translate}}</th>
+                        <th>{{'TransportManagement.DriverMaster.LicenseNumber'|translate}}</th>
+                        <th>{{'TransportManagement.DriverMaster.LicenseType'|translate}}</th>
+                        <th>{{'TransportManagement.DriverMaster.DateOfIssue'|translate}}</th>
+                        <th>{{'TransportManagement.DriverMaster.PlaceOfIssue'|translate}}</th>
+                        <th>{{'TransportManagement.DriverMaster.ValidityTill'|translate}}</th>
+                        <th>{{'TransportManagement.DriverMaster.IssuingAuthority'|translate}}</th>
+                        <th>{{'Common.CreatedOn'|translate}}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of drivers">
+                        <td>{{item.name}}</td>
+                        <td>{{item.salary}}</td>
+                        <td>{{item.dateOfBirth|date}}</td>
+                        <td>{{item.mobileNumber}}</td>
+                        <td>{{item.isDriver ? 'Yes': 'No'}}</td>
+                        <td>{{item.licenseNumber}}</td>
+                        <td>{{item.licenseType}}</td>
+                        <td>{{item.dateOfIssue|date}}</td>
+                        <td>{{item.placeOfIssue}}</td>
+                        <td>{{item.validityTill|date}}</td>
+                        <td>{{item.issuingAuthority}}</td>
+                        <td>{{item.createdOn|date}}</td>
+                        <td><a matTooltip="Edit" matTooltipPosition="above"  *ngIf="isAllowed('Edit')"
+                               routerLink="/transportmanagement/drivermaster/{{item.id}}" routerLinkActive="active">
+                            <i class="zmdi zmdi-edit zmdi-hc-lg"></i></a></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="rct-block-title text-center" *ngIf="drivers.length==0">
+                {{'TransportManagement.DriverMaster.NoDriverAdded'|translate}}
+            </div>
+        </div>
+    </div>
+</div>

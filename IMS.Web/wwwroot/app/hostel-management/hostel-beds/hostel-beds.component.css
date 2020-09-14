@@ -1,0 +1,19 @@
+.docs-component-list-category {
+    margin: 20px;
+}
+.docs-component-list-item {
+    display: inline-block;
+    margin: 20px;
+    vertical-align: top;
+    width: 260px;
+}
+.docs-component-list-icon-spacer {
+    flex-grow: 1;
+}
+.docs-component-list-item-icon {
+    margin: 0 0 0 10px;
+    width: 40px;
+    height: 40px;
+    align-self: flex-end;
+    flex-grow: 0;
+}

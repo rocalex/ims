@@ -1,0 +1,80 @@
+<div class="page-title d-flex justify-content-between align-items-center">
+  <div class="page-title-wrap">
+    <h2 class="mb-0">{{'Hostel.Mess.MessManage'|translate}}</h2>
+  </div>
+</div>
+<div class="rct-block">
+  <div class="rct-block-content">
+    <mat-form-field class="col-12 col-lg-6">
+      <mat-select placeholder="{{'Hostel.Mess.Hostel'|translate}}" [(ngModel)]="searchMess.hostelId" #hostel="ngModel"
+        [ngModelOptions]="{standalone: true}" required>
+        <mat-option *ngFor="let hostel of hostelList" [value]="hostel.id">
+          {{hostel.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="form-group col-12 col-lg-6">
+      <input matInput [matDatepicker]="fromDate" placeholder="{{'Hostel.Mess.FromDate'|translate}} *"
+        (dateChange)="searchMess.fromDate = $event.value;" [value]="searchMess.fromDate" [max]="searchMess.EndDate"
+        disabled required>
+      <mat-datepicker-toggle matSuffix [for]="fromDate"></mat-datepicker-toggle>
+      <mat-datepicker #fromDate disabled="false"></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field class="form-group col-12 col-lg-6">
+      <input matInput [matDatepicker]="endDate" placeholder="{{'Hostel.Mess.ToDate'|translate}} *"
+        (dateChange)="searchMess.toDate = $event.value" [value]="searchMess.toDate" [min]="todayDate" disabled required>
+      <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+      <mat-datepicker #endDate disabled="false"></mat-datepicker>
+    </mat-form-field>
+
+    <div class="col-12">
+      <button class="btn-icon-rounded btn-primary" matTooltip="{{'Hostel.Mess.Search'|translate}}"
+        matTooltipPosition="above" (click)="search()">
+        <i class="zmdi zmdi-search"></i>
+      </button>
+    </div>
+  </div>
+  <div class="rct-full-block" *ngIf="isSearched">
+    <div class="table-responsive">
+      <table class="table mb-0">
+        <thead>
+          <tr>
+            <th>{{'Hostel.Mess.Image'|translate}}</th>
+            <th>{{'Hostel.Mess.RollNo'|translate}}</th>
+            <th>{{'Hostel.Mess.Name'|translate}}</th>
+            <th>{{'Hostel.Mess.CardNumber'|translate}}</th>
+            <th>{{'Hostel.Mess.NoOfDays'|translate}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let messManage of messManages">
+            <td>
+              <img [src]="((messManage.student.personalImage)?messManage.student.personalImage:'/assets/img/default_user.png')" alt="staff"
+                class="embed-responsive-item rounded-circle" />
+            </td>
+            <td>{{messManage.student.rollNumber}}</td>
+            <td>{{fullName(messManage.student)}}</td>
+            <td>
+              <input type="text" matInput required placeholder="{{'Hostel.Mess.CardNumber'|translate}}" 
+              [(ngModel)]="messManage.cardNumber" #HostelCautionDeposit="ngModel" [ngModelOptions]="{standalone: true}"/>
+            </td>
+            <td>
+              <input type="text" matInput required placeholder="{{'Hostel.Mess.NoOfDays'|translate}}" 
+                  [(ngModel)]="messManage.duration" #HostelCautionDeposit="ngModel" [ngModelOptions]="{standalone: true}"/>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="rct-block-title text-center" *ngIf="messManages.length==0">
+        {{'Hostel.Mess.NoRecords'|translate}}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="fixed-action-btn" *ngIf="isSearched">
+  <a class="btn-floating btn-lg red waves-effect waves-light" matTooltip="{{'Payroll.Timesheets.Save'|translate}}"
+    matTooltipPosition="above" (click)="save()" routerLinkActive="active">
+    <i class="zmdi zmdi-floppy"></i>
+  </a>
+</div>

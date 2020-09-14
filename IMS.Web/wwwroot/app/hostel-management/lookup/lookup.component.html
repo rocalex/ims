@@ -1,0 +1,13 @@
+<div class="rct-block">
+  <div class="rct-block-content">
+    <mat-form-field class="col-12 col-lg-6">
+      <mat-select placeholder="{{'Hostel.Lookup.Title'|translate}}" [(ngModel)]="lookupType" #hostel="ngModel" (selectionChange)="redirect($event.value)"
+        [ngModelOptions]="{standalone: true}" required>
+        <mat-option *ngFor="let lookup of lookupTypes" [value]="lookup">
+          {{lookup}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>
+<router-outlet></router-outlet>

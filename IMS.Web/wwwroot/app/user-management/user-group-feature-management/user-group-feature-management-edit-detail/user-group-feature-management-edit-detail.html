@@ -1,0 +1,35 @@
+﻿<div class="rct-block">
+    <div class="rct-full-block">
+        <div class="table-responsive">
+            <div *ngFor="let feature of features">
+                <mat-accordion>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                {{feature.Name}}
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div *ngFor="let featureChild of feature.Child">
+                            <mat-accordion>
+                                <mat-expansion-panel>
+                                    <mat-expansion-panel-header>
+                                        <mat-panel-title>
+                                            {{featureChild.Name}}
+                                        </mat-panel-title>
+                                    </mat-expansion-panel-header>
+                                    <mat-slide-toggle class="col-12 col-lg-6" [(ngModel)]="featureChild.Actions.CanView">{{'UserManagement.UserGroupFeature.View'|translate}}</mat-slide-toggle>
+                                    <mat-slide-toggle class="col-12 col-lg-6" [(ngModel)]="featureChild.Actions.CanAdd">{{'UserManagement.UserGroupFeature.Add'|translate}}</mat-slide-toggle>
+                                    <mat-slide-toggle class="col-12 col-lg-6" [(ngModel)]="featureChild.Actions.CanEdit">{{'UserManagement.UserGroupFeature.Edit'|translate}}</mat-slide-toggle>
+                                    <mat-slide-toggle class="col-12 col-lg-6" [(ngModel)]="featureChild.Actions.CanDelete">{{'UserManagement.UserGroupFeature.Delete'|translate}}</mat-slide-toggle>
+                                </mat-expansion-panel>
+                            </mat-accordion>
+                        </div>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
+        </div>
+        <div class="rct-block-content">
+            <button class="btn-icon-rounded btn-primary" matTooltip="Save" matTooltipPosition="above" (click)="bulkUpdateUserGroupFeature()"><i class="zmdi zmdi-floppy"></i> </button>
+        </div>
+    </div>
+</div>

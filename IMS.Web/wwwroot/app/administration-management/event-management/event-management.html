@@ -1,0 +1,12 @@
+﻿<div class="horizontal-menu mb-4 d-flex">
+    <ul class="list-unstyled nav">
+        <li *ngFor="let eventManagementLookUp of eventManagementLookUps">
+            <a class="nav-link" routerLinkActive="active"
+               [routerLink]="eventManagementLookUp.Url">
+                <i *ngIf="eventManagementLookUp.Icon" [class]="eventManagementLookUp.Icon"></i>
+                <span class="menu-title">{{eventManagementLookUp.Name}}</span>
+            </a>
+        </li>
+    </ul>
+</div>
+<router-outlet></router-outlet>

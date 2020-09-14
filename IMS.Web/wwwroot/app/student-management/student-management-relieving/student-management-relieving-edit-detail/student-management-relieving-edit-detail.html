@@ -1,0 +1,40 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'StudentManagement.Relieving.EditRelieving'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" matTooltip="Details" matTooltipPosition="above" routerLink="/student/relieving/list" routerLinkActive="active"><i class="zmdi zmdi-view-list"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-block-content">
+        <form class="row">
+            <mat-card class="col-12 mb-3" *ngIf="student.student">
+                {{student.student.rollNumber}} - {{student.student.firstName}} {{student.student.lastName}}
+            </mat-card>
+            <mat-form-field class="col-12 col-lg-6">
+                <mat-select placeholder="{{'StudentManagement.Relieving.SelectRelievingType'|translate}}" [(ngModel)]="student.studentRelievingDescription"
+                            [ngModelOptions]="{standalone: true}" required #RelievingTypeId="ngModel">
+                    <mat-option *ngFor="let relievingType of relievingTypes" [value]="relievingType">
+                        {{relievingType}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="col-12 col-lg-6">
+                <input matInput [matDatepicker]="relievingDatepicker" placeholder="{{'StudentManagement.Relieving.RelievingDate'|translate}} *"
+                       (dateChange)="student.relievingDate = $event.value" disabled required [value]="student.relievingDate">
+                <mat-datepicker-toggle matSuffix [for]="relievingDatepicker"></mat-datepicker-toggle>
+                <mat-datepicker #relievingDatepicker disabled="false"></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field class="col-12 col-lg-6">
+                <textarea type="text" matInput placeholder="{{'StudentManagement.Relieving.Reason'|translate}}" maxlength="100"
+                          [(ngModel)]="student.reason" [ngModelOptions]="{standalone: true}"></textarea>
+            </mat-form-field>
+            <div class="col-12">
+                <button class="btn-icon-rounded btn-primary" matTooltip="Save" matTooltipPosition="above" (click)="updateStudent()" [disabled]="!(RelievingTypeId.valid &&
+                            (student.relievingDate !== undefined && student.relievingDate !==null))">
+                    <i class="zmdi zmdi-floppy"></i>
+                </button>
+                <a class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="Cancel" matTooltipPosition="above" routerLink="/student/relieving/list" routerLinkActive="active"><i class="zmdi zmdi-close"></i></a>
+            </div>
+        </form>
+    </div>
+</div>

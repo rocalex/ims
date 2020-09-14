@@ -1,0 +1,100 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'StudentFeeManagement.StudentFee.StudentFees'|translate}}</h2>
+    </div>
+</div>
+<div class="rct-block">
+    <div class="rct-block-content">
+        <div class="row mx-0">
+            <fieldset class="col-12 col-lg-6">
+                <mat-form-field>
+                    <mat-select placeholder="{{'Common.Select'|translate}} {{'StudentFeeManagement.StudentFee.CurrentClass'|translate}}" [(ngModel)]="currentSelectedClass"
+                                #CurrentSelectedClassModel="ngModel" [ngModelOptions]="{standalone: true}" required>
+                        <mat-option *ngFor="let class of initialData.classes" [value]="class">
+                            {{class.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-select placeholder="{{'Common.Select'|translate}} {{'StudentFeeManagement.StudentFee.CurrentSection'|translate}}" [(ngModel)]="currentSelectedSection"
+                                #CurrentSelectedSectionModel="ngModel" [ngModelOptions]="{standalone: true}" required>
+                        <mat-option *ngFor="let section of initialData.sections" [value]="section">
+                            {{section.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <button class="btn-icon-rounded btn-primary" matTooltip="Search" matTooltipPosition="above" (click)="getStudentByClassAndSectionId()" [disabled]="!(CurrentSelectedClassModel.valid &&
+                            CurrentSelectedSectionModel.valid)">
+                    <i class="zmdi zmdi-search"></i>
+                </button>
+            </fieldset>
+        </div>
+    </div>
+</div>
+<div class="rct-block">
+    <div class="rct-block-content">
+        <div class="row mx-0">
+            <fieldset class="col-12 col-lg-6">
+                <mat-form-field>
+                    <mat-select placeholder="{{'Common.Select'|translate}} {{'StudentFeeManagement.StudentFee.Student'|translate}}" [(ngModel)]="studentId"
+                                [ngModelOptions]="{standalone: true}" (selectionChange)="getStudentFee(studentId)" required>
+                        <mat-option *ngFor="let student of students" [value]="student.id">
+                            {{student.rollNumber}} - {{student.firstName}} {{student.lastName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </fieldset>
+        </div>
+    </div>
+    <div class="table-responsive" *ngIf="studentFee.studentFeeComponents">
+        <div *ngIf="individualPreviewTable.length; else notRecord">
+            <table class="table mb-0" *ngIf="individualPreviewTable">
+                <thead>
+                    <tr>
+                        <th>{{'Student.Articles.Title'|translate}}</th>
+                        <th *ngFor="let col of previewColumns">{{'StudentFeeManagement.StudentFee.Term'|translate}} {{col}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let studentFeeComponent of individualPreviewTable">
+                        <td>{{studentFeeComponent.Name}}</td>
+                        <td *ngFor="let data of studentFeeComponent.list">
+                            <mat-form-field>
+                                <input type="number" matInput [(ngModel)]="data.amount" [ngModelOptions]="{standalone: true}" />
+                            </mat-form-field>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="p-3">{{'StudentFeeManagement.StudentFee.Discount'|translate}}</div>
+            <table class="table mb-0" *ngIf="discountPreviewTable">
+                <thead>
+                    <tr>
+                        <th>{{'Student.Articles.Title'|translate}}</th>
+                        <th *ngFor="let col of previewColumns">{{'StudentFeeManagement.StudentFee.Term'|translate}} {{col}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let studentFeeComponent of discountPreviewTable">
+                        <td>{{studentFeeComponent.Name}}</td>
+                        <td *ngFor="let data of studentFeeComponent.list">
+                            <mat-form-field>
+                                <input type="number" matInput [(ngModel)]="data.amount" [ngModelOptions]="{standalone: true}" />
+                            </mat-form-field>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="p-3">
+                <button class="btn-icon-rounded btn-primary" matTooltip="Save" matTooltipPosition="above" (click)="updateStudentFee()">
+                    <i class="zmdi zmdi-floppy"></i>
+                </button>
+            </div>
+        </div>
+        <ng-template #notRecord>
+            <div class="rct-block-title text-center">
+                {{'Common.NoRecordFound'|translate}}
+            </div>
+        </ng-template>
+    </div>
+</div>

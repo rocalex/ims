@@ -1,0 +1,49 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Administration.LookUp.LookUps'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary"
+       matTooltip="{{'Administration.LookUp.AddLookUp'|translate}}" matTooltipPosition="before"
+       routerLink="/administration/lookup/add" routerLinkActive="active"><i class="zmdi zmdi-plus"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-full-block">
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th>{{'Administration.LookUp.Code'|translate}}</th>
+                        <th>{{'Administration.LookUp.Name'|translate}}</th>
+                        <th>{{'Administration.LookUp.Description'|translate}}</th>
+                        <th>{{'Administration.LookUp.LookUpMapping'|translate}}</th>
+                        <th>{{'Administration.LookUp.Status'|translate}}</th>
+                        <th>{{'Administration.LookUp.IsDefault'|translate}}</th>
+                        <th>{{'Administration.LookUp.IsSystemRow'|translate}}</th>
+                        <th>{{'Administration.LookUp.IsDeleted'|translate}}</th>
+                        <th>{{'Common.CreatedOn'|translate}}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let lookUp of lookUps">
+                        <td>{{lookUp.code}}</td>
+                        <td>{{lookUp.name}}</td>
+                        <td>{{lookUp.description}}</td>
+                        <td>{{lookUp.lookUp.name}}</td>
+                        <td>{{lookUp.status ? 'Yes':'No'}}</td>
+                        <td>{{lookUp.isDefault ? 'Yes':'No'}}</td>
+                        <td>{{lookUp.isSystemRow ? 'Yes':'No'}}</td>
+                        <td>{{lookUp.isDeleted ? 'Yes':'No'}}</td>
+                        <td>{{lookUp.createdOn|date}}</td>
+                        <td><a routerLink="/administration/lookup/{{lookUp.id}}" matTooltip="Edit" matTooltipPosition="above" routerLinkActive="active"><i class="zmdi zmdi-edit zmdi-hc-lg"></i></a></td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <div class="rct-block-title text-center" *ngIf="lookUps.length==0">
+                {{'Administration.LookUp.NoLookUps'|translate}}
+            </div>
+        </div>
+    </div>
+</div>
+

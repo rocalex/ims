@@ -1,0 +1,33 @@
+﻿<div class="main-container media" [class.sidebar-expanded]="isSidenavExpanded">
+    <app-sidenav class="rct-sidebar sidebar-overlay-dark"
+                 [nav]="nav"></app-sidenav>
+    <div class="rct-sidebar-expand-overlay" (click)="toggleSidenav(false)"></div>
+    <div class="main-page-container media-body">
+        <app-header class="app-header" [nav]="nav" (toggleSidenav)="toggleSidenav($event)" (languageChange)="languageChange($event)"
+                    (directionChange)="directionChange($event)" [institutes]="institutes"
+                    (instituteChange)="instituteChange($event)" [currentInstitute]="selectedInstitute"
+                    [academicYears]="academicYears" [selectedAcademicYear]="selectedAcademicYear" (academicYearChange)="academicYearChange($event)"></app-header>
+        <div class="rct-page rct-page-content">
+            <router-outlet></router-outlet>
+        </div>
+        <app-theme [direction]="direction"></app-theme>
+        <ng-template let-data let-dialogRef="dialogRef">
+            <div>
+                <h5>Institute Selection</h5>
+            </div>
+            <div>
+                <mat-form-field>
+                    <mat-select placeholder="Select Institute" [(ngModel)]="selectedInstitute" [ngModelOptions]="{standalone: true}"
+                                (selectionChange)="closeModal(dialogRef)" autoFocus required>
+                        <mat-option *ngFor="let institute of institutes" [value]="institute">
+                            {{institute.institute.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </ng-template>
+    </div>
+</div>
+<div class="page-loder" *ngIf="loader">
+    <div class="loader"></div>
+</div>

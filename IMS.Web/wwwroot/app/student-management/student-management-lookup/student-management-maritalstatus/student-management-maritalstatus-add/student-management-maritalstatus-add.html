@@ -1,0 +1,15 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+  <div class="page-title-wrap">
+    <h2 class="mb-0">{{'StudentManagement.MaritalStatus.AddMaritalStatus'|translate}}</h2>
+  </div>
+  <a class="btn-icon-rounded btn-outline-primary" matTooltip="Details" matTooltipPosition="above" routerLink="/student/lookup/maritalstatus/list" routerLinkActive="active"><i class="zmdi zmdi-view-list"></i></a>
+</div>
+<div class="row">
+  <div class="col-12 col-lg-6">
+    <div class="rct-block">
+      <div class="rct-block-content">
+          <look-up-shared [lookUpData]="baseModel" (saveChanges)="addInstituteMaritalStatus($event)" [error]="error"></look-up-shared>
+      </div>
+    </div>
+  </div>
+</div>

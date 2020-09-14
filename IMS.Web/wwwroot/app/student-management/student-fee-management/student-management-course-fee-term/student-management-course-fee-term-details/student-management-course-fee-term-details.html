@@ -1,0 +1,109 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'StudentManagement.FeeManagement.UpdateCourseFeeTerms'|translate}}</h2>
+    </div>
+</div>
+
+<div class="rct-block">
+    <div class="rct-block-content">
+        <form class="row">
+            <mat-form-field class="col-12 col-lg-6">
+                <input type="text" matInput placeholder="{{'Institute.TimeTable.ClassName'|translate}}" [(ngModel)]="class.Name"
+                       #instituteClassModel="ngModel" [ngModelOptions]="{standalone: true}" disabled />
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <mat-select placeholder="{{'Institute.AcademicYear.SelectAcademicYear'|translate}}" [(ngModel)]="addCourseFeeTerm.courseFeeTermAc.academicYearId" #academicYear="ngModel"
+                            [ngModelOptions]="{standalone: true}" required [disabled]="!isEditable"
+                            (selectionChange)="getCourseFeeTermByAcademicYear(addCourseFeeTerm.courseFeeTermAc.academicYearId, addCourseFeeTerm.courseFeeTermAc.religionId)">
+                    <mat-option *ngFor="let academicYear of academicYearsList" [value]="academicYear.id">
+                        {{academicYear.academicYearCode}}
+                    </mat-option>
+                </mat-select>
+
+                <mat-error *ngIf="academicYear.invalid && academicYear.touched">
+                    <span *ngIf="academicYear.hasError('required')">{{'Common.Required'|translate}}</span>
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <mat-select placeholder="{{'StudentManagement.FeeManagement.SelectReligion'|translate}}" [(ngModel)]="addCourseFeeTerm.courseFeeTermAc.religionId" #religionModel="ngModel"
+                            [ngModelOptions]="{standalone: true}" required
+                            (selectionChange)="getCourseFeeTermByAcademicYear(addCourseFeeTerm.courseFeeTermAc.academicYearId, addCourseFeeTerm.courseFeeTermAc.religionId)">
+                    <mat-option *ngFor="let religion of religionsList" [value]="religion.id">
+                        {{religion.name}}
+                    </mat-option>
+                </mat-select>
+
+                <mat-error *ngIf="religionModel.invalid && religionModel.touched">
+                    <span *ngIf="religionModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <mat-select placeholder="{{'StudentManagement.FeeManagement.SelectFeeTerm'|translate}}" [(ngModel)]="addCourseFeeTerm.term" #feeTermModel="ngModel"
+                            [ngModelOptions]="{standalone: true}" required (selectionChange)="getDistributedFeeStructure()">
+                    <mat-option *ngFor="let feeTerm of feeTermList" [value]="feeTerm.key">
+                        {{feeTerm.value}}
+                    </mat-option>
+                </mat-select>
+
+                <mat-error *ngIf="feeTermModel.invalid && feeTermModel.touched">
+                    <span *ngIf="feeTermModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <input matInput [matDatepicker]="dueDate" placeholder="{{'StudentManagement.FeeManagement.DueDate'|translate}} *"
+                       (dateChange)="addCourseFeeTerm.courseFeeTermAc.dueDate = $event.value" disabled required [value]="addCourseFeeTerm.courseFeeTermAc.dueDate">
+                <mat-datepicker-toggle matSuffix [for]="dueDate"></mat-datepicker-toggle>
+                <mat-datepicker #dueDate disabled="false"></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <input matInput type="number" [(ngModel)]="addCourseFeeTerm.courseFeeTermAc.lateFee" placeholder="{{'StudentManagement.FeeManagement.LateFee'|translate}}"
+                       #lateFeeModel="ngModel" [ngModelOptions]="{standalone: true}" required min="0" [disabled]="!isEditable" />
+
+                <mat-error *ngIf="lateFeeModel.invalid && lateFeeModel.touched">
+                    <span *ngIf="lateFeeModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                </mat-error>
+            </mat-form-field>
+        </form>
+    </div>
+</div>
+
+<div class="mt-3 rct-block" *ngIf="addCourseFeeTerm.courseFeeTermDetailsList.length > 0">
+    <div class="rct-full-block">
+        <div class="table-responsive">
+            <table class="table table-bordered mb-0">
+                <thead>
+                    <tr>
+                        <th>{{'StudentManagement.FeeManagement.Component'|translate}}</th>
+                        <th>{{'StudentManagement.FeeManagement.Amount'|translate}}</th>
+                        <th hidden></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let courseFeeTermDetail of addCourseFeeTerm.courseFeeTermDetailsList">
+                        <td>{{courseFeeTermDetail.feeComponentName}}</td>
+                        <td>
+                            <input matInput type="number" [(ngModel)]="courseFeeTermDetail.amount" [disabled]="!isEditable"
+                                   #amountModel="ngModel" [ngModelOptions]="{standalone: true}" required min="0" />
+                        </td>
+                        <td hidden>{{courseFeeTermDetail.feeComponentId}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <button class="m-3 btn-icon-rounded btn-primary" matTooltip="Save" matTooltipPosition="above" (click)="saveCourseFeeDetails()"
+                [disabled]="!(academicYear.valid && religionModel.valid && feeTermModel.valid && lateFeeModel.valid
+                && (addCourseFeeTerm.courseFeeTermAc.dueDate !== null && addCourseFeeTerm.courseFeeTermAc.dueDate !== undefined)) || !isEditable">
+            <i class="zmdi zmdi-floppy"></i>
+        </button>
+
+        <a class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="{{'Common.Cancel'|translate}}" matTooltipPosition="above" 
+           routerLink="/student/feemanagement/coursefeeterms" routerLinkActive="active">
+            <i class="zmdi zmdi-close"></i>
+        </a>
+    </div>
+</div>

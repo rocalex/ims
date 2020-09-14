@@ -1,0 +1,69 @@
+<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+      <h2 class="mb-0">{{'Hostel.Allocate.Title'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" matTooltip="{{'Hostel.Allocate.Save'|translate}}" matTooltipPosition="above"
+      (click)="save()"><i class="zmdi zmdi-floppy"></i></a>
+  </div>
+  <div class="rct-block">
+    <div class="rct-block-content">
+      <mat-form-field class="col-12 col-lg-6">
+        <mat-select placeholder="{{'Hostel.Allocate.Hostel'|translate}}" [(ngModel)]="hostelId" #hostel="ngModel" (selectionChange)="getBlockListByHostelId($event.value)"
+          [ngModelOptions]="{standalone: true}" required>
+          <mat-option *ngFor="let hostel of hostelList" [value]="hostel.id">
+            {{hostel.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+  
+      <mat-form-field class="col-12 col-lg-6">
+        <mat-select placeholder="{{'Hostel.Allocate.Block'|translate}}" [(ngModel)]="blockId" #block="ngModel" (selectionChange)="generateFloor($event.value)"
+          [ngModelOptions]="{standalone: true}" required>
+          <mat-option *ngFor="let block of blockList" [value]="block">
+            {{block.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      
+      <mat-form-field class="col-12 col-lg-6">
+        <mat-select placeholder="{{'Hostel.Allocate.Floor'|translate}}" [(ngModel)]="floorId" #floor="ngModel" (selectionChange)="getRoomBed($event.value)"
+          [ngModelOptions]="{standalone: true}" required>
+          <mat-option *ngFor="let floor of floorList" [value]="floor.floorNo">
+            {{floor.floorName}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div class="col-12">
+        <button class="btn-icon-rounded btn-primary" mattooltip="Search" mattooltipposition="above" (click)="search()"
+          aria-describedby="cdk-describedby-message-49" cdk-describedby-host="" ng-reflect-position="above"
+          ng-reflect-message="Search"><i class="zmdi zmdi-search"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="rct-block" *ngIf="results.length > 0">
+    <div class="rct-full-block">
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th>{{'Hostel.Report.RoomNo'|translate}}</th>
+                        <th>{{'Hostel.Report.BedNo'|translate}}</th>
+                        <th>{{'Hostel.Report.RollNo'|translate}}</th>
+                        <th>{{'Hostel.Report.Name'|translate}}</th>
+                        <th>{{'Hostel.Report.Status'|translate}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let result of results">
+                        <td>{{result.roomNo}}</td>
+                        <td>{{result.bedNo}}</td>
+                        <td>{{result.rollNo}}</td>
+                        <td>{{fullName(result)}}</td>
+                        <td>{{result.status}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+  </div>

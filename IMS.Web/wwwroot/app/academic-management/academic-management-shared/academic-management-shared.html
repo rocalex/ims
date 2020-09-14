@@ -1,0 +1,61 @@
+﻿<form class="row">
+    <mat-form-field class="col-12 col-lg-6">
+        <input type="text" matInput placeholder="{{'StudentManagement.LookUp.Name'|translate}}" required NoSpaces
+               [(ngModel)]="lookUpData.Name" #NameModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20"
+               (keydown)="resetError('Name')" />
+
+        <mat-error *ngIf="NameModel.invalid && NameModel.touched">
+            <span *ngIf="NameModel.hasError('required')">{{'Common.Required'|translate}}</span>
+            <span *ngIf="(!NameModel.hasError('required') && NameModel.hasError('whitespace'))">{{'StudentManagement.LookUp.NameWhitespaceError'|translate}}</span>
+        </mat-error>
+
+        <mat-hint *ngIf="hasError('Name')">
+            <span class="form-text text-danger">{{error.Message}}</span>
+        </mat-hint>
+    </mat-form-field>
+
+    <mat-form-field class="col-12 col-lg-6">
+        <input type="text" matInput placeholder="{{'StudentManagement.LookUp.Code'|translate}}" required NoSpaces
+               [(ngModel)]="lookUpData.Code" #CodeModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20"
+               (keydown)="resetError('Code')" />
+
+        <mat-error *ngIf="CodeModel.invalid && CodeModel.touched">
+            <span *ngIf="CodeModel.hasError('required')">{{'Common.Required'|translate}}</span>
+            <span *ngIf="(!CodeModel.hasError('required') && CodeModel.hasError('whitespace'))">{{'StudentManagement.LookUp.CodeWhitespaceError'|translate}}</span>
+        </mat-error>
+
+        <mat-hint *ngIf="hasError('Code')">
+            <span class="form-text text-danger">{{error.Message}}</span>
+        </mat-hint>
+    </mat-form-field>
+
+    <mat-form-field class="col-12 col-lg-6">
+        <textarea type="text" matInput placeholder="{{'StudentManagement.LookUp.Description'|translate}}"
+                  [(ngModel)]="lookUpData.Description" [ngModelOptions]="{standalone: true}" maxlength="50"></textarea>
+    </mat-form-field>
+
+    <mat-form-field class="col-12 col-lg-6" *ngIf="countries.length">
+        <mat-select placeholder="{{'StudentManagement.LookUp.SelectCountry'|translate}}" [(ngModel)]="selectedCountry" [ngModelOptions]="{standalone: true}"
+                    (selectionChange)="getStates()" required>
+            <mat-option *ngFor="let country of countries" [value]="country">
+                {{country.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="col-12 col-lg-6" *ngIf="selectedUrl === 'city'">
+        <mat-select placeholder="{{'StudentManagement.LookUp.SelectState'|translate}}" [disabled]="states.length === 0" [(ngModel)]="selectedState" [ngModelOptions]="{standalone: true}" required>
+            <mat-option *ngFor="let state of states" [value]="state">
+                {{state.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <div class="col-12">
+        <button class="btn-icon-rounded btn-primary" matTooltip="Save" matTooltipPosition="above" (click)="add()" 
+                [disabled]="!(NameModel.valid && CodeModel.valid && isAllowedForCountry() && isAllowedForState())">
+            <i class="zmdi zmdi-floppy"></i>
+        </button>
+        <a class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="Cancel" matTooltipPosition="above" routerLink="/academic/{{selectedUrl}}/list" routerLinkActive="active"><i class="zmdi zmdi-close"></i></a>
+    </div>
+</form>

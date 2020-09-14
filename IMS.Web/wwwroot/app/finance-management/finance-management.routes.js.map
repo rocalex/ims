@@ -1,0 +1,1 @@
+{"version":3,"file":"finance-management.routes.js","sourceRoot":"","sources":["finance-management.routes.ts"],"names":[],"mappings":";;AAAA,4CAAuD;AAEvD,MAAM,uBAAuB,GAAW;IACpC;QACI,IAAI,EAAE,SAAS;QACf,QAAQ,EAAE;YACN,EAAE,IAAI,EAAE,EAAE,EAAE,UAAU,EAAE,SAAS,EAAE,SAAS,EAAE,MAAM,EAAE;SACzD;KACJ;CAEJ,CAAC;AACW,QAAA,wBAAwB,GAAG,qBAAY,CAAC,OAAO,CAAC,uBAAuB,CAAC,CAAC"}

@@ -1,0 +1,69 @@
+<div class="page-title d-flex justify-content-between align-items-center">
+  <div class="page-title-wrap">
+      <h2 class="mb-0">{{'Library.Issuebook.EditIssueBook'|translate}}</h2>
+  </div>
+  <a class="btn-icon-rounded btn-outline-primary" matTooltip="Details" matTooltipPosition="above" routerLink="/library/issuebook" rIssuebookouterLinkActive="active"><i class="zmdi zmdi-view-list"></i></a>
+</div>
+<div class="rct-block">
+  <div class="rct-block-content">
+    <mat-form-field class="col-12 col-lg-6">
+      <mat-select placeholder="{{'Library.Issuebook.UserType'|translate}}" [(ngModel)]="addIssuebook.userType"
+                  #usertype="ngModel" [ngModelOptions]="{standalone: true}" required>
+          <mat-option *ngFor="let usertype of userTypeList" [value]="usertype.id">
+              {{usertype.label}}
+          </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="col-12 col-lg-6" *ngIf="addIssuebook.userType == 0">
+      <mat-select placeholder="{{'Library.Issuebook.IssueBookTo'|translate}}" [(ngModel)]="addIssuebook.studentId"
+                  #issueBookTo="ngModel" [ngModelOptions]="{standalone: true}" required>
+          <mat-option *ngFor="let student of studentList" [value]="student.id">
+              {{fullName(student)}}
+          </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="col-12 col-lg-6" *ngIf="addIssuebook.userType != 0">
+        <mat-select placeholder="{{'Library.Issuebook.IssueBookTo'|translate}}" [(ngModel)]="addIssuebook.staffId"
+                    #issueBookTo="ngModel" [ngModelOptions]="{standalone: true}" required>
+            <mat-option *ngFor="let staff of staffList" [value]="staff.id">
+              {{fullName(staff)}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field class="col-12 col-lg-6">
+      <mat-select placeholder="{{'Library.Issuebook.BookName'|translate}}" [(ngModel)]="addIssuebook.book" (selectionChange)="changeBook($event.value)"
+                  #bookName="ngModel" [ngModelOptions]="{standalone: true}" required>
+          <mat-option *ngFor="let book of bookList" [value]="book">
+              {{book.name}}
+          </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="col-12 col-lg-6">
+      <input matInput [matDatepicker]="startDate" placeholder="{{'Library.Issuebook.IssueDate'|translate}}"
+              [value]="addIssuebook.issueDate" [max]="currentDate"
+              (dateChange)="addIssuebook.issueDate = $event.value" disabled required />
+      <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+      <mat-datepicker #startDate disabled="false"></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field class="col-12 col-lg-6">
+        <input type="text" matInput placeholder="{{'Library.Issuebook.RemainingQuantity'|translate}}" required NoSpaces
+                [(ngModel)]="remaining" #RemainingQuantityModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20" disabled/>
+    </mat-form-field>
+    <mat-form-field class="col-12 col-lg-6">
+        <input type="text" matInput placeholder="{{'Library.Issuebook.ReferenceNo'|translate}}" required NoSpaces
+                [(ngModel)]="addIssuebook.refNo" #ReferenceNoModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20"/>
+    </mat-form-field>
+    <div class="col-12 col-lg-6">
+      <textarea type="text" matInput placeholder="{{'Library.Issuebook.Description'|translate}}" #PresentAddressModel="ngModel"
+                [(ngModel)]="addIssuebook.description" [ngModelOptions]="{standalone: true}"></textarea>
+    </div>
+
+    <div class="col-12">
+      <button class="btn-icon-rounded btn-primary" matTooltip="{{'Library.Issuebook.Save'|translate}}" matTooltipPosition="above" (click)="add()">
+          <i class="zmdi zmdi-floppy"></i>
+      </button>
+      <a class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="{{'Library.Issuebook.Cancel'|translate}}" matTooltipPosition="above" routerLink="/library/issuebook" rIssuebookouterLinkActive="active"><i class="zmdi zmdi-close"></i></a>
+    </div>
+  </div>
+</div>
+  

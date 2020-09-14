@@ -1,0 +1,33 @@
+﻿import { Component, OnInit } from '@angular/core';
+import { SharedService } from '../../../shared/shared.service';
+import { UserGroupFeatureParentEnum, UserGroupFeatureChildEnum } from '../../../shared/sidenav/sidenav.model';
+
+@Component({
+    moduleId: module.id,
+    templateUrl: 'staff-management-activities.html'
+})
+export class StaffManagementActivitiesComponent implements OnInit {
+    permissions: any[] = [];
+    constructor(private sharedService: SharedService) {
+    }
+
+    ngOnInit() {
+        this.sharedService.permission.subscribe(res => {
+            this.permissions = res;
+        });
+    }
+
+    isAllowed(name: string) {
+        if (this.permissions.length) {
+            var data = this.permissions.find(x => x.userGroupFeatureParent === UserGroupFeatureParentEnum.Staff
+                && x.userGroupFeatureChild === UserGroupFeatureChildEnum[name]);
+            if (data) {
+                return data.canView;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+}

@@ -1,0 +1,50 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'FinanceManagement.GeneralPayment.BasicPayments'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" *ngIf="isAllowed('Add')"
+       matTooltip="{{'FinanceManagement.GeneralPayment.AddBasicPayment'|translate}}" matTooltipPosition="before"
+       routerLink="/finance/payment/add" routerLinkActive="active"><i class="zmdi zmdi-plus"></i></a>
+</div>
+
+<div class="rct-block">
+    <div class="rct-full-block">
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th>{{'FinanceManagement.GeneralPayment.Code'|translate}}</th>
+                        <th>{{'FinanceManagement.GeneralPayment.PaymentDate'|translate}}</th>
+                        <th>{{'FinanceManagement.GeneralPayment.PaymentType'|translate}}</th>
+                        <th>{{'FinanceManagement.GeneralPayment.PaymentReference'|translate}}</th>
+                        <th>{{'FinanceManagement.GeneralPayment.ReferenceCode'|translate}}</th>
+                        <th>{{'FinanceManagement.GeneralPayment.ReferenceDate'|translate}}</th>
+                        <th>{{'FinanceManagement.GeneralPayment.PaymentBy'|translate}}</th>
+                        <th>{{'FinanceManagement.GeneralPayment.PaidTo'|translate}}</th>
+                        <th>{{'FinanceManagement.GeneralPayment.Amount'|translate}}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let payments of paymentsList">
+                        <td>{{payments.code}}</td>
+                        <td>{{payments.paymentDate|date}}</td>
+                        <td>{{payments.paymentType?.name}}</td>
+                        <td>{{payments.paymentReferenceName}}</td>
+                        <td>{{payments.referenceCode}}</td>
+                        <td>{{payments.referenceDate|date}}</td>
+                        <td>{{payments.paymentByUser?.name}}</td>
+                        <td>{{payments.paidToChartOfAccounts?.code}} - {{payments.paidToChartOfAccounts?.name}}</td>
+                        <td>{{payments.amount}}</td>
+                        <td> <a class="nav-link" matTooltip="{{'FinanceManagement.GeneralPayment.EditBasicPayment'|translate}}" *ngIf="isAllowed('Edit')"
+                                matTooltipPosition="above" routerLink="/finance/payment/{{payments.id}}" routerLinkActive="active">
+                            <i class="zmdi zmdi-edit zmdi-hc-lg"></i></a></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="rct-block-title text-center" *ngIf="paymentsList.length==0">
+                {{'FinanceManagement.GeneralPayment.NoBasicPayments'|translate}}
+            </div>
+        </div>
+    </div>
+</div>

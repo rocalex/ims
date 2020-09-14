@@ -1,0 +1,84 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Institute.ClassSubjectMapping.ClassSubjectMappings'|translate}}</h2>
+    </div>
+</div>
+<div class="rct-block">
+    <div class="rct-full-block">
+        <div class="row mx-0 py-3">
+            <div class="col-12 col-lg-6">
+                <mat-form-field>
+                    <mat-select placeholder="{{'Institute.ClassSubjectMapping.SelectClass'|translate}}" [(ngModel)]="selectedClassId" #selectedClass="ngModel"
+                                [ngModelOptions]="{standalone: true}" required (selectionChange)="getClassSubjectMappingDetails()">
+                        <mat-option *ngFor="let class of classes" [value]="class.id">
+                            {{class.name}}
+                        </mat-option>
+                    </mat-select>
+
+                    <mat-error *ngIf="selectedClass.invalid && selectedClass.touched">
+                        <span *ngIf="selectedClass.hasError('required')">{{'Common.Required'|translate}}</span>
+                    </mat-error>
+                </mat-form-field>
+                <mat-error *ngIf="errorMessage">
+                    <span>{{errorMessage}}</span>
+                </mat-error>
+            </div>
+        </div>
+        <div class="table-responsive" *ngIf="selectedClassId">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>{{'Institute.Subject.Subjects'|translate}}</th>
+                        <th>{{'Institute.ClassSubjectMapping.Faculty'|translate}}</th>
+                        <th>{{'Institute.ClassSubjectMapping.AlternateFaculty'|translate}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let classSubjectMapping of classSubjectMappings">
+                        <td>
+                            <mat-checkbox [(ngModel)]="classSubjectMapping.isMapped" (change)="mapClassSubject(classSubjectMapping)"
+                                          [ngModelOptions]="{standalone: true}"></mat-checkbox>
+                        </td>
+                        <td>
+                            {{classSubjectMapping.subjectName}}
+                        </td>
+                        <td>
+                            <mat-form-field>
+                                <mat-select placeholder="{{'Institute.ClassSubjectMapping.SelectFaculty'|translate}}" [(ngModel)]="classSubjectMapping.facultyId" #facultyModel="ngModel" required
+                                            [ngModelOptions]="{standalone: true}" [disabled]="!classSubjectMapping.isMapped" (selectionChange)="updateAssignedStaff(classSubjectMapping)">
+                                    <mat-option *ngFor="let faculty of faculties" [value]="faculty.id">
+                                        {{faculty.employeeId}} - {{faculty.firstName}}
+                                    </mat-option>
+                                </mat-select>
+
+                                <mat-error *ngIf="facultyModel.invalid && facultyModel.touched">
+                                    <span *ngIf="facultyModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                                </mat-error>
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field>
+                                <mat-select placeholder="{{'Institute.ClassSubjectMapping.SelectAlternateFaculty'|translate}}" [(ngModel)]="classSubjectMapping.alternateFacultyId"
+                                            #alternateFacultyModel="ngModel" [ngModelOptions]="{standalone: true}" required
+                                            [disabled]="!classSubjectMapping.isMapped" (selectionChange)="updateAssignedStaff(classSubjectMapping)">
+                                    <mat-option *ngFor="let faculty of faculties" [value]="faculty.id">
+                                        {{faculty.employeeId}} - {{faculty.firstName}}
+                                    </mat-option>
+                                </mat-select>
+
+                                <mat-error *ngIf="alternateFacultyModel.invalid && alternateFacultyModel.touched">
+                                    <span *ngIf="alternateFacultyModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                                </mat-error>
+                            </mat-form-field>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="rct-block-content">
+        <button class="btn-icon-rounded btn-primary" matTooltip="Save" matTooltipPosition="above" (click)="bulkUpdateClassSubjectMappings()"><i class="zmdi zmdi-floppy"></i></button>
+        <button class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="Cancel" matTooltipPosition="above" (click)="cancelEditing()"><i class="zmdi zmdi-close"></i></button>
+    </div>
+</div>

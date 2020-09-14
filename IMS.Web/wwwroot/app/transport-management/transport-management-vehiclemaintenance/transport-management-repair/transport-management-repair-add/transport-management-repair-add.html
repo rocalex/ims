@@ -1,0 +1,61 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'TransportManagement.Repair.AddRepair'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" matTooltip="Details" matTooltipPosition="above" routerLink="/transportmanagement/vehiclemaintenance/repair/list" routerLinkActive="active"><i class="zmdi zmdi-view-list"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-block-content">
+        <mat-form-field class="col-12 col-lg-6">
+            <input type="text" matInput placeholder="{{'TransportManagement.Repair.Code'|translate}}" required NoSpaces
+                   [(ngModel)]="addRepair.Code" #CodeModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20"
+                   (keydown)="resetError('Code')" />
+            <mat-error *ngIf="CodeModel.invalid && CodeModel.touched">
+                <span *ngIf="CodeModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                <span *ngIf="(!CodeModel.hasError('required') && CodeModel.hasError('whitespace'))">{{'Common.WhiteSpace'|translate}}</span>
+            </mat-error>
+            <mat-hint class="mat-error" *ngIf="hasError('Code')">
+                <span>{{error.Message}}</span>
+            </mat-hint>
+        </mat-form-field>
+
+        <mat-form-field class="col-12 col-lg-6">
+            <input matInput [matDatepicker]="repairDate" placeholder="{{'TransportManagement.Repair.RepairDate'|translate}} *"
+                   (dateChange)="addRepair.RepairDate = $event.value" disabled>
+            <mat-datepicker-toggle matSuffix [for]="repairDate"></mat-datepicker-toggle>
+            <mat-datepicker #repairDate disabled="false"></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field class="col-12">
+            <mat-select placeholder="{{'TransportManagement.Repair.SelectVehicle'|translate}}" [(ngModel)]="addRepair.VehicleId"
+                        #VehicleId="ngModel" [ngModelOptions]="{standalone: true}" required>
+                <mat-option *ngFor="let vehicle of initialData.vehicles" [value]="vehicle.id">
+                    {{vehicle.vehicleCode}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="col-12 col-lg-6">
+            <input type="number" matInput placeholder="{{'TransportManagement.Repair.RepairCost'|translate}}" required pattern="\d+"
+                   [(ngModel)]="addRepair.RepairCost" #RepairCostModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20" />
+            <mat-error *ngIf="RepairCostModel.invalid && RepairCostModel.touched">
+                <span *ngIf="RepairCostModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                <span *ngIf="RepairCostModel.hasError('pattern')">{{'TransportManagement.Repair.RepairCostError'|translate}}</span>
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="col-12 col-lg-6">
+            <textarea type="text" matInput placeholder="{{'TransportManagement.Repair.Remark'|translate}}" maxlength="50"
+                      [(ngModel)]="addRepair.Remarks" [ngModelOptions]="{standalone: true}"></textarea>
+        </mat-form-field>
+
+        <div class="col-12">
+            <button class="btn-icon-rounded btn-primary" matTooltip="Save" matTooltipPosition="above" (click)="addRepairData()"
+                    [disabled]="!(CodeModel.valid && VehicleId.valid && RepairCostModel.valid
+                    && (addRepair.RepairDate !== null && addRepair.RepairDate !== undefined))">
+                <i class="zmdi zmdi-floppy"></i>
+            </button>
+            <a class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="Cancel" matTooltipPosition="above" routerLink="/transportmanagement/vehiclemaintenance/repair/list" routerLinkActive="active"><i class="zmdi zmdi-close"></i></a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,35 @@
+﻿<div class="horizontal-menu mb-4 d-flex">
+    <ul class="list-unstyled nav">
+        <li>
+            <a class="nav-link" routerLinkActive="active" *ngIf="isAllowed('AcademicEmail')" [routerLink]="['emailconfiguration']">
+                <i class="zmdi zmdi-accounts-alt"></i>
+                <span class="menu-title">Email Configuration</span>
+            </a>
+        </li>
+        <!--<li>
+            <a class="nav-link" routerLinkActive="active" *ngIf="isAllowed('AcademicLookUp')" [routerLink]="['lookup']">
+                <i class="zmdi zmdi-accounts-alt"></i>
+                <span class="menu-title">Look Up</span>
+            </a>
+        </li>-->
+        <li>
+            <a class="nav-link" routerLinkActive="active" *ngIf="isAllowed('AcademicTemplates')" [routerLink]="['templates']">
+                <i class="zmdi zmdi-accounts-alt"></i>
+                <span class="menu-title">Templates</span>
+            </a>
+        </li>
+        <li>
+            <a class="nav-link" routerLinkActive="active" *ngIf="isAllowed('AcademicAutoSequence')" [routerLink]="['autosequence']">
+                <i class="zmdi zmdi-accounts-alt"></i>
+                <span class="menu-title">Auto Sequence</span>
+            </a>
+        </li>
+        <li>
+            <a class="nav-link" routerLinkActive="active" *ngIf="isAllowed('AcademicEvent')" [routerLink]="['event']">
+                <i class="zmdi zmdi-accounts-alt"></i>
+                <span class="menu-title">Event Management</span>
+            </a>
+        </li>
+    </ul>
+</div>
+<router-outlet></router-outlet>

@@ -1,0 +1,40 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Notifications.Notifications'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" matTooltip="{{'Notifications.MarkAllAsRead'|translate}}"
+       matTooltipPosition="above" tabindex="0" (click)="markAllNotificationAsRead()" routerLinkActive="active"><i class="zmdi zmdi-check-all"></i></a>
+</div>
+
+<div class="rct-block">
+    <div class="rct-full-block">
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th>{{'Notifications.Message'|translate}}</th>
+                        <th>{{'Notifications.Details'|translate}}</th>
+                        <th>{{'Notifications.Date'|translate}}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let notification of notificationsList">
+                        <td>{{notification.notificationMessage}}</td>
+                        <td>{{notification.notificationDetails}}</td>
+                        <td>{{notification.notificationCreationDate|date}}</td>
+                        <td>
+                            <a matTooltip="{{'Notifications.MarkAsRead'|translate}}" matTooltipPosition="above" (click)="markNotificationAsRead(notification.id)" 
+                               routerLinkActive="active" [hidden]="notification.isReadByUser">
+                                <i class="zmdi zmdi-check zmdi-hc-lg"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="rct-block-title text-center" *ngIf="notificationsList.length==0">
+                {{'Notifications.NoNotificationsAvailable'|translate}}
+            </div>
+        </div>
+    </div>
+</div>

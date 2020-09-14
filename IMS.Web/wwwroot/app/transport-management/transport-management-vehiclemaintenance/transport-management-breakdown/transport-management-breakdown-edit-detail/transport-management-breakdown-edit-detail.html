@@ -1,0 +1,69 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'TransportManagement.BreakDown.EditBreakDown'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" matTooltip="Details" matTooltipPosition="above" routerLink="/transportmanagement/vehiclemaintenance/breakdown/list" routerLinkActive="active"><i class="zmdi zmdi-view-list"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-block-content">
+        <mat-form-field class="col-12 col-lg-6">
+            <input type="text" matInput placeholder="{{'TransportManagement.BreakDown.Code'|translate}}" required NoSpaces
+                   [(ngModel)]="addBreakDown.Code" #CodeModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20"
+                   (keydown)="resetError('Code')" />
+            <mat-error *ngIf="CodeModel.invalid && CodeModel.touched">
+                <span *ngIf="CodeModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                <span *ngIf="(!CodeModel.hasError('required') && CodeModel.hasError('whitespace'))">{{'Common.WhiteSpace'|translate}}</span>
+            </mat-error>
+            <mat-hint class="mat-error" *ngIf="hasError('Code')">
+                <span>{{error.Message}}</span>
+            </mat-hint>
+        </mat-form-field>
+
+        <mat-form-field class="col-12 col-lg-6">
+            <input matInput [matDatepicker]="breakDownDate" placeholder="{{'TransportManagement.BreakDown.BreakDownDate'|translate}} *"
+                   [max]="currentDate" (dateChange)="addBreakDown.BreakDownDate = $event.value" [value]="addBreakDown.BreakDownDate" disabled>
+            <mat-datepicker-toggle matSuffix [for]="breakDownDate"></mat-datepicker-toggle>
+            <mat-datepicker #breakDownDate disabled="false"></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field class="col-12 col-lg-6">
+            <mat-select placeholder="{{'TransportManagement.BreakDown.SelectVehicle'|translate}}" [(ngModel)]="addBreakDown.VehicleId"
+                        #VehicleId="ngModel" [ngModelOptions]="{standalone: true}" (selectionChange)="resetDriver()" required>
+                <mat-option *ngFor="let vehicle of initialData.vehicles" [value]="vehicle.id">
+                    {{vehicle.vehicleCode}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="col-12 col-lg-6">
+            <mat-select placeholder="{{'TransportManagement.BreakDown.SelectDriver'|translate}}" [(ngModel)]="addBreakDown.DriverId"
+                        #DriverId="ngModel" [ngModelOptions]="{standalone: true}" required>
+                <mat-option *ngFor="let driver of initialData.drivers" [disabled]="!isDriverAllowed(driver.id)" [value]="driver.id">
+                    {{driver.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="col-12 col-lg-6">
+            <input matInput [matDatepicker]="breakDownDuration" placeholder="{{'TransportManagement.BreakDown.BreakDownDuration'|translate}} *"
+                   (dateChange)="addBreakDown.BreakDownDuration = $event.value" [value]="addBreakDown.BreakDownDuration" disabled>
+            <mat-datepicker-toggle matSuffix [for]="breakDownDuration"></mat-datepicker-toggle>
+            <mat-datepicker #breakDownDuration disabled="false"></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field class="col-12 col-lg-6">
+            <textarea type="text" matInput placeholder="{{'TransportManagement.BreakDown.Address'|translate}}" maxlength="50"
+                      [(ngModel)]="addBreakDown.Address" [ngModelOptions]="{standalone: true}"></textarea>
+        </mat-form-field>
+
+        <div class="col-12">
+            <button class="btn-icon-rounded btn-primary" matTooltip="Save" matTooltipPosition="above" (click)="updateBreakDown()"
+                    [disabled]="!(CodeModel.valid && VehicleId.valid && DriverId.valid
+                    && (addBreakDown.BreakDownDate !== null && addBreakDown.BreakDownDate !== undefined)
+                    && (addBreakDown.BreakDownDuration !== null && addBreakDown.BreakDownDuration !== undefined))">
+                <i class="zmdi zmdi-floppy"></i>
+            </button>
+            <a class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="Cancel" matTooltipPosition="above" routerLink="/transportmanagement/vehiclemaintenance/breakdown/list" routerLinkActive="active"><i class="zmdi zmdi-close"></i></a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,39 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'TransportManagement.Accident.Accidents'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" *ngIf="isAllowed('Add')" matTooltip="{{'TransportManagement.Accident.AddAccident'|translate}}" matTooltipPosition="before" routerLink="/transportmanagement/vehiclemaintenance/accident/add" routerLinkActive="active"><i class="zmdi zmdi-plus"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-full-block">
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th>{{'TransportManagement.Accident.Code'|translate}}</th>
+                        <th>{{'TransportManagement.Accident.AccidentDate'|translate}}</th>
+                        <th>{{'TransportManagement.Accident.Vehicle'|translate}}</th>
+                        <th>{{'TransportManagement.Accident.Driver'|translate}}</th>
+                        <th>{{'TransportManagement.Accident.EstimateCost'|translate}}</th>
+                        <th>{{'Common.CreatedOn'|translate}}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of accidents">
+                        <td>{{item.code}}</td>
+                        <td>{{item.accidentDate|date}}</td>
+                        <td>{{item.vehicle.vehicleCode}}</td>
+                        <td>{{item.driver.name}}</td>
+                        <td>{{item.estimateCost}}</td>
+                        <td>{{item.createdOn|date}}</td>
+                        <td><a matTooltip="Edit" matTooltipPosition="above" *ngIf="isAllowed('Edit')" routerLink="/transportmanagement/vehiclemaintenance/accident/{{item.id}}" routerLinkActive="active"><i class="zmdi zmdi-edit zmdi-hc-lg"></i></a></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="rct-block-title text-center" *ngIf="accidents.length==0">
+                {{'TransportManagement.Accident.NoAccidentAdded'|translate}}
+            </div>
+        </div>
+    </div>
+</div>

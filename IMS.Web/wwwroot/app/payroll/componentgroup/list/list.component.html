@@ -1,0 +1,40 @@
+<div class="page-title d-flex justify-content-between align-items-center">
+  <div class="page-title-wrap">
+      <h2 class="mb-0">{{'Payroll.Group.Title'|translate}}</h2>
+  </div>
+  <a class="btn-icon-rounded btn-outline-primary" *ngIf="isAllowed('Add')"
+     matTooltip="{{'Payroll.Group.Add'|translate}}" matTooltipPosition="before"
+     routerLink="/payroll/componentgroup/add" routerLinkActive="active"><i class="zmdi zmdi-plus"></i></a>
+</div>
+
+<div class="rct-block">
+  <div class="rct-full-block">
+      <div class="table-responsive">
+          <table class="table mb-0">
+              <thead>
+                  <tr>
+                      <th>{{'Payroll.Group.Code'|translate}}</th>
+                      <th>{{'Payroll.Group.Name'|translate}}</th>
+                      <th>{{'Payroll.Group.CreatedOn'|translate}}</th>
+                      <th>{{'Payroll.Group.Status'|translate}}</th>
+                      <th></th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr *ngFor="let group of groupList">
+                      <td>{{group.code}}</td>
+                      <td>{{group.name}}</td>
+                      <td>{{group.createdOn | date}}</td>
+                      <td>{{group.status}}</td>
+                      <td> <a class="nav-link" routerLink="/payroll/componentgroup/{{group.id}}" *ngIf="isAllowed('Edit')"
+                              matTooltip="{{'Payroll.Group.Edit'|translate}}" matTooltipPosition="above" 
+                              routerLinkActive="active"><i class="zmdi zmdi-edit zmdi-hc-lg"></i></a></td>
+                  </tr>
+              </tbody>
+          </table>
+          <div class="rct-block-title text-center" *ngIf="groupList.length==0">
+              {{'Payroll.Group.NoGroup'|translate}}
+          </div>
+      </div>
+  </div>
+</div>

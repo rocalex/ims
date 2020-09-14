@@ -1,0 +1,44 @@
+<div class="page-title d-flex justify-content-between align-items-center">
+  <div class="page-title-wrap">
+      <h2 class="mb-0">{{'Hostel.Blocks.AddBlock'|translate}}</h2>
+  </div>
+  <a class="btn-icon-rounded btn-outline-primary" matTooltip="Details" matTooltipPosition="above" routerLink="/hostel/blocks" routerLinkActive="active"><i class="zmdi zmdi-view-list"></i></a>
+</div>
+<div class="rct-block">
+  <div class="rct-block-content">
+    <mat-form-field class="col-12 col-lg-6">
+      <mat-select placeholder="{{'Hostel.Blocks.Hostel'|translate}}" [(ngModel)]="addBlock.hostelId"
+                  #hostel="ngModel" [ngModelOptions]="{standalone: true}" required>
+          <mat-option *ngFor="let hostel of hostelList" [value]="hostel.id">
+              {{hostel.name}}
+          </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="col-12 col-lg-6">
+        <input type="text" matInput placeholder="{{'Hostel.Blocks.BlockName'|translate}}" required NoSpaces
+                [(ngModel)]="addBlock.name" #NameModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20" />
+    </mat-form-field>
+    <mat-form-field class="col-12 col-lg-6">
+      <input type="number" matInput placeholder="{{'Hostel.Blocks.FloorAmount'|translate}}"
+             [(ngModel)]="addBlock.floorAmount" #HostelCautionDeposit="ngModel" 
+             [ngModelOptions]="{standalone: true}" maxlength="20" />
+    </mat-form-field>
+    <div class="col-12 col-lg-6 form-group">
+      <mat-slide-toggle [(ngModel)]="addBlock.status" [ngModelOptions]="{standalone: true}">
+          {{'Hostel.Blocks.Active'|translate}} / {{'Hostel.Blocks.Inactive'|translate}} 
+      </mat-slide-toggle>
+    </div>
+    <mat-form-field class="col-12 col-lg-6">
+      <textarea type="text" matInput placeholder="{{'Hostel.Blocks.Description'|translate}}" #PresentAddressModel="ngModel"
+                [(ngModel)]="addBlock.description" [ngModelOptions]="{standalone: true}"></textarea>
+    </mat-form-field>
+
+    <div class="col-12">
+      <button class="btn-icon-rounded btn-primary" matTooltip="{{'Hostel.Add.Save'|translate}}" matTooltipPosition="above" (click)="add()">
+          <i class="zmdi zmdi-floppy"></i>
+      </button>
+      <a class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="{{'Hostel.Add.Cancel'|translate}}" matTooltipPosition="above" routerLink="/hostel/blocks" routerLinkActive="active"><i class="zmdi zmdi-close"></i></a>
+    </div>
+  </div>
+</div>
+  

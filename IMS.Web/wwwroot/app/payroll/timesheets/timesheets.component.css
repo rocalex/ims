@@ -1,0 +1,48 @@
+.fixed-action-btn {
+    position: fixed;
+    z-index: 998;
+    right: 35px;
+    bottom: 10px;
+    margin-bottom: 0;
+    padding-top: 15px;
+}
+.btn-floating {
+    box-shadow: 0 5px 11px 0 rgba(0,0,0,.18), 0 4px 15px 0 rgba(0,0,0,.15);
+    width: 47px;
+    height: 47px;
+    position: relative;
+    z-index: 1;
+    vertical-align: middle;
+    display: inline-block;
+    overflow: hidden;
+    transition: all .2s ease-in-out;
+    margin: 10px;
+    border-radius: 50%;
+    padding: 0;
+    cursor: pointer;
+}
+.btn-floating.btn-lg {
+    width: 61.1px;
+    height: 61.1px;
+}
+.waves-effect {
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+.btn-floating.btn-lg i {
+    font-size: 2.625rem;
+}
+.btn-floating i {
+    display: inline-block;
+    width: inherit;
+    color: #fff;
+}
+.red {
+    background-color: #2196f3 !important;
+}

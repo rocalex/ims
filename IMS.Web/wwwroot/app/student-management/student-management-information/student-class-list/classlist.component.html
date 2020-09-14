@@ -1,0 +1,33 @@
+<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Student.Information.Students'|translate}}</h2>
+    </div>
+  </div>
+  
+  <div class="rct-block">
+    <div class="rct-full-block">
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th>{{'StudentManagement.ClassList.ClassName'|translate}}</th>
+                        <th>{{'StudentManagement.ClassList.NoOfStudents'|translate}}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let class of classList">
+                        <td>{{class.className}}</td>
+                        <td>{{class.noOfStudents}}</td>
+                        <td><a class="nav-link" routerLink="/student/information/list/{{class.id}}" 
+                          matTooltipPosition="above" 
+                          routerLinkActive="active">{{'StudentManagement.ClassList.ViewAll'|translate}}</a></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="rct-block-title text-center" *ngIf="classList.length==0">
+                {{'StudentManagement.ClassList.NoBooks'|translate}}
+            </div>
+        </div>
+    </div>
+  </div>

@@ -1,0 +1,25 @@
+﻿<div class="table-responsive">
+    <table class="table mb-0">
+        <thead>
+            <tr>
+                <th>{{'StudentManagement.LookUp.Name'|translate}}</th>
+                <th>{{'StudentManagement.LookUp.Code'|translate}}</th>
+                <th>{{'StudentManagement.LookUp.Description'|translate}}</th>
+                <th>{{'StudentManagement.LookUp.Status'|translate}}</th>
+                <th>{{'Common.CreatedOn'|translate}}</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of list">
+                <td>{{item.name}}</td>
+                <td>{{item.code}}</td>
+                <td>{{item.description}}</td>
+                <td>{{item.status? 'Yes': 'No'}}</td>
+                <td>{{item.createdOn|date}}</td>
+                <td *ngIf="selected.Url !== 'disciplinarystatus' && selected.Url !== 'activitystatus'"><a *ngIf="isAllowed()" routerLink="/student/lookup/{{selected.Url}}/{{item.id}}" matTooltip="Edit" matTooltipPosition="above" routerLinkActive="active"><i class="zmdi zmdi-edit zmdi-hc-lg"></i></a></td>
+                <td *ngIf="selected.Url === 'disciplinarystatus' || selected.Url === 'activitystatus'"><a *ngIf="isAllowed()" [hidden]="!item.isEditable" routerLink="/student/lookup/{{selected.Url}}/{{item.id}}" matTooltip="Edit" matTooltipPosition="above" routerLinkActive="active"><i class="zmdi zmdi-edit zmdi-hc-lg"></i></a></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,155 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Staff.Activity.AddActivity'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" matTooltip="{{'Staff.Activity.Activities'|translate}}" matTooltipPosition="above" routerLink="/staff/activities/activity/list" routerLinkActive="active"><i class="zmdi zmdi-view-list"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-block-content">
+        <form class="row">
+            <mat-form-field class="col-12 col-lg-6">
+                <input type="text" matInput placeholder="{{'Common.Name'|translate}}" required
+                       [(ngModel)]="activity.name" #activityNameModel="ngModel" [ngModelOptions]="{standalone: true}"
+                       (keyup)="checkWhiteSpace(activityNameModel)" (keydown)="resetError(activityNameModel)" maxlength="25" />
+
+                <mat-error *ngIf="activityNameModel.invalid && activityNameModel.touched">
+                    <span *ngIf="activityNameModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                    <span *ngIf="(!activityNameModel.hasError('required') && activityNameModel.whiteSpaceError !== '')">{{activityNameModel.whiteSpaceError}}</span>
+                </mat-error>
+
+                <mat-hint class="mat-error" *ngIf="errorMessage !== ''">
+                    <span>{{errorMessage}}</span>
+                </mat-hint>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <mat-select placeholder="{{'StudentManagement.MeetingAgenda.MeetingAgendas'|translate}}" [(ngModel)]="activity.meetingAgendaId" #meetingAgendaModel="ngModel" [ngModelOptions]="{standalone: true}" required>
+                    <mat-option *ngFor="let meetingAgenda of meetingAgendaList" [value]="meetingAgenda.id">
+                        {{meetingAgenda.name}}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="meetingAgendaModel.invalid && meetingAgendaModel.touched">
+                    <span *ngIf="meetingAgendaModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <mat-select placeholder="{{'StudentManagement.ActivityStatus.ActivityStatus'|translate}}" [(ngModel)]="activity.activityStatusId" #activityStatusModel="ngModel" [ngModelOptions]="{standalone: true}" required>
+                    <mat-option *ngFor="let activityStatus of activityStatusList" [value]="activityStatus.id">
+                        {{activityStatus.name}}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="activityStatusModel.invalid && activityStatusModel.touched">
+                    <span *ngIf="activityStatusModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <input type="text" matInput placeholder="{{'Common.Description'|translate}}"
+                       [(ngModel)]="activity.description" #activityDescriptionModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="50" />
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <input matInput [matDatepicker]="startDate" placeholder="{{'Staff.Activity.StartDate'|translate}} *"
+                       (dateChange)="activity.startDate = $event.value; isInvalidDateError = false;" disabled required [min]="currentDate">
+                <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+                <mat-datepicker #startDate disabled="false"></mat-datepicker>
+
+                <mat-hint class="mat-error" *ngIf="isInvalidDateError">
+                    <span>{{'Administration.EventManagement.Report.DateRangeError'|translate}}</span>
+                </mat-hint>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <input matInput [matDatepicker]="endDate" placeholder="{{'Staff.Activity.EndDate'|translate}} *"
+                       (dateChange)="activity.endDate = $event.value; isInvalidDateError = false;" disabled required [min]="currentDate">
+                <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+                <mat-datepicker #endDate disabled="false"></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <input matInput [ngxTimepicker]="startTime" [disableClick]="true" placeholder="{{'Institute.TimeTable.StartTime'|translate}}"
+                       #startTimeModel="ngModel" [(ngModel)]="activity.startTime" [ngModelOptions]="{standalone: true}" readonly>
+                <ngx-material-timepicker-toggle matSuffix [for]="startTime"></ngx-material-timepicker-toggle>
+                <ngx-material-timepicker #startTime></ngx-material-timepicker>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <input matInput [ngxTimepicker]="endTime" [disableClick]="true" placeholder="{{'MarkManagement.ClassExam.EndTime'|translate}}"
+                       #endModel="ngModel" [(ngModel)]="activity.endTime" [ngModelOptions]="{standalone: true}" readonly>
+                <ngx-material-timepicker-toggle matSuffix [for]="endTime"></ngx-material-timepicker-toggle>
+                <ngx-material-timepicker #endTime></ngx-material-timepicker>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <input type="text" matInput placeholder="{{'Admin.Institute.Location'|translate}}" [(ngModel)]="activity.location"
+                       #locationModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="50" />
+            </mat-form-field>
+
+            <div class="form-group col-12 col-lg-6">
+                <mat-slide-toggle [(ngModel)]="activity.isActive" #isActiveModel="ngModel" [ngModelOptions]="{standalone: true}">{{'Staff.Activity.IsActive'|translate}}</mat-slide-toggle>
+            </div>
+
+            <div class="col-12">
+                <h3>{{'Staff.Activity.Attendees'|translate}}</h3>
+                <mat-hint class="mat-error" *ngIf="isActivityAttendeeEmptyError">
+                    <span>{{'Staff.Activity.EmptyAttendeeList'|translate}}</span>
+                </mat-hint>
+
+                <mat-form-field class="form-group col-12 col-lg-12">
+                    <mat-select placeholder="{{'StudentManagement.LeaveType.SelectType'|translate}}" [(ngModel)]="selectedUserType"
+                                #LeaveAssignedTypeEnumDescription="ngModel" [ngModelOptions]="{standalone: true}" required
+                                (selectionChange)="setFilterList()">
+                        <mat-option *ngFor="let assignedType of attendeeTypeEnumDetails" [value]="assignedType.key">
+                            {{assignedType.value}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field class="form-group col-12 col-lg-12">
+                    <mat-chip-list #chipList aria-label="Attendee Selection">
+                        <mat-chip *ngFor="let activityAttendee of activityAttendeeList"
+                                  [selectable]="true"
+                                  [removable]="true"
+                                  (removed)="selectAttendee(false, activityAttendee.attendeeName, activityAttendee.activityAttendeeType)">
+                            {{activityAttendee.attendeeName}}
+                            <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
+                        </mat-chip>
+
+                        <input matInput placeholder="{{'Common.Name'|translate}}" [ngModelOptions]="{standalone: true}"
+                               #attendeeInput
+                               [disabled]="selectedUserType===null || selectedUserType===undefined"
+                               [matAutocomplete]="auto"
+                               [matChipInputFor]="chipList"
+                               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                               [matChipInputAddOnBlur]="true"
+                               [(ngModel)]="attendeeName"
+                               (ngModelChange)="filterAttendees(attendeeName)">
+                    </mat-chip-list>
+
+                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectAttendee(true, attendeeName, null); attendeeName = null;">
+                        <mat-option *ngFor="let filteredUser of filteredUsers" [value]="selectedUserType!==2 ? filteredUser.firstName : filteredUser.name">
+                            <div *ngIf="selectedUserType!==2">
+                                {{filteredUser.firstName}}
+                            </div>
+                            <div *ngIf="selectedUserType===2">
+                                {{filteredUser.name}}
+                            </div>
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+            </div>
+
+            <div class="col-12">
+                <button class="btn-icon-rounded btn-primary" matTooltip="{{'Common.Save'|translate}}" matTooltipPosition="above" (click)="addActivity()"
+                        [disabled]="!(activityNameModel.valid && !errorMessage && activityNameModel.whiteSpaceError === ''
+                            && meetingAgendaModel.valid && activityStatusModel.valid
+                            && (activity.startTime !== null && activity.startTime !== undefined) && (activity.endTime !== null && activity.endTime !== undefined)
+                            && (activity.startDate !== null && activity.startDate !== undefined) && (activity.endDate !== null && activity.endDate !== undefined))">
+                    <i class="zmdi zmdi-floppy"></i>
+                </button>
+                <a class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="{{'Common.Cancel'|translate}}" matTooltipPosition="above" routerLink="/staff/activities/activity/list" routerLinkActive="active"><i class="zmdi zmdi-close"></i></a>
+            </div>
+        </form>
+    </div>
+</div>

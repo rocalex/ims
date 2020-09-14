@@ -1,0 +1,156 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "ims-web": {
+      "root": "wwwroot",
+      "sourceRoot": "",
+      "projectType": "application",
+      "prefix": "app",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "./wwwroot/dist/web/",
+            "index": "./wwwroot/index.html",
+            "main": "./wwwroot/app/main.ts",
+            "polyfills": "./wwwroot/polyfills.ts",
+            "tsConfig": "./wwwroot/tsconfig.json",
+            "assets": [
+            ],
+            "styles": [
+              "./node_modules/angular-calendar/css/angular-calendar.css",
+              "./node_modules/@progress/kendo-theme-default/dist/all.css"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "./wwwroot/environments/environment.ts",
+                  "with": "./wwwroot/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "extractCss": true,
+              "aot": true
+            }
+          }
+        }
+      }
+    },
+    "ims-superadmin": {
+      "root": "wwwroot",
+      "sourceRoot": "",
+      "projectType": "application",
+      "prefix": "app-superadmin",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "./wwwroot/dist/superadmin/",
+            "index": "./wwwroot/index.html",
+            "main": "./wwwroot/app-superadmin/superadmin.main.ts",
+            "polyfills": "./wwwroot/polyfills.ts",
+            "tsConfig": "./wwwroot/tsconfig.json",
+            "assets": [
+            ],
+            "styles": [],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "./wwwroot/environments/environment.ts",
+                  "with": "./wwwroot/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "extractCss": true,
+              "aot": true
+            }
+          }
+        }
+      }
+    },
+    "ims-user": {
+      "root": "wwwroot",
+      "sourceRoot": "",
+      "projectType": "application",
+      "prefix": "app-user",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "./wwwroot/dist/user/",
+            "index": "./wwwroot/index.html",
+            "main": "./wwwroot/app-user/user.main.ts",
+            "polyfills": "./wwwroot/polyfills.ts",
+            "tsConfig": "./wwwroot/tsconfig.json",
+            "assets": [
+            ],
+            "styles": [
+              "./node_modules/angular-calendar/css/angular-calendar.css"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "./wwwroot/environments/environment.ts",
+                  "with": "./wwwroot/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "extractCss": true,
+              "aot": true
+            }
+          }
+        }
+      }
+    },
+    "ims-driver": {
+      "root": "wwwroot",
+      "sourceRoot": "",
+      "projectType": "application",
+      "prefix": "app-driver",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "./wwwroot/dist/driver/",
+            "index": "./wwwroot/index.html",
+            "main": "./wwwroot/app-driver/driver.main.ts",
+            "polyfills": "./wwwroot/polyfills.ts",
+            "tsConfig": "./wwwroot/tsconfig.json",
+            "assets": [
+            ],
+            "styles": [],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "./wwwroot/environments/environment.ts",
+                  "with": "./wwwroot/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "extractCss": true,
+              "aot": true
+            }
+          }
+        }
+      }
+    }
+  }
+}

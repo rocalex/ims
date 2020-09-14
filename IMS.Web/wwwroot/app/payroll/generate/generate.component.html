@@ -1,0 +1,50 @@
+<div class="page-title d-flex justify-content-between align-items-center">
+  <div class="page-title-wrap">
+      <h2 class="mb-0">{{'Payroll.Generate.Title'|translate}}</h2>
+  </div>
+</div>
+<div class="rct-block">
+  <div class="rct-block-content">
+    <mat-form-field class="col-12 col-lg-6">
+      <mat-select placeholder="{{'Payroll.Generate.Month'|translate}}" [(ngModel)]="searchPayroll.Month"
+                  #month="ngModel" [ngModelOptions]="{standalone: true}" required>
+          <mat-option *ngFor="let month of monthList" [value]="month.value">
+              {{month.viewValue}}
+          </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="col-12 col-lg-6">
+      <mat-select placeholder="{{'Payroll.Generate.AcademicYear'|translate}}" [(ngModel)]="searchPayroll.AcademicYear"
+                  #academicYear="ngModel" [ngModelOptions]="{standalone: true}" required>
+          <mat-option *ngFor="let academicYear of academicYearList" [value]="academicYear.id">
+              {{academicYear.academicYearCode}}
+          </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <!-- <mat-form-field class="col-12 col-lg-6">
+      <mat-select placeholder="{{'Payroll.Generate.'|translate}}" [(ngModel)]="searchPayroll.Group"
+                  #group="ngModel" [ngModelOptions]="{standalone: true}" required>
+          <mat-option *ngFor="let group of groupList" [value]="group">
+              {{group}}
+          </mat-option>
+      </mat-select>
+    </mat-form-field> -->
+    <mat-form-field class="col-12 col-lg-6">
+      <mat-select placeholder="{{'Payroll.Generate.Staff'|translate}}" [(ngModel)]="searchPayroll.Staff"
+                  #staffName="ngModel" [ngModelOptions]="{standalone: true}" required>
+          <mat-option *ngFor="let staff of staffList" [value]="staff.id">
+              {{staff.employeeId}} - {{staff.firstName}} {{staff.lastName}}
+          </mat-option>
+      </mat-select>
+    </mat-form-field>
+    
+    <div class="col-12">
+      <button class="btn-icon-rounded btn-primary" matTooltip="{{'Payroll.Generate.Search'|translate}}" matTooltipPosition="above" (click)="search()">
+          <i class="zmdi zmdi-search"></i>
+      </button>
+    </div>
+  </div>
+</div>
+<div class="rct-block">
+    
+</div>

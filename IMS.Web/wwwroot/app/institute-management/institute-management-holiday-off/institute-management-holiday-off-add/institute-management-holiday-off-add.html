@@ -1,0 +1,67 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Institute.HolidayOff.AddHoliday'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" matTooltip="{{'Institute.HolidayOff.HolidayList'|translate}}" matTooltipPosition="above" routerLink="/institute/holiday/list" routerLinkActive="active"><i class="zmdi zmdi-view-list"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-block-content">
+        <form class="row">
+            <!--<mat-form-field class="col-12 col-lg-12">
+                <input type="text" matInput placeholder="{{'Institute.AcademicYear.SelectAcademicYear'|translate}}" [(ngModel)]="academicYear.academicYearCode"
+                       #academicYearModel="ngModel" [ngModelOptions]="{standalone: true}" disabled />
+            </mat-form-field>-->
+
+            <mat-form-field class="col-12 col-lg-6">
+                <input matInput [matDatepicker]="fromDate" placeholder="{{'Institute.AcademicYear.FromDate'|translate}} *"
+                       (dateChange)="holiday.fromDate = $event.value" disabled required>
+                <mat-datepicker-toggle matSuffix [for]="fromDate"></mat-datepicker-toggle>
+                <mat-datepicker #fromDate disabled="false"></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <input matInput [matDatepicker]="toDate" placeholder="{{'Institute.AcademicYear.ToDate'|translate}}"
+                       (dateChange)="holiday.toDate = $event.value; resetError()" disabled>
+                <mat-datepicker-toggle matSuffix [for]="toDate"></mat-datepicker-toggle>
+                <mat-datepicker #toDate disabled="false"></mat-datepicker>
+
+                <mat-hint class="mat-error" *ngIf="dateExceedError !== ''">
+                    <span>{{dateExceedError}}</span>
+                </mat-hint>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <input type="text" matInput placeholder="{{'Common.Description'|translate}}" required [(ngModel)]="holiday.description" #description="ngModel"
+                       maxlength="20" [ngModelOptions]="{standalone: true}" [disabled]="!isEditable" />
+
+                <mat-error *ngIf="description.invalid && description.touched">
+                    <span *ngIf="description.hasError('required')">{{'Common.Required'|translate}}</span>
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <mat-select required placeholder="{{'Institute.HolidayOff.SelectOccuranceType'|translate}}" [(ngModel)]="holiday.occuranceType" #occuranceType="ngModel"
+                            [ngModelOptions]="{standalone: true}" [disabled]="!isEditable">
+                    <mat-option *ngFor="let occuranceType of occuranceTypesList" [value]="occuranceType.holidayOccuranceTypeEnum">
+                        {{occuranceType.holidayOccuranceTypeEnumString}}
+                    </mat-option>
+                </mat-select>
+
+                <mat-error *ngIf="occuranceType.invalid && occuranceType.touched">
+                    <span *ngIf="occuranceType.hasError('required')">{{'Common.Required'|translate}}</span>
+                </mat-error>
+            </mat-form-field>
+
+            <div class="col-12">
+                <button class="btn-icon-rounded btn-primary" (click)="addNewHoliday()"
+                        matTooltip="{{'Common.Save'|translate}}" matTooltipPosition="above"
+                        [disabled]="!(description.valid && occuranceType.valid
+                        && holiday.occuranceType!=null && holiday.occuranceType!=undefined
+                        && (holiday.fromDate !== null && holiday.fromDate !== undefined)) || !isEditable">
+                    <i class="zmdi zmdi-floppy"></i>
+                </button>
+                <a class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="{{'Common.Cancel'|translate}}" matTooltipPosition="above" routerLink="/institute/holiday/list" routerLinkActive="active"><i class="zmdi zmdi-close"></i></a>
+            </div>
+        </form>
+    </div>
+</div>

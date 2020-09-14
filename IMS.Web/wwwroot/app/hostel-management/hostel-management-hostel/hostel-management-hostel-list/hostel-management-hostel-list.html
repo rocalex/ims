@@ -1,0 +1,42 @@
+<div class="page-title d-flex justify-content-between align-items-center">
+  <div class="page-title-wrap">
+      <h2 class="mb-0">{{'Hostel.List.Hostels'|translate}}</h2>
+  </div>
+  <a class="btn-icon-rounded btn-outline-primary" *ngIf="isAllowed('Add')"
+     matTooltip="{{'Hostel.List.AddHostel'|translate}}" matTooltipPosition="before"
+     routerLink="/hostel/list/add" routerLinkActive="active"><i class="zmdi zmdi-plus"></i></a>
+</div>
+
+<div class="rct-block">
+  <div class="rct-full-block">
+      <div class="table-responsive">
+          <table class="table mb-0">
+              <thead>
+                  <tr>
+                      <th>{{'Hostel.List.HostelName'|translate}}</th>
+                      <th>{{'Hostel.List.ContactPerson'|translate}}</th>
+                      <th>{{'Hostel.List.Status'|translate}}</th>
+                      <th>{{'Hostel.List.City'|translate}}</th>
+                      <th>{{'Hostel.List.Type'|translate}}</th>
+                      <th></th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr *ngFor="let hostel of hostelList">
+                      <td>{{hostel.name}}</td>
+                      <td>{{hostel.contactPerson}}</td>
+                      <td>{{hostel.status}}</td>
+                      <td>{{hostel.city.name}}</td>
+                      <td>{{hostelTypes[hostel.hostelType].label}}</td>
+                      <td> <a class="nav-link" routerLink="/hostel/list/{{hostel.id}}" *ngIf="isAllowed('Edit')"
+                              matTooltip="{{'Hostel.List.Edit'|translate}}" matTooltipPosition="above" 
+                              routerLinkActive="active"><i class="zmdi zmdi-edit zmdi-hc-lg"></i></a></td>
+                  </tr>
+              </tbody>
+          </table>
+          <div class="rct-block-title text-center" *ngIf="hostelList.length==0">
+              {{'Hostel.List.NoHostelAdded'|translate}}
+          </div>
+      </div>
+  </div>
+</div>

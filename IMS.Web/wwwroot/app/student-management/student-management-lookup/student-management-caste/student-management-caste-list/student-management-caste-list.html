@@ -1,0 +1,19 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'StudentManagement.Caste.Castes'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" *ngIf="isAllowed('Add')"
+       matTooltip="{{'StudentManagement.Caste.AddCaste'|translate}}" matTooltipPosition="before"
+       routerLink="/student/lookup/caste/add" routerLinkActive="active"><i class="zmdi zmdi-plus"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-full-block">
+        <div class="table-responsive">
+            <look-up-shared-list [list]="castes"></look-up-shared-list>
+            <div class="rct-block-title text-center" *ngIf="castes.length==0">
+                No Caste Added
+            </div>
+        </div>
+    </div>
+</div>
+

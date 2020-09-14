@@ -1,0 +1,37 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'UserManagement.UserGroup.Roles'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" matTooltip="{{'UserManagement.UserGroup.AddRole'|translate}}" *ngIf="isAllowed('Add')"
+       matTooltipPosition="before" routerLink="/usermanagement/role/add" routerLinkActive="active"><i class="zmdi zmdi-plus"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-full-block">
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th>{{'UserManagement.UserGroup.RoleCode'|translate}}</th>
+                        <th>{{'Common.Name'|translate}}</th>
+                        <th>{{'Common.Description'|translate}}</th>
+                        <th>{{'Common.CreatedOn'|translate}}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let userGroup of userGroupList">
+                        <td>{{userGroup.code}}</td>
+                        <td>{{userGroup.name}}</td>
+                        <td>{{userGroup.description}}</td>
+                        <td>{{userGroup.createdOn|date}}</td>
+                        <td *ngIf="userGroup.canDelete"><a matTooltip="Edit" matTooltipPosition="above" *ngIf="isAllowed('Edit')" routerLink="/usermanagement/role/{{userGroup.id}}" routerLinkActive="active"><i class="zmdi zmdi-edit zmdi-hc-lg"></i></a></td>
+                        <td *ngIf="!userGroup.canDelete"><a matTooltip="View" matTooltipPosition="above" routerLink="/usermanagement/role/{{userGroup.id}}" routerLinkActive="active"><i class="zmdi zmdi-info zmdi-hc-lg"></i></a></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="rct-block-title text-center" *ngIf="!userGroupList.length">
+                {{'UserManagement.UserGroup.NoRolesAdded'|translate}}
+            </div>
+        </div>
+    </div>
+</div>

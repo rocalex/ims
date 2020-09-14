@@ -1,0 +1,75 @@
+<div class="page-title d-flex justify-content-between align-items-center">
+  <div class="page-title-wrap">
+      <h2 class="mb-0">{{'Hostel.Mess.ManageExpenditure'|translate}}</h2>
+  </div>
+</div>
+<div class="rct-block">
+  <div class="rct-block-content">
+    <mat-form-field class="col-12 col-lg-6">
+      <mat-select placeholder="{{'Hostel.Mess.Hostel'|translate}}" (selectionChange)="getMessManageList($event.value)" [(ngModel)]="hostelId"
+                  #hostel="ngModel" [ngModelOptions]="{standalone: true}" required>
+        <mat-option *ngFor="let hostel of hostelList" [value]="hostel.id">
+            {{hostel.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="col-12 col-lg-6">
+      <mat-select placeholder="{{'Hostel.Mess.MessManage'|translate}}" [(ngModel)]="messManageId" (selectionChange)="search($event.value)"
+                  #mess="ngModel" [ngModelOptions]="{standalone: true}" required>
+        <mat-option *ngFor="let messManage of messManageList" [value]="messManage.id">
+            {{messManage.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div><div class="rct-full-block" *ngIf="isSearched">
+    <div class="table-responsive">
+      <table class="table mb-0">
+        <thead>
+          <tr>
+            <th>{{'Hostel.Mess.ExpenseType'|translate}}</th>
+            <th>{{'Hostel.Mess.Amount'|translate}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><h2>{{'Hostel.Mess.Expense'|translate}}</h2></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>{{searchResult.expenseType.name}}</td>
+            <td>{{searchResult.totalExpenditure}}</td>
+          </tr>
+          <tr>
+            <td><h2>{{'Hostel.Mess.TotalExpenditure'|translate}}</h2></td>
+            <td>{{searchResult.totalExpenditure}}</td>
+          </tr>
+          <tr>
+            <td><h2>{{'Hostel.Mess.Income'|translate}}</h2></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><h2>{{'Hostel.Mess.TotalIncome'|translate}}</h2></td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td><h2>{{'Hostel.Mess.Total'|translate}}</h2></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><h2>{{'Hostel.Mess.TotalExpenditureIncome'|translate}}</h2></td>
+            <td>{{searchResult.totalExpenditure}}</td>
+          </tr>
+          <tr>
+            <td><h2>{{'Hostel.Mess.Total'|translate}}/{{'Hostel.Mess.NoOfStudents'|translate}}</h2></td>
+            <td>{{searchResult.totalExpenditure}}/{{searchResult.studentAmount}}</td>
+          </tr>
+          <tr>
+            <td><h2>{{'Hostel.Mess.PerStudentRate'|translate}}</h2></td>
+            <td>{{searchResult.totalExpenditure/searchResult.studentAmount}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+  

@@ -1,0 +1,49 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Institute.Subject.EditSubject'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" matTooltip="{{'Institute.Subject.Subjects'|translate}}" matTooltipPosition="above" routerLink="/institute/subject/list" routerLinkActive="active"><i class="zmdi zmdi-view-list"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-block-content">
+        <form class="row">
+            <mat-form-field class="col-12 col-lg-6">
+                <input type="text" matInput placeholder="{{'Institute.Subject.Code'|translate}}" required NoSpaces
+                       [(ngModel)]="updateSubject.Code" #Code="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20"
+                       (keydown)="resetError('Code')" />
+                <mat-error *ngIf="Code.invalid && Code.touched">
+                    <span *ngIf="Code.hasError('required')">{{'Common.Required'|translate}}</span>
+                    <span *ngIf="(!Code.hasError('required') && Code.hasError('whitespace'))">{{'Institute.Subject.CodeWhitespace'|translate}}</span>
+                </mat-error>
+                <mat-hint class="mat-error" *ngIf="hasError('Code') && error.HasError">
+                    <span>{{error.Message}}</span>
+                </mat-hint>
+            </mat-form-field>
+            <mat-form-field class="col-12 col-lg-6">
+                <input type="text" matInput placeholder="{{'Institute.Subject.SubjectName'|translate}}" required NoSpaces
+                       [(ngModel)]="updateSubject.Name" #Name="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20"
+                       (keydown)="resetError('Name')" />
+                <mat-error *ngIf="Name.invalid && Name.touched">
+                    <span *ngIf="Name.hasError('required')">{{'Common.Required'|translate}}</span>
+                    <span *ngIf="(!Name.hasError('required') && Name.hasError('whitespace'))">{{'Institute.Subject.NameWhitespace'|translate}}</span>
+                </mat-error>
+                <mat-hint class="mat-error" *ngIf="hasError('Name') && error.HasError">
+                    <span>{{error.Message}}</span>
+                </mat-hint>
+            </mat-form-field>
+            <div class="form-group col-12 col-lg-6">
+                <mat-slide-toggle [(ngModel)]="updateSubject.IsGroup" [ngModelOptions]="{standalone: true}">{{'Institute.Subject.IsGroup'|translate}}</mat-slide-toggle>
+            </div>
+            <mat-form-field class="col-12 col-lg-6">
+                <textarea matInput placeholder="{{'Institute.Subject.Description'|translate}}" maxlength="50"
+                          [(ngModel)]="updateSubject.Description" [ngModelOptions]="{standalone: true}"></textarea>
+            </mat-form-field>
+            <div class="col-12">
+                <button class="btn-icon-rounded btn-primary" matTooltip="{{'Common.Save'|translate}}" matTooltipPosition="above" (click)="updateInstituteSubject()" [disabled]="!(Code.valid && Name.valid)">
+                    <i class="zmdi zmdi-floppy"></i>
+                </button>
+                <a class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="{{'Common.Cancel'|translate}}" matTooltipPosition="above" routerLink="/institute/subject/list" routerLinkActive="active"><i class="zmdi zmdi-close"></i></a>
+            </div>
+        </form>
+    </div>
+</div>

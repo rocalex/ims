@@ -1,0 +1,102 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'StaffLeaveManagement.LeaveManagement.Leaves'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" matTooltip="{{'StaffLeaveManagement.LeaveManagement.ApplyLeave'|translate}}" matTooltipPosition="above"
+       routerLink="/leavemanagement/add" routerLinkActive="active"><i class="zmdi zmdi-plus"></i></a>
+</div>
+<mat-tab-group>
+    <mat-tab label="{{'StaffLeaveManagement.LeaveManagement.LeaveList'|translate}}">
+        <div class="rct-block">
+            <div class="table-responsive">
+                <table class="table mb-0">
+                    <thead>
+                        <tr>
+                            <th>{{'StaffLeaveManagement.LeaveManagement.LeaveType'|translate}}</th>
+                            <th>{{'StaffLeaveManagement.LeaveManagement.NoOfDays'|translate}}</th>
+                            <th>{{'StaffLeaveManagement.LeaveManagement.Status'|translate}}</th>
+                            <th>{{'StaffLeaveManagement.LeaveManagement.FromDate'|translate}}</th>
+                            <th>{{'StaffLeaveManagement.LeaveManagement.EndDate'|translate}}</th>
+                            <th>{{'StaffLeaveManagement.LeaveManagement.ApprovedBy'|translate}}</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let leave of leaves">
+                            <td>{{leave.leaveType.name}}</td>
+                            <td>{{numberOfDays(leave.fromDate, leave.endDate)}}</td>
+                            <td>{{leave.leaveStatus.name}}</td>
+                            <td>{{leave.fromDate|date}}</td>
+                            <td>{{leave.endDate|date}}</td>
+                            <td>{{leave.approvedBy.name}}</td>
+                            <td>
+                                <a matTooltip="Edit" matTooltipPosition="above" [hidden]="!isAllowedToEdit(leave.id)"
+                                   routerLink="/leavemanagement/{{leave.id}}"
+                                   routerLinkActive="active"><i class="zmdi zmdi-edit zmdi-hc-lg"></i></a>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                <div class="rct-block-title text-center" *ngIf="leaves.length==0">
+                    {{'StaffLeaveManagement.LeaveManagement.NoLeaveAdded'|translate}}
+                </div>
+            </div>
+        </div>
+    </mat-tab>
+    <mat-tab label="{{'StaffLeaveManagement.LeaveManagement.PendingLeaves'|translate}}">
+        <div class="shop-grid">
+            <div class="row">
+                <div class="col-12 col-md-6 col-lg-4 col-xl-3" *ngFor="let leave of pendings">
+                    <div class="rct-block overflow-hidden">
+                        <div class="rct-block-content">
+                            <div class="product-image mb-20 embed-responsive embed-responsive-1by1">
+                                <img [src]="leave.student.personalImage" alt="product" class="embed-responsive-item rounded-circle" />
+                            </div>
+                            <div class="rpoduct-detail row">
+                                <h4 class="col-12 mb-15">{{leave.student.firstName}} {{leave.student.lastName}}</h4>
+                                <div class="col-6 p-2 text-grey">
+                                    <i class="mr-3 zmdi zmdi-assignment-account zmdi-hc-lg"></i>
+                                    <span>{{leave.student.rollNumber}}</span>
+                                </div>
+                                <div class="col-6 p-2 text-grey">
+                                    <i class="mr-3 zmdi zmdi-mood zmdi-hc-lg"></i>
+                                    <span>{{leave.leaveType.name}}</span>
+                                </div>
+                                <div class="col-12 p-2 text-grey">
+                                    <i class="mr-3 zmdi zmdi-calendar-alt zmdi-hc-lg"></i>
+                                    <span>{{leave.fromDate|date}}</span>
+                                    <i class="mx-2 zmdi zmdi-trending-flat zmdi-hc-lg"></i>
+                                    <span>{{leave.endDate|date}}</span>
+                                </div>
+                                <div class="col-6 p-2 text-grey">
+                                    <i class="mr-3 zmdi zmdi-sun zmdi-hc-lg"></i>
+                                    <span>{{numberOfDays(leave.fromDate, leave.endDate)}}</span>
+                                </div>
+                                <div class="col-6 p-2 text-grey">
+                                    <i class="mr-3 zmdi zmdi-alert-polygon zmdi-hc-lg"></i>
+                                    <span>{{leave.leaveStatus.name}}</span>
+                                </div>
+                            </div>
+                            <div class="rct-block-footer-drawer">
+                                <button class="btn-icon-rounded btn-primary"
+                                        matTooltip="{{'StaffLeaveManagement.LeaveManagement.Approve'|translate}}"
+                                        matTooltipPosition="above" (click)="approveAndRejectLeave(leave.id, 'Approve')">
+                                    <i class="zmdi zmdi-badge-check"></i>
+                                </button>
+                                <button class="btn-icon-rounded btn-secondary"
+                                        matTooltip="{{'StaffLeaveManagement.LeaveManagement.Reject'|translate}}"
+                                        matTooltipPosition="above" (click)="approveAndRejectLeave(leave.id, 'Rejected')">
+                                    <i class="zmdi zmdi-block"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="rct-block-title text-center" *ngIf="pendings.length==0">
+            {{'StaffLeaveManagement.LeaveManagement.NoLeaveAdded'|translate}}
+        </div>
+    </mat-tab>
+</mat-tab-group>

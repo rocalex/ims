@@ -1,0 +1,217 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'TransportManagement.VehicleMaster.AddVehicleMaster'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" matTooltip="Details" matTooltipPosition="above" routerLink="/transportmanagement/vehiclemaster/list" routerLinkActive="active"><i class="zmdi zmdi-view-list"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-block-content">
+        <mat-tab-group [selectedIndex]="selectedTab">
+            <mat-tab label="{{'Staff.Master.PersonalInformation'|translate}}" disabled>
+                <mat-form-field class="col-12 col-lg-6">
+                    <input type="text" matInput placeholder="{{'TransportManagement.VehicleMaster.VehicleCode'|translate}}" required NoSpaces
+                           [(ngModel)]="addVehicle.VehicleCode" #VehicleCodeModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20"
+                           (keydown)="resetError('VehicleCode')" />
+                    <mat-error *ngIf="VehicleCodeModel.invalid && VehicleCodeModel.touched">
+                        <span *ngIf="VehicleCodeModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                        <span *ngIf="(!VehicleCodeModel.hasError('required') && VehicleCodeModel.hasError('whitespace'))">{{'Common.WhiteSpace'|translate}}</span>
+                    </mat-error>
+                    <mat-hint class="mat-error" *ngIf="hasError('VehicleCode')">
+                        <span>{{error.Message}}</span>
+                    </mat-hint>
+                </mat-form-field>
+
+                <mat-form-field class="col-12 col-lg-6">
+                    <mat-select placeholder="{{'TransportManagement.VehicleMaster.SelectVehicleType'|translate}}" [(ngModel)]="addVehicle.VehicleType"
+                                #VehicleType="ngModel" [ngModelOptions]="{standalone: true}" required>
+                        <mat-option *ngFor="let vehicleType of vehicleTypes" [value]="vehicleType">
+                            {{vehicleType}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field class="col-12 col-lg-6">
+                    <mat-select placeholder="{{'TransportManagement.VehicleMaster.SelectFuelType'|translate}}" [(ngModel)]="addVehicle.FuelType"
+                                #FuelType="ngModel" [ngModelOptions]="{standalone: true}" required>
+                        <mat-option *ngFor="let fuelType of fuelTypes" [value]="fuelType">
+                            {{fuelType}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field class="col-12 col-lg-6">
+                    <input type="text" matInput placeholder="{{'TransportManagement.VehicleMaster.VehicleRegistrationNumber'|translate}}" required NoSpaces
+                           [(ngModel)]="addVehicle.VehicleRegistrationNumber" #VehicleRegistrationNumberModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20"
+                           (keydown)="resetError('VehicleRegistrationNumber')" />
+                    <mat-error *ngIf="VehicleRegistrationNumberModel.invalid && VehicleRegistrationNumberModel.touched">
+                        <span *ngIf="VehicleRegistrationNumberModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                        <span *ngIf="(!VehicleRegistrationNumberModel.hasError('required') && VehicleRegistrationNumberModel.hasError('whitespace'))">{{'Common.WhiteSpace'|translate}}</span>
+                    </mat-error>
+                    <mat-hint class="mat-error" *ngIf="hasError('VehicleRegistrationNumber')">
+                        <span>{{error.Message}}</span>
+                    </mat-hint>
+                </mat-form-field>
+
+                <mat-form-field class="col-12 col-lg-6">
+                    <input type="text" matInput placeholder="{{'TransportManagement.VehicleMaster.EngineNumber'|translate}}" required NoSpaces
+                           [(ngModel)]="addVehicle.EngineNumber" #EngineNumberModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20"
+                           (keydown)="resetError('EngineNumber')" />
+                    <mat-error *ngIf="EngineNumberModel.invalid && EngineNumberModel.touched">
+                        <span *ngIf="EngineNumberModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                        <span *ngIf="(!EngineNumberModel.hasError('required') && EngineNumberModel.hasError('whitespace'))">{{'Common.WhiteSpace'|translate}}</span>
+                    </mat-error>
+                    <mat-hint class="mat-error" *ngIf="hasError('EngineNumber')">
+                        <span>{{error.Message}}</span>
+                    </mat-hint>
+                </mat-form-field>
+
+                <mat-form-field class="col-12 col-lg-6">
+                    <input type="text" matInput placeholder="{{'TransportManagement.VehicleMaster.ChasisNumber'|translate}}"
+                           [(ngModel)]="addVehicle.ChasisNumber" [ngModelOptions]="{standalone: true}" maxlength="20" />
+                </mat-form-field>
+
+                <mat-form-field class="col-12 col-lg-6">
+                    <input type="number" matInput placeholder="{{'TransportManagement.VehicleMaster.AverageKMPL'|translate}}" required
+                           [(ngModel)]="addVehicle.AverageKMPL" #AverageKMPLModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20"
+                           (keydown)="resetError('AverageKMPL')" pattern="\d+" />
+                    <mat-error *ngIf="AverageKMPLModel.invalid && AverageKMPLModel.touched">
+                        <span *ngIf="AverageKMPLModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                        <span *ngIf="AverageKMPLModel.hasError('pattern')">{{'TransportManagement.VehicleMaster.AverageKMPLError'|translate}}</span>
+                    </mat-error>
+                    <mat-hint class="mat-error" *ngIf="hasError('AverageKMPL')">
+                        <span>{{error.Message}}</span>
+                    </mat-hint>
+                </mat-form-field>
+
+                <mat-form-field class="col-12 col-lg-6">
+                    <input type="text" matInput placeholder="{{'TransportManagement.VehicleMaster.InsuranceNumber'|translate}}"
+                           [(ngModel)]="addVehicle.InsuranceNumber" [ngModelOptions]="{standalone: true}" maxlength="20" />
+                </mat-form-field>
+
+                <mat-form-field class="col-12 col-lg-6">
+                    <input matInput [matDatepicker]="insuranceDate" placeholder="{{'TransportManagement.VehicleMaster.InsuranceDate'|translate}}"
+                           (dateChange)="addVehicle.InsuranceDate = $event.value" disabled>
+                    <mat-datepicker-toggle matSuffix [for]="insuranceDate"></mat-datepicker-toggle>
+                    <mat-datepicker #insuranceDate disabled="false"></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field class="col-12 col-lg-6">
+                    <input matInput [matDatepicker]="insuranceExpDate" placeholder="{{'TransportManagement.VehicleMaster.InsuranceExpDate'|translate}}"
+                           (dateChange)="addVehicle.InsuranceExpDate = $event.value" disabled>
+                    <mat-datepicker-toggle matSuffix [for]="insuranceExpDate"></mat-datepicker-toggle>
+                    <mat-datepicker #insuranceExpDate disabled="false"></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field class="col-12 col-lg-6">
+                    <input matInput [matDatepicker]="nextMaintenanceDate" placeholder="{{'TransportManagement.VehicleMaster.NextMaintenanceDate'|translate}} *"
+                           [min]="currentDate" (dateChange)="addVehicle.NextMaintenanceDate = $event.value" disabled>
+                    <mat-datepicker-toggle matSuffix [for]="nextMaintenanceDate"></mat-datepicker-toggle>
+                    <mat-datepicker #nextMaintenanceDate disabled="false"></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field class="col-12 col-lg-6">
+                    <input matInput [matDatepicker]="permitValidityDate" placeholder="{{'TransportManagement.VehicleMaster.PermitValidityDate'|translate}}"
+                           (dateChange)="addVehicle.PermitValidityDate = $event.value" disabled>
+                    <mat-datepicker-toggle matSuffix [for]="permitValidityDate"></mat-datepicker-toggle>
+                    <mat-datepicker #permitValidityDate disabled="false"></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field class="col-12 col-lg-6">
+                    <input matInput [matDatepicker]="fitnessExpDate" placeholder="{{'TransportManagement.VehicleMaster.FitnessExpDate'|translate}}"
+                           (dateChange)="addVehicle.FitnessExpDate = $event.value" disabled>
+                    <mat-datepicker-toggle matSuffix [for]="fitnessExpDate"></mat-datepicker-toggle>
+                    <mat-datepicker #fitnessExpDate disabled="false"></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field class="col-12 col-lg-6">
+                    <textarea type="text" matInput placeholder="{{'TransportManagement.VehicleMaster.ExtraFittings'|translate}}" maxlength="50"
+                              [(ngModel)]="addVehicle.ExtraFittings" [ngModelOptions]="{standalone: true}"></textarea>
+                </mat-form-field>
+
+                <!--<div class="col-12 col-lg-6 mb-2">
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="VehiclePhotoInput" aria-describedby="VehiclePhotoInput" #VehiclePhotoInput
+                               (change)="preview(VehiclePhotoInput.files, 0)" accept=".jpg, .jpeg, .png" />
+                        <label class="custom-file-label" for="VehiclePhotoInput">Choose Vehicle Photo</label>
+                    </div>
+                    <img class="img-thumbnail mt-2" [src]="VehiclePhotoURL" width="200" height="200" *ngIf="VehiclePhotoURL" />
+                </div>
+                <div class="col-12 col-lg-6 mb-2">
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="RegistrationCopyPhotoInput" aria-describedby="RegistrationCopyPhotoInput" #RegistrationCopyPhotoInput
+                               (change)="preview(RegistrationCopyPhotoInput.files, 1)" accept=".jpg, .jpeg, .png" />
+                        <label class="custom-file-label" for="RegistrationCopyPhotoInput">Choose Registration Copy</label>
+                    </div>
+                    <img class="img-thumbnail mt-2" [src]="RegistrationCopyPhotoURL" width="200" height="200" *ngIf="RegistrationCopyPhotoURL" />
+                </div>
+                <div class="col-12 col-lg-6 mb-2">
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="InsuranceCopyPhotoInput" aria-describedby="InsuranceCopyPhotoInput" #InsuranceCopyPhotoInput
+                               (change)="preview(InsuranceCopyPhotoInput.files, 2)" accept=".jpg, .jpeg, .png" />
+                        <label class="custom-file-label" for="InsuranceCopyPhotoInput">Choose Insurance Copy</label>
+                    </div>
+                    <img class="img-thumbnail mt-2" [src]="InsuranceCopyPhotoURL" width="200" height="200" *ngIf="InsuranceCopyPhotoURL" />
+                </div>-->
+                <div class="col-12">
+                    <button class="btn-icon-rounded btn-primary" matTooltip="Next" matTooltipPosition="above" (click)="selectTab(1)"><i class="zmdi zmdi-chevron-right"></i></button>
+                    <button class="btn-icon-rounded btn-primary" matTooltip="Save" matTooltipPosition="above" (click)="addVehicleMaster()"
+                            [disabled]="!(VehicleCodeModel.valid && VehicleType.valid && FuelType.valid
+                    && VehicleRegistrationNumberModel.valid && EngineNumberModel.valid && AverageKMPLModel.valid
+                    && (addVehicle.NextMaintenanceDate !== null && addVehicle.NextMaintenanceDate !== undefined))">
+                        <i class="zmdi zmdi-floppy"></i>
+                    </button>
+                    <a class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="Cancel" matTooltipPosition="above" routerLink="/transportmanagement/vehiclemaster/list" routerLinkActive="active"><i class="zmdi zmdi-close"></i></a>
+                </div>
+            </mat-tab>
+            <mat-tab label="{{'Student.Information.Documents'|translate}}" disabled>
+                <div class="row mx-0">
+                    <div class="col-12 form-group">
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="document" aria-describedby="document" #document multiple
+                                   (change)="previewDocument()" />
+                            <label class="custom-file-label" for="document">Choose file</label>
+                        </div>
+                        <div class="row mt-2" *ngFor="let document of documents; let i = index">
+                            <mat-form-field class="form-group col-12 col-lg-6">
+                                <input type="text" matInput placeholder="{{'Student.Information.File'|translate}}" readonly
+                                       [(ngModel)]="document.File" [ngModelOptions]="{standalone: true}" maxlength="250" />
+                            </mat-form-field>
+                            <mat-form-field class="form-group col-12 col-lg-6">
+                                <input type="text" matInput placeholder="{{'Student.Information.Name'|translate}}"
+                                       [(ngModel)]="document.Name" [ngModelOptions]="{standalone: true}" maxlength="250" />
+                            </mat-form-field>
+                            <mat-form-field class="form-group col-12 col-lg-6">
+                                <input matInput [matDatepicker]="expiredDate" placeholder="{{'Student.Information.ExpiredDate'|translate}} *"
+                                       (dateChange)="document.ExpiredDate = $event.value" [value]="document.ExpiredDate" disabled required>
+                                <mat-datepicker-toggle matSuffix [for]="expiredDate"></mat-datepicker-toggle>
+                                <mat-datepicker #expiredDate disabled="false"></mat-datepicker>
+                            </mat-form-field>
+                            <mat-form-field class="form-group col-12 col-lg-6">
+                                <input type="text" matInput placeholder="{{'Student.Information.MetaData'|translate}}"
+                                       [(ngModel)]="document.MetaData" [ngModelOptions]="{standalone: true}" maxlength="250" />
+                            </mat-form-field>
+                            <mat-form-field class="form-group col-12 col-lg-6">
+                                <mat-select placeholder="{{'Student.Information.SelectFileType'|translate}}" [(ngModel)]="document.FileType"
+                                            #FileType="ngModel" [ngModelOptions]="{standalone: true}">
+                                    <mat-option *ngFor="let fileType of fileTypes" [value]="fileType">
+                                        {{fileType}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <div class="col-12">
+                                <button class="btn-icon-rounded btn-primary" matTooltip="Remove" matTooltipPosition="above" (click)="removeDocument(i)">
+                                    <i class="zmdi zmdi-close"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <button class="btn-icon-rounded btn-primary" matTooltip="Back" matTooltipPosition="above" (click)="selectTab(0)"><i class="zmdi zmdi-chevron-left"></i></button>
+                        <button class="ml-2 btn-icon-rounded btn-primary" matTooltip="Save" matTooltipPosition="above" (click)="addVehicleMaster()"><i class="zmdi zmdi-floppy"></i></button>
+                        <a class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="Cancel" matTooltipPosition="above" routerLink="/transportmanagement/vehiclemaster/list" routerLinkActive="active"><i class="zmdi zmdi-close"></i></a>
+                    </div>
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>

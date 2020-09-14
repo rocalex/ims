@@ -1,0 +1,67 @@
+<div class="page-title d-flex justify-content-between align-items-center">
+  <div class="page-title-wrap">
+    <h2 class="mb-0">{{'Hostel.BedInfo.Title'|translate}}</h2>
+  </div>
+</div>
+<div class="rct-block">
+  <div class="rct-block-content">
+    <mat-form-field class="col-12 col-lg-6">
+      <mat-select placeholder="{{'Hostel.BedInfo.Hostel'|translate}}" [(ngModel)]="hostelId" #hostel="ngModel" (selectionChange)="getBlockListByHostelId($event.value)"
+        [ngModelOptions]="{standalone: true}" required>
+        <mat-option *ngFor="let hostel of hostelList" [value]="hostel.id">
+          {{hostel.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="col-12 col-lg-6">
+      <mat-select placeholder="{{'Hostel.BedInfo.Block'|translate}}" [(ngModel)]="blockObj" #block="ngModel" (selectionChange)="generateFloor($event.value)"
+        [ngModelOptions]="{standalone: true}" required>
+        <mat-option *ngFor="let block of blockList" [value]="block">
+          {{block.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="col-12 col-lg-6">
+      <mat-select placeholder="{{'Hostel.BedInfo.Floor'|translate}}" [(ngModel)]="floorId" #floor="ngModel"
+        [ngModelOptions]="{standalone: true}" required>
+        <mat-option *ngFor="let floor of floorList" [value]="floor.floorNo">
+          {{floor.floorName}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div class="col-12 col-lg-6">
+      <button class="btn-icon-rounded btn-primary" mattooltip="Search" mattooltipposition="above" (click)="search()"
+        aria-describedby="cdk-describedby-message-49" cdk-describedby-host="" ng-reflect-position="above"
+        ng-reflect-message="Search"><i class="zmdi zmdi-search"></i>
+      </button>
+    </div>
+    <div class="col-12 col-lg-6 float-right" style="margin-top: -30px;left: 40px;">
+      <img src="/assets/img/bedsInfo.png">
+    </div>
+  </div>
+  
+  <div class="rct-full-block" *ngFor="let bedInfos of bedInfoByRoom">
+    <div class="docs-component-list-category ng-star-inserted" >
+      <fieldset>
+        <h2 class="mb-0">Room No : {{bedInfos[0].roomNo}}</h2>
+      </fieldset>
+      <a class="docs-component-list-item" *ngFor="let bedInfo of bedInfos">
+        <mat-card class="mat-card">
+          <mat-card-header class="docs-component-list-card mat-card-header">
+            <div class="mat-card-header-text"></div>
+            <div class="mat-card-header-text">
+              <mat-card-title class="docs-component-list-card-title mat-card-title mat-card-title">{{bedInfo.bedNo}}</mat-card-title>
+            </div>
+            <div class="docs-component-list-icon-spacer"></div>
+            <div class="docs-component-list-item-icon">
+              <img *ngIf="bedInfo.status == 0" src="/assets/img/availableBed.png" />
+              <img *ngIf="bedInfo.status == 1" src="/assets/img/bookedBed.png" />
+            </div>
+          </mat-card-header>
+        </mat-card>
+      </a>
+    </div>
+  </div>
+</div>

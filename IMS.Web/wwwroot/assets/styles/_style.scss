@@ -1,0 +1,360 @@
+﻿* {
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    border-radius: 3px;
+    transition: opacity 100ms ease 0s;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: rgba(black, 0);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 3px;
+    background-color: rgba(black, 0.2);
+
+    &:hover {
+      background-color: rgba(black, 0.3);
+    }
+
+    &:vertical {
+      min-height: 50px
+    }
+
+    &:horizontal {
+      min-width: 50px
+    }
+  }
+}
+/* Material*/
+.mat-tab-body-content {
+  padding-top: 1rem;
+}
+
+.mat-form-field {
+  width: 100%;
+  padding-bottom: .75rem;
+}
+
+.mat-form-field-appearance-legacy .mat-form-field-underline {
+  background-color: rgba(black, 0.12);
+}
+
+.mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label,
+.mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus + .mat-form-field-label-wrapper .mat-form-field-label {
+  transform: translateY(-1.34375em) scale(.75);
+}
+
+.mat-focused .mat-form-field-required-marker {
+  color: #f44336;
+}
+
+.mat-select {
+  min-width: 100px;
+}
+
+.cdk-overlay-container {
+  z-index: 1040;
+}
+
+.mat-snack-bar-container {
+  background: #464d69;
+}
+
+/*General-bootstrap*/
+.app-loder {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1040;
+  background: rgba(black, 0.96);
+  overflow: hidden;
+}
+
+.page-loder {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1040;
+  background: rgba(white, 0.64);
+  overflow: hidden;
+}
+
+.loader {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  display: block;
+  width: 84px;
+  height: 84px;
+  margin: -60px 0 0 -60px;
+  border: 4px solid transparent;
+  border-color: #5D92F4 #5D92F4 transparent transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    bottom: 16px;
+    left: 16px;
+    border: 4px solid transparent;
+    border-color: #5D92F4 #5D92F4 transparent transparent;
+    border-radius: 50%;
+    animation: spin .5s linear infinite;
+    animation-direction: reverse;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.main-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+
+  .rct-sidebar-expand-overlay {
+    display: none;
+  }
+
+  @media (max-width:767px) {
+    &.sidebar-expanded {
+      .rct-sidebar-expand-overlay {
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+        width: 100%;
+        height: 100%;
+        content: "";
+        background: rgba(black, 0.36);
+        animation: .25s opacity;
+      }
+    }
+  }
+}
+
+.main-page-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  transition: all 200ms ease 0s;
+
+  @media (min-width:768px) {
+    .sidebar-expanded & {
+      padding-left: 16.25rem;
+    }
+
+    .navbar-top & {
+      padding-left: 0;
+    }
+  }
+}
+
+.flex-grow-1 {
+  flex-grow: 1;
+}
+
+.app-header {
+  display: block;
+  flex-shrink: 1;
+}
+
+.navbar-brand img {
+  max-height: 40px;
+}
+
+.rct-page-content {
+  flex: 1;
+  overflow: auto;
+}
+
+.rct-mainMenu .menu-icon {
+  color: rgba(0, 0, 0, 0.54);
+  display: inline-flex;
+  flex-shrink: 0;
+  margin-right: 16px;
+}
+
+.btn-nav-icon {
+  color: rgba(black, 0.54);
+  border: 0;
+  margin: 0;
+  cursor: pointer;
+  display: inline-flex;
+  outline: none;
+  padding: 12px;
+  position: relative;
+  align-items: center;
+  user-select: none;
+  vertical-align: middle;
+  justify-content: center;
+  text-decoration: none;
+  background-color: transparent;
+  flex: 0 0 auto;
+  overflow: visible;
+  font-size: 1.5rem;
+  text-align: center;
+  transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  border-radius: 50%;
+
+  &:hover {
+    background-color: rgba(black, 0.08);
+  }
+
+  .app-header & {
+    color: inherit;
+  }
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.mat-form-field-appearance-legacy .mat-form-field-label {
+  top: 1.3em !important;
+}
+
+.draggable-item {
+  cursor: move;
+  cursor: grab;
+}
+
+.gu-mirror {
+  position: fixed !important;
+  margin: 0 !important;
+  z-index: 9999 !important;
+  opacity: .8;
+}
+
+.gu-hide {
+  display: none !important
+}
+
+.gu-unselectable {
+  user-select: none !important
+}
+
+.gu-transit {
+  opacity: .2;
+}
+
+.text-grey {
+  color: rgba(black, 0.54);
+}
+
+.gallery-item {
+  position: relative;
+
+  .close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: inline-block;
+    padding: 8px 12px;
+    text-shadow: none;
+    color: #ddd;
+    opacity: 1;
+  }
+}
+
+.rct-visual-block {
+  position: relative;
+
+  .zmdi {
+    position: absolute;
+    top: 0;
+    right: 16px;
+    display: inline-block;
+    color: white;
+    opacity: 0.3;
+    font-size: 86px;
+    line-height: 86px;
+  }
+}
+
+.blue-madison {
+  background-color: #578ebe !important;
+}
+
+.red-intense {
+  background-color: #e35b5a !important;
+}
+
+.green-haze {
+  background-color: #44b6ae !important;
+}
+
+.purple-plum {
+  background-color: #8775a7 !important;
+}
+
+.bg-yellow {
+  background-color: #c49f47 !important;
+}
+
+.bg-red {
+  background-color: #cb5a5e !important;
+}
+
+.rct-block-footer-drawer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: white;
+  padding: 16px;
+  transform: translateY(100%);
+  transition: .2s;
+  box-shadow: 0 -2px 2px rgba(black, 0.2);
+
+  .rct-block:hover & {
+    transform: translateY(0);
+  }
+}
+
+.overflow-auto {
+  overflow: auto;
+}
+
+.max-h-200px {
+  max-height: 200px;
+}
+
+.app-store-links {
+  img {
+    height: 50px;
+  }
+}
+
+.rct-page {
+  .horizontal-menu {
+    .nav-link.active {
+      border-bottom: 2px solid currentColor;
+    }
+  }
+}
+
+ngx-material-timepicker-toggle svg {
+  fill: currentColor;
+}

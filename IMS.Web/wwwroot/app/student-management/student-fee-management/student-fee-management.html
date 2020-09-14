@@ -1,0 +1,13 @@
+﻿<div class="horizontal-menu mb-4 d-flex">
+    <ul class="list-unstyled nav">
+        <li *ngFor="let feeManagementLookUp of feeManagementLookUps">
+            <a class="nav-link" routerLinkActive="active"
+               *ngIf="isAllowed(feeManagementLookUp.Type)"
+               [routerLink]="feeManagementLookUp.Url">
+                <i *ngIf="feeManagementLookUp.Icon" [class]="feeManagementLookUp.Icon"></i>
+                <span class="menu-title">{{feeManagementLookUp.Name}}</span>
+            </a>
+        </li>
+    </ul>
+</div>
+<router-outlet></router-outlet>

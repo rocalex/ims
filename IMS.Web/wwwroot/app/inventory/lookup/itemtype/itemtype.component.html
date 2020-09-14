@@ -1,0 +1,23 @@
+<div class="horizontal-menu mb-4 d-flex">
+    <ul class="list-unstyled nav">
+        <li>
+            <a class="nav-link" routerLinkActive="active" routerLink="/inventory/lookup/itemtype">
+                <i class="zmdi zmdi-info"></i>
+                <span class="menu-title">{{'Inventory.Lookup.ItemType'|translate}}</span>
+            </a>
+        </li>
+        <li>
+            <a class="nav-link" routerLinkActive="active" routerLink="/inventory/lookup/taxtype">
+                <i class="zmdi zmdi-collection-text"></i>
+                <span class="menu-title">{{'Inventory.Lookup.TaxType'|translate}}</span>
+            </a>
+        </li>
+        <li>
+            <a class="nav-link" routerLinkActive="active" routerLink="/inventory/lookup/uom">
+                <i class="zmdi zmdi-collection-text"></i>
+                <span class="menu-title">{{'Inventory.Lookup.UOM'|translate}}</span>
+            </a>
+        </li>
+    </ul>
+  </div>
+  <router-outlet></router-outlet>

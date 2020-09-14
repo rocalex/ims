@@ -1,0 +1,71 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'StudentManagement.Promotion.Students'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" *ngIf="isAllowed('Add')"
+       matTooltip="{{'StudentManagement.Promotion.AddPromotion'|translate}}" matTooltipPosition="before"
+       routerLink="/student/promotion/add" routerLinkActive="active"><i class="zmdi zmdi-plus"></i></a>
+</div>
+
+<div class="shop-grid">
+    <div class="row">
+        <div class="col-12 col-md-6 col-lg-4 col-xl-3" *ngFor="let student of students">
+            <div class="rct-block overflow-hidden">
+                <div class="rct-block-content">
+                    <div class="product-image mb-20 embed-responsive embed-responsive-1by1">
+                        <img [src]="((student.student.personalImage)?student.student.personalImage:'/assets/img/default_user.png')" alt="product" class="embed-responsive-item rounded-circle" />
+                    </div>
+                    <div class="rpoduct-detail row">
+                        <h4 class="col-12 mb-15">{{student.student.firstName}} {{student.student.lastName}}</h4>
+                        <div class="col-6 p-2 text-grey">
+                            <i class="mr-3 zmdi zmdi-cake zmdi-hc-lg"></i>
+                            <span>{{student.student.dateOfBirth|date}}</span>
+                        </div>
+                        <div class="col-6 p-2 text-grey">
+                            <i class="mr-3 zmdi zmdi-smartphone zmdi-hc-lg"></i>
+                            <span>{{student.student.mobileNumber}}</span>
+                        </div>
+                        <div class="col-6 p-2 text-grey">
+                            <i class="mr-3 zmdi zmdi-confirmation-number zmdi-hc-lg"></i>
+                            <span>{{student.student.rollNumber}}</span>
+                        </div>
+                        <div class="col-6 p-2 text-grey">
+                            <i class="mr-3 zmdi zmdi-confirmation-number zmdi-hc-lg"></i>
+                            <span>{{student.student.admissionNumber}}</span>
+                        </div>
+                        <div class="col-6 p-2 text-grey">
+                            <i class="mr-3 zmdi zmdi-calendar-alt zmdi-hc-lg"></i>
+                            <span>{{student.student.admissionDate|date}}</span>
+                        </div>
+                        <div class="col-6 p-2 text-grey">
+                            <i class="mr-3 zmdi zmdi-calendar-alt zmdi-hc-lg"></i>
+                            <span>{{student.currentClass.name}}</span>
+                        </div>
+                        <div class="col-6 p-2 text-grey">
+                            <i class="mr-3 zmdi zmdi-calendar-alt zmdi-hc-lg"></i>
+                            <span>{{student.promotedToClass.name}}</span>
+                        </div>
+                        <div class="col-6 p-2 text-grey">
+                            <i class="mr-3 zmdi zmdi-calendar-alt zmdi-hc-lg"></i>
+                            <span>{{student.currentSection.name}}</span>
+                        </div>
+                        <div class="col-6 p-2 text-grey">
+                            <i class="mr-3 zmdi zmdi-calendar-alt zmdi-hc-lg"></i>
+                            <span>{{student.promotedToSection.name}}</span>
+                        </div>
+                        <div class="col-6 p-2 text-grey">
+                            <i class="mr-3 zmdi zmdi-calendar-alt zmdi-hc-lg"></i>
+                            <span class="text-truncate">{{student.remark}}</span>
+                        </div>
+                    </div>
+                    <div class="rct-block-footer-drawer">
+                        <a class="btn-icon-rounded btn-outline-primary" *ngIf="isAllowed('Edit')" matTooltip="Details" matTooltipPosition="above" routerLink="/student/promotion/{{student.id}}" routerLinkActive="active"><i class="zmdi zmdi-edit"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 rct-block rct-block-title text-center" *ngIf="students.length==0">
+            {{'StudentManagement.Promotion.NoStudentPromoted'|translate}}
+        </div>
+    </div>
+</div>

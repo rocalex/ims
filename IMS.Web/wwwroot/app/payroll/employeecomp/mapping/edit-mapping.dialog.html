@@ -1,0 +1,48 @@
+<h1 mat-dialog-title>{{'Payroll.EmployeeComp.Mapping' | translate}}</h1>
+<div mat-dialog-content>
+    <mat-form-field class="col-12 col-lg-6">
+        <mat-select placeholder="{{'Payroll.EmployeeComp.Component'|translate}}" [(ngModel)]="addMapping.componentId"
+            #hostel="ngModel" [ngModelOptions]="{standalone: true}" required>
+            <mat-option *ngFor="let component of componentList" [value]="component.id">
+                {{component.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field class="col-12 col-lg-6">
+        <mat-select placeholder="{{'Payroll.EmployeeComp.ComponentType'|translate}}" [(ngModel)]="addMapping.componentTypeId" (selectionChange)="changeComponentType($event.value)"
+            #hostel="ngModel" [ngModelOptions]="{standalone: true}" required>
+            <mat-option *ngFor="let type of typeList" [value]="type.id">
+                {{type.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field class="col-12 col-lg-6" *ngIf="isFormula">
+        <input type="text" matInput required placeholder="{{'Payroll.EmployeeComp.Formula'|translate}}" 
+            [(ngModel)]="addMapping.formula" #HostelCautionDeposit="ngModel" [ngModelOptions]="{standalone: true}"/>
+    </mat-form-field>
+    <mat-form-field class="col-12 col-lg-6">
+        <mat-select placeholder="{{'Payroll.EmployeeComp.Operator'|translate}}" [(ngModel)]="addMapping.operator"
+            #hostel="ngModel" [ngModelOptions]="{standalone: true}" required>
+            <mat-option *ngFor="let operator of operatorList" [value]="operator">
+                {{operator}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field class="col-12 col-lg-6">
+        <input type="number" matInput required placeholder="{{'Payroll.EmployeeComp.Amount'|translate}}"
+            [(ngModel)]="addMapping.amount" #HostelCautionDeposit="ngModel" [ngModelOptions]="{standalone: true}"
+            maxlength="20" />
+    </mat-form-field>
+</div>
+<div mat-dialog-actions>
+    <div class="col-12">
+        <button class="btn-icon-rounded btn-primary" matTooltip="{{'Payroll.EmployeeComp.Save'|translate}}"
+            matTooltipPosition="above" (click)="add()">
+            <i class="zmdi zmdi-floppy"></i>
+        </button>
+        <button class="btn-icon-rounded btn-primary" matTooltip="{{'Payroll.EmployeeComp.Save'|translate}}"
+            matTooltipPosition="above" (click)="cancel()">
+            <i class="zmdi zmdi-close"></i>
+        </button>
+    </div>
+</div>

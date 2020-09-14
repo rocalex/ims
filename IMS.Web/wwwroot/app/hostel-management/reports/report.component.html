@@ -1,0 +1,17 @@
+<div class="horizontal-menu mb-4 d-flex">
+    <ul class="list-unstyled nav">
+        <li>
+            <a class="nav-link" routerLinkActive="active" [routerLink]="['allocate']">
+                <i class="zmdi zmdi-collection-text"></i>
+                <span class="menu-title">{{'Hostel.Report.AllocateRooms'|translate}}</span>
+            </a>
+        </li>
+        <li>
+            <a class="nav-link" routerLinkActive="active" [routerLink]="['messmanage']">
+                <i class="zmdi zmdi-info"></i>
+                <span class="menu-title">{{'Hostel.Report.MessManagement'|translate}}</span>
+            </a>
+        </li>
+    </ul>
+  </div>
+  <router-outlet></router-outlet>

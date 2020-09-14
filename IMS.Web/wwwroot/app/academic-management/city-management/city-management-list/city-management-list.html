@@ -1,0 +1,83 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Academic.City.Cities'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary"
+       matTooltip="{{'Academic.City.AddCity'|translate}}" matTooltipPosition="before" *ngIf="isAllowed('Add')"
+       routerLink="/academic/city/add" routerLinkActive="active"><i class="zmdi zmdi-plus"></i></a>
+</div>
+<!--<div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource" class="w-100">
+
+        
+        <ng-container matColumnDef="position">
+            <th mat-header-cell *matHeaderCellDef> No. </th>
+            <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+        </ng-container>
+
+        
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef> Name </th>
+            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        </ng-container>
+
+        
+        <ng-container matColumnDef="weight">
+            <th mat-header-cell *matHeaderCellDef> Weight </th>
+            <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
+        </ng-container>
+
+        
+        <ng-container matColumnDef="symbol">
+            <th mat-header-cell *matHeaderCellDef> Symbol </th>
+            <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>-->
+
+
+
+
+<div class="rct-block">
+    <div class="rct-full-block">
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th>{{'Common.Name'|translate}}</th>
+                        <th>{{'Academic.City.CountryName'|translate}}</th>
+                        <th>{{'Academic.City.StateName'|translate}}</th>
+                        <th>{{'StudentManagement.LookUp.Code'|translate}}</th>
+                        <th>{{'StudentManagement.LookUp.Description'|translate}}</th>
+                        <th>{{'StudentManagement.LookUp.Status'|translate}}</th>
+                        <th>{{'Common.CreatedOn'|translate}}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let city of cities">
+                        <td>{{city.name}}</td>
+                        <td>{{city.state.country.name}}</td>
+                        <td>{{city.state.name}}</td>
+                        <td>{{city.code}}</td>
+                        <td>{{city.description}}</td>
+                        <td>{{city.status? 'Yes': 'No'}}</td>
+                        <td>{{city.createdOn|date}}</td>
+                        <td><a routerLink="/academic/city/{{city.id}}" matTooltip="{{'Academic.City.CityEdit'|translate}}" *ngIf="isAllowed('Edit')"
+                               matTooltipPosition="above" routerLinkActive="active"><i class="zmdi zmdi-edit zmdi-hc-lg"></i></a></td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <div class="rct-block-title text-center" *ngIf="cities.length==0">
+                {{'Academic.City.NoCityAdded'|translate}}
+            </div>
+        </div>
+    </div>
+</div>
+

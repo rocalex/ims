@@ -1,0 +1,43 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'FinanceManagement.PaymentType.PaymentTypes'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" *ngIf="isAllowed('Add')"
+       matTooltip="{{'FinanceManagement.PaymentType.AddPaymentType'|translate}}" matTooltipPosition="before"
+       routerLink="/finance/paymenttypes/add" routerLinkActive="active"><i class="zmdi zmdi-plus"></i></a>
+</div>
+
+<div class="rct-block">
+    <div class="rct-full-block">
+        <div class="table-responsive">
+            <div class="table-responsive">
+                <table class="table mb-0">
+                    <thead>
+                        <tr>
+                            <th>{{'StudentManagement.LookUp.Name'|translate}}</th>
+                            <th>{{'StudentManagement.LookUp.Code'|translate}}</th>
+                            <th>{{'StudentManagement.LookUp.Description'|translate}}</th>
+                            <th>{{'Common.CreatedOn'|translate}}</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let paymentType of paymentTypes">
+                            <td>{{paymentType.name}}</td>
+                            <td>{{paymentType.code}}</td>
+                            <td>{{paymentType.description}}</td>
+                            <td>{{paymentType.createdOn|date}}</td>
+                            <td><a routerLink="/finance/paymenttypes/{{paymentType.id}}" *ngIf="isAllowed('Edit')"
+                                   matTooltip="{{'FinanceManagement.PaymentType.EditPaymentType'|translate}}" matTooltipPosition="above"
+                                   routerLinkActive="active"><i class="zmdi zmdi-edit zmdi-hc-lg"></i></a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="rct-block-title text-center" *ngIf="paymentTypes.length==0">
+                {{'FinanceManagement.PaymentType.NoPaymentTypes'|translate}}
+            </div>
+        </div>
+    </div>
+</div>

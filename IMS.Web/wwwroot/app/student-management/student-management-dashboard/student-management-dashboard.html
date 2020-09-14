@@ -1,0 +1,264 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Sidenav.Children.Dashboard'|translate}}</h2>
+    </div>
+    <div class="d-flex">
+        <div class="collapse" id="collapseDashboardNav">
+            <a class="btn-icon-rounded btn-outline-primary" matTooltip="Android" matTooltipPosition="above"><i class="zmdi zmdi-android"></i></a>
+            <a class="ml-2 btn-icon-rounded btn-outline-primary" matTooltip="Google" matTooltipPosition="above"><i class="zmdi zmdi-google"></i></a>
+        </div>
+        <a class="ml-3 btn-icon-rounded btn-outline-primary"
+            matTooltip="More" matTooltipPosition="above"
+           data-toggle="collapse" data-target="#collapseDashboardNav" aria-expanded="false"><i class="zmdi zmdi-more-vert"></i></a>
+    </div>
+</div>
+
+<!-- Counts -->
+<div class="row">
+    <div class="col-12 col-lg-3">
+        <div class="rct-block rct-visual-block blue-madison text-white">
+            <div class="rct-block-content">
+                <div class="display-4">{{totalStudentsCount}}</div>
+                <h2>{{'StudentManagement.Dashboard.TotalStudents'|translate}}</h2>
+                <i class="zmdi zmdi-accounts"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-lg-3">
+        <div class="rct-block rct-visual-block green-haze text-white">
+            <div class="rct-block-content">
+                <div class="display-4">{{activeStudentsCount}}</div>
+                <h2>{{'StudentManagement.Dashboard.ActiveStudents'|translate}}</h2>
+                <i class="zmdi zmdi-account"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-lg-3">
+        <div class="rct-block rct-visual-block purple-plum text-white">
+            <div class="rct-block-content">
+                <div class="display-4">{{totalFeeCollected}}</div>
+                <h2>{{'StudentManagement.Dashboard.TotalFeeCollected'|translate}}</h2>
+                <i class="zmdi zmdi-balance"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-lg-3">
+        <div class="rct-block rct-visual-block red-intense text-white">
+            <div class="rct-block-content">
+                <div class="display-4">{{totalFeeRefunded}}</div>
+                <h2>{{'StudentManagement.Dashboard.TotalFeeRefunded'|translate}}</h2>
+                <i class="zmdi zmdi-balance"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-lg-3">
+        <div class="rct-block rct-visual-block bg-yellow text-white">
+            <div class="rct-block-content">
+                <div class="display-4">{{inActiveStudentsCount}}</div>
+                <h2>{{'StudentManagement.Dashboard.InactiveStudents'|translate}}</h2>
+                <i class="zmdi zmdi-account"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-lg-3">
+        <div class="rct-block rct-visual-block bg-red text-white">
+            <div class="rct-block-content">
+                <div class="display-4">{{terminatedStudentsCount}}</div>
+                <h2>{{'StudentManagement.Dashboard.TerminatedStudents'|translate}}</h2>
+                <i class="zmdi zmdi-account"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Charts -->
+<div class="row">
+    <!-- Religion Wise Students -->
+    <div class="col-12 col-lg-6">
+        <div class="rct-block">
+            <div class="rct-block-title">
+                <h2 class="mb-0">{{'StudentManagement.Dashboard.ReligionWiseStudents'|translate}}</h2>
+            </div>
+            <div class="rct-block-content">
+                <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [options]="pieChartOptions" [chartType]="pieChartType" [colors]="pieChartColor"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Class Wise Students -->
+    <div class="col-12 col-lg-6">
+        <div class="rct-block">
+            <div class="rct-block-title">
+                <h2 class="mb-0">{{'StudentManagement.Dashboard.ClassWiseStudents'|translate}}</h2>
+            </div>
+            <div class="rct-block-content">
+                <canvas baseChart [datasets]="classWiseBarChartData" [options]="barChartOptions" [labels]="classWiseBarChartLabels" [legend]="barChartLegend"
+                        [colors]="classWiseBarChartColor" [chartType]="barChartType"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Active/Inactive -->
+    <div class="col-12 col-lg-6">
+        <div class="rct-block">
+            <div class="rct-block-title">
+                <h2 class="mb-0">{{'StudentManagement.Dashboard.ActiveInactiveStudents'|translate}}</h2>
+            </div>
+            <div class="rct-block-content">
+                <canvas baseChart [datasets]="activeWiseBarChartData" [options]="barChartOptions" [labels]="activeWiseBarChartLabels" [legend]="barChartLegend"
+                        [colors]="activeWiseBarChartColor" [chartType]="barChartType"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gender Wise Students -->
+    <div class="col-12 col-lg-6">
+        <div class="rct-block">
+            <div class="rct-block-title">
+                <h2 class="mb-0">{{'StudentManagement.Dashboard.GenderWiseStudents'|translate}}</h2>
+            </div>
+            <div class="rct-block-content">
+                <canvas baseChart [data]="donutChartData" [labels]="donutChartLabels" [options]="donutChartOptions" [chartType]="donutChartType" [colors]="donutChartColor"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 col-lg-4">
+        <div class="rct-block">
+            <div class="rct-block-title d-flex justify-content-between">
+                <h2 class="mb-0">{{'StudentManagement.Dashboard.Homework'|translate}}</h2>
+                <a class="btn-icon-rounded btn-outline-primary"
+                   matTooltip="Home work" matTooltipPosition="before"
+                   routerLink="/staff/activities/homework" routerLinkActive="active"><i class="zmdi zmdi-plus"></i></a>
+            </div>
+            <div class="rct-block-content">
+                <ul class="list-unstyled">
+                    <li *ngFor="let homework of homeworksList">
+                        <div class="media">
+                            <div class="media-body pt-5">
+                                <div class="d-flex justify-content-between">
+                                    <h5 class="mb-5 text-primary">{{homework.homework}}</h5>
+                                    <span class="text-muted fs-12">{{homework.homeworkDate|date}}</span>
+                                </div>
+                                <span class="text-muted fs-12 d-block">{{homework.staff}}</span>
+                            </div>
+                        </div>
+                        <hr class="my-1" />
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-lg-4">
+        <div class="rct-block">
+            <div class="rct-block-title d-flex justify-content-between">
+                <h2 class="mb-0">{{'StudentManagement.Dashboard.Notice'|translate}}</h2>
+                <a class="btn-icon-rounded btn-outline-primary"
+                   matTooltip="{{'Staff.CircularNotice.AddNotice'|translate}}" matTooltipPosition="before" *ngIf="isAllowed('Add')"
+                   routerLink="/staff/activities/notice/add" routerLinkActive="active"><i class="zmdi zmdi-plus"></i></a>
+            </div>
+            <div class="rct-block-content">
+                <ul class="list-unstyled">
+                    <li *ngFor="let notice of noticeList">
+                        <div class="media">
+                            <div class="media-body pt-5">
+                                <div class="d-flex justify-content-between">
+                                    <a routerLink="/staff/activities/notice/{{notice.id}}"><h5 class="mb-5 text-primary">{{notice.message}}</h5></a>
+                                    <span class="text-muted fs-12">{{notice.noticeDate|date}}</span>
+                                </div>
+                                <span class="text-muted fs-12 d-block">{{notice.description}}</span>
+                            </div>
+                        </div>
+                        <hr class="my-1" />
+                    </li>
+                </ul>
+                <div class="rct-block-title text-center" *ngIf="noticeList.length==0">
+                    {{'Staff.CircularNotice.NoNoticeAdded'|translate}}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-lg-4">
+        <div class="rct-block">
+            <div class="rct-block-title d-flex justify-content-between">
+                <h2 class="mb-0">{{'StudentManagement.Dashboard.Circular'|translate}}</h2>
+                <a class="btn-icon-rounded btn-outline-primary"
+                   matTooltip="{{'Staff.CircularNotice.AddNotice'|translate}}" matTooltipPosition="before" *ngIf="isAllowed('Add')"
+                   routerLink="/staff/activities/notice/add" routerLinkActive="active"><i class="zmdi zmdi-plus"></i></a>
+            </div>
+            <div class="rct-block-content">
+                <ul class="list-unstyled">
+                    <li *ngFor="let circular of circularList">
+                        <div class="media">
+                            <div class="media-body pt-5">
+                                <div class="d-flex justify-content-between">
+                                    <a routerLink="/staff/activities/notice/{{circular.id}}"><h5 class="mb-5 text-primary">{{circular.message}}</h5></a>
+                                    <span class="text-muted fs-12">{{circular.noticeDate|date}}</span>
+                                </div>
+                                <span class="text-muted fs-12 d-block">{{circular.description}}</span>
+                            </div>
+                        </div>
+                        <hr class="my-1" />
+                    </li>
+                </ul>
+                <div class="rct-block-title text-center" *ngIf="circularList.length==0">
+                    {{'Staff.CircularNotice.NoNoticeAdded'|translate}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Calendar view -->
+<div class="rct-block">
+    <div class="rct-block-title d-flex justify-content-between">
+        <h2 class="mb-0">{{'StudentManagement.Dashboard.CalendarView'|translate}}</h2>
+        <a class="btn-icon-rounded btn-outline-primary"
+           matTooltip="{{'Staff.Activity.AddActivity'|translate}}" matTooltipPosition="before"
+           routerLink="/staff/activities/activity/add" routerLinkActive="active"><i class="zmdi zmdi-plus"></i></a>
+    </div>
+    <div class="rct-block-title d-flex justify-content-between">
+        <div class="btn-group" role="group">
+            <div class="btn btn-primary" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">
+                {{'StudentManagement.Dashboard.Previous'|translate}}
+            </div>
+            <div class="btn btn-primary active" mwlCalendarToday [(viewDate)]="viewDate">
+                {{'StudentManagement.Dashboard.Today'|translate}}
+            </div>
+            <div class="btn btn-primary" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">
+                {{'StudentManagement.Dashboard.Next'|translate}}
+            </div>
+        </div>
+        <div class="btn-group ml-3" role="group">
+            <div class="btn btn-primary" (click)="setView(CalendarView.Month)" [class.active]="view === CalendarView.Month">
+                {{'StudentManagement.Dashboard.Month'|translate}}
+            </div>
+            <div class="btn btn-primary" (click)="setView(CalendarView.Week)" [class.active]="view === CalendarView.Week">
+                {{'StudentManagement.Dashboard.Week'|translate}}
+            </div>
+            <div class="btn btn-primary" (click)="setView(CalendarView.Day)" [class.active]="view === CalendarView.Day">
+                {{'StudentManagement.Dashboard.Day'|translate}}
+            </div>
+        </div>
+    </div>
+    <div class="rct-block-content">
+        <div [ngSwitch]="view">
+            <mwl-calendar-month-view *ngSwitchCase="CalendarView.Month" [viewDate]="viewDate" [events]="calendarEvents"
+                                     [activeDayIsOpen]="activeDayIsOpen" (dayClicked)="dayClicked($event.day)"
+                                     (eventClicked)="handleEvent('Clicked', $event.event)">
+            </mwl-calendar-month-view>
+            <mwl-calendar-week-view *ngSwitchCase="CalendarView.Week" [viewDate]="viewDate" [events]="calendarEvents"
+                                    (eventClicked)="handleEvent('Clicked', $event.event)">
+            </mwl-calendar-week-view>
+            <mwl-calendar-day-view *ngSwitchCase="CalendarView.Day" [viewDate]="viewDate" [events]="calendarEvents"
+                                   (eventClicked)="handleEvent('Clicked', $event.event)">
+            </mwl-calendar-day-view>
+        </div>
+    </div>
+</div>

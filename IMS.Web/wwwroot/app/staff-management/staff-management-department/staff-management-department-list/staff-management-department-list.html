@@ -1,0 +1,37 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Staff.Department.Departments'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" *ngIf="isAllowed('Add')"
+       matTooltip="{{'Staff.Department.AddDepartment'|translate}}" matTooltipPosition="before"
+       routerLink="/staff/department/add" routerLinkActive="active"><i class="zmdi zmdi-plus"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-full-block">
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th>{{'Institute.AcademicYear.Code'|translate}}</th>
+                        <th>{{'Common.Name'|translate}}</th>
+                        <th>{{'Common.CreatedOn'|translate}}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let department of departments">
+                        <td>{{department.code}}</td>
+                        <td>{{department.departmentName}}</td>
+                        <td>{{department.createdOn|date}}</td>
+                        <td><a matTooltip="{{'Staff.Department.EditDepartments'|translate}}" *ngIf="isAllowed('Edit')" matTooltipPosition="above" routerLink="/staff/department/{{department.id}}" routerLinkActive="active"><i class="zmdi zmdi-edit zmdi-hc-lg"></i></a></td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <div class="rct-block-title text-center" *ngIf="departments.length==0">
+                {{'Staff.Department.NoDepartmentAdded'|translate}}
+            </div>
+        </div>
+    </div>
+</div>
+

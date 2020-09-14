@@ -1,0 +1,120 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'FinanceManagement.GeneralPayment.EditBasicPayment'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" matTooltip="{{'FinanceManagement.GeneralPayment.BasicPayments'|translate}}" matTooltipPosition="above" routerLink="/finance/payment/list" routerLinkActive="active"><i class="zmdi zmdi-view-list"></i></a>
+</div>
+
+<div class="rct-block">
+    <div class="rct-block-content">
+        <form class="row">
+            <mat-form-field class="col-12 col-lg-6">
+                <input type="text" matInput placeholder="{{'FinanceManagement.GeneralPayment.Code'|translate}}" required
+                       [(ngModel)]="financePayment.code" #codeModel="ngModel" [ngModelOptions]="{standalone: true}"
+                       maxlength="20" (keyup)="checkWhiteSpace()" (keydown)="checkWhiteSpace(); resetError()" />
+
+                <mat-error *ngIf="codeModel.invalid && codeModel.touched">
+                    <span *ngIf="codeModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                </mat-error>
+
+                <mat-hint class="mat-error" *ngIf="isEmptyCodeError">
+                    <span>{{'FinanceManagement.GeneralPayment.EmptyFinancePaymentCode'|translate}}</span>
+                </mat-hint>
+
+                <mat-hint class="mat-error" *ngIf="errorMessage !== ''">
+                    <span>{{errorMessage}}</span>
+                </mat-hint>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <input matInput [matDatepicker]="paymentDate" placeholder="{{'FinanceManagement.GeneralPayment.PaymentDate'|translate}} *"
+                       (dateChange)="financePayment.paymentDate = $event.value" disabled required [min]="currentDate" [value]="financePayment.paymentDate">
+                <mat-datepicker-toggle matSuffix [for]="paymentDate"></mat-datepicker-toggle>
+                <mat-datepicker #paymentDate disabled="false"></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <mat-select placeholder="{{'FinanceManagement.GeneralPayment.PaymentType'|translate}}" [(ngModel)]="financePayment.paymentTypeId"
+                            #paymentTypeModel="ngModel" [ngModelOptions]="{standalone: true}" required (keyup)="checkWhiteSpace()" (keydown)="resetError()">
+                    <mat-option *ngFor="let paymentType of paymentTypesList" [value]="paymentType.id">
+                        {{paymentType.name}}
+                    </mat-option>
+                </mat-select>
+
+                <mat-error *ngIf="paymentTypeModel.invalid && paymentTypeModel.touched">
+                    <span *ngIf="paymentTypeModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <mat-select placeholder="{{'FinanceManagement.GeneralPayment.PaymentReference'|translate}}" [(ngModel)]="financePayment.paymentReference"
+                            #paymentReferenceModel="ngModel" [ngModelOptions]="{standalone: true}" required (keyup)="checkWhiteSpace()" (keydown)="resetError()">
+                    <mat-option *ngFor="let paymentReferenceEnum of paymentReferenceEnumDetails" [value]="paymentReferenceEnum.key">
+                        {{paymentReferenceEnum.value}}
+                    </mat-option>
+                </mat-select>
+
+                <mat-error *ngIf="paymentReferenceModel.invalid && paymentReferenceModel.touched">
+                    <span *ngIf="paymentReferenceModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <input matInput type="text" [(ngModel)]="financePayment.referenceCode" placeholder="{{'FinanceManagement.GeneralPayment.ReferenceCode'|translate}}"
+                       maxlength="20" #referenceCodeModel="ngModel" [ngModelOptions]="{standalone: true}" />
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <input matInput [matDatepicker]="referenceDate" placeholder="{{'FinanceManagement.GeneralPayment.ReferenceDate'|translate}}"
+                       (dateChange)="financePayment.referenceDate = $event.value" disabled [min]="currentDate" [value]="financePayment.referenceDate">
+                <mat-datepicker-toggle matSuffix [for]="referenceDate"></mat-datepicker-toggle>
+                <mat-datepicker #referenceDate disabled="false"></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <mat-select placeholder="{{'FinanceManagement.GeneralPayment.PaymentBy'|translate}}" [(ngModel)]="financePayment.paymentById"
+                            #paymentByModel="ngModel" [ngModelOptions]="{standalone: true}" required (keyup)="checkWhiteSpace()" (keydown)="resetError()">
+                    <mat-option *ngFor="let systemUser of systemUsersList" [value]="systemUser.id">
+                        {{systemUser.name}}
+                    </mat-option>
+                </mat-select>
+
+                <mat-error *ngIf="paymentByModel.invalid && paymentByModel.touched">
+                    <span *ngIf="paymentByModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <mat-select placeholder="{{'FinanceManagement.GeneralPayment.PaidTo'|translate}}" [(ngModel)]="financePayment.paidToId"
+                            #paidToModel="ngModel" [ngModelOptions]="{standalone: true}" required (keyup)="checkWhiteSpace()" (keydown)="resetError()">
+                    <mat-option *ngFor="let expenseChartOfAccount of expenseChartOfAccountsList" [value]="expenseChartOfAccount.id">
+                        {{expenseChartOfAccount.code}} - {{expenseChartOfAccount.name}}
+                    </mat-option>
+                </mat-select>
+
+                <mat-error *ngIf="paidToModel.invalid && paidToModel.touched">
+                    <span *ngIf="paidToModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <input matInput type="number" [(ngModel)]="financePayment.amount" placeholder="{{'FinanceManagement.GeneralPayment.Amount'|translate}}"
+                       #amountModel="ngModel" [ngModelOptions]="{standalone: true}" required min="0" />
+
+                <mat-error *ngIf="amountModel.invalid && amountModel.touched">
+                    <span *ngIf="amountModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                </mat-error>
+            </mat-form-field>
+
+            <div class="col-12">
+                <button class="btn-icon-rounded btn-primary" (click)="updateFinancePayment()"
+                        matTooltip="{{'Common.Save'|translate}}" matTooltipPosition="above"
+                        [disabled]="!(codeModel.valid && paymentTypeModel.valid && paymentReferenceModel.valid && paymentByModel.valid && paidToModel.valid
+                        && (financePayment.paymentDate !== null && financePayment.paymentDate !== undefined))">
+                    <i class="zmdi zmdi-floppy"></i>
+                </button>
+                <a class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="{{'Common.Cancel'|translate}}" matTooltipPosition="above" routerLink="/finance/payment/list" routerLinkActive="active"><i class="zmdi zmdi-close"></i></a>
+            </div>
+        </form>
+    </div>
+</div>

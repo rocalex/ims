@@ -1,0 +1,39 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'TransportManagement.BreakDown.BreakDowns'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" *ngIf="isAllowed('Add')" matTooltip="{{'TransportManagement.BreakDown.AddBreakDown'|translate}}" matTooltipPosition="before" routerLink="/transportmanagement/vehiclemaintenance/breakdown/add" routerLinkActive="active"><i class="zmdi zmdi-plus"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-full-block">
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th>{{'TransportManagement.BreakDown.Code'|translate}}</th>
+                        <th>{{'TransportManagement.BreakDown.BreakDownDate'|translate}}</th>
+                        <th>{{'TransportManagement.BreakDown.Vehicle'|translate}}</th>
+                        <th>{{'TransportManagement.BreakDown.Driver'|translate}}</th>
+                        <th>{{'TransportManagement.BreakDown.BreakDownDuration'|translate}}</th>
+                        <th>{{'Common.CreatedOn'|translate}}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of breakDowns">
+                        <td>{{item.code}}</td>
+                        <td>{{item.breakDownDate|date}}</td>
+                        <td>{{item.vehicle.vehicleCode}}</td>
+                        <td>{{item.driver.name}}</td>
+                        <td>{{item.breakDownDuration|date}}</td>
+                        <td>{{item.createdOn|date}}</td>
+                        <td><a matTooltip="Edit" matTooltipPosition="above" *ngIf="isAllowed('Edit')" routerLink="/transportmanagement/vehiclemaintenance/breakdown/{{item.id}}" routerLinkActive="active"><i class="zmdi zmdi-edit zmdi-hc-lg"></i></a></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="rct-block-title text-center" *ngIf="breakDowns.length==0">
+                {{'TransportManagement.BreakDown.NoBreakDownAdded'|translate}}
+            </div>
+        </div>
+    </div>
+</div>

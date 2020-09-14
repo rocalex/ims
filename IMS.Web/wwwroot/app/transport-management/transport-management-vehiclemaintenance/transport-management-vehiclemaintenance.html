@@ -1,0 +1,29 @@
+﻿<div class="horizontal-menu mb-4 d-flex">
+    <ul class="list-unstyled nav">
+        <li>
+            <a class="nav-link" routerLinkActive="active" *ngIf="isAllowed('TransportVehicleMaintanence')" [routerLink]="['maintenance']">
+                <i class="zmdi zmdi-settings"></i>
+                <span class="menu-title">Maintenance</span>
+            </a>
+        </li>
+        <li>
+            <a class="nav-link" routerLinkActive="active" *ngIf="isAllowed('TransportVehicleRepair')" [routerLink]="['repair']">
+                <i class="zmdi zmdi-settings"></i>
+                <span class="menu-title">Repair</span>
+            </a>
+        </li>
+        <li>
+            <a class="nav-link" routerLinkActive="active" *ngIf="isAllowed('TransportVehicleAccident')" [routerLink]="['accident']">
+                <i class="zmdi zmdi-bike"></i>
+                <span class="menu-title">Accident</span>
+            </a>
+        </li>
+        <li>
+            <a class="nav-link" routerLinkActive="active" *ngIf="isAllowed('TransportVehicleBreakDown')" [routerLink]="['breakdown']">
+                <i class="zmdi zmdi-bike"></i>
+                <span class="menu-title">Break Down</span>
+            </a>
+        </li>
+    </ul>
+</div>
+<router-outlet></router-outlet>

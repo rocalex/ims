@@ -1,0 +1,78 @@
+<h1 mat-dialog-title>{{'Hostel.Floor.AddRoom' | translate}}</h1>
+<div mat-dialog-content>
+    <mat-form-field class="col-12 col-lg-6">
+        <input type="text" matInput placeholder="{{'Hostel.Floor.RoomNo'|translate}}" required NoSpaces (change)="changeRoomNo($event.value)"
+            [(ngModel)]="data.addRoom.roomNo" #NameModel="ngModel" [ngModelOptions]="{standalone: true}"
+            maxlength="20" />
+    </mat-form-field>
+    <mat-form-field class="col-12 col-lg-6">
+        <mat-select placeholder="{{'Hostel.Floor.RoomType'|translate}}" [(ngModel)]="data.addRoom.roomType"
+            #hostel="ngModel" [ngModelOptions]="{standalone: true}" required>
+            <mat-option *ngFor="let roomType of roomTypeList" [value]="roomType.id">
+                {{roomType.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field class="col-12 col-lg-6">
+        <input type="number" matInput required placeholder="{{'Hostel.Floor.NoOfBed'|translate}}" (change)="changeBedAmount($event.value)"
+            [(ngModel)]="data.addRoom.bedAmount" #HostelCautionDeposit="ngModel" [ngModelOptions]="{standalone: true}"
+            maxlength="20" />
+    </mat-form-field>
+    <div class="col-12 col-lg-6 form-group">
+        <mat-slide-toggle [(ngModel)]="data.addRoom.status" [ngModelOptions]="{standalone: true}">
+            {{'Hostel.Floor.Active'|translate}} / {{'Hostel.Floor.Inactive'|translate}}
+        </mat-slide-toggle>
+    </div>
+</div>
+<div class="rct-block">
+    <div class="rct-full-block">
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th>{{'Hostel.Floor.RoomNo'|translate}}</th>
+                        <th>{{'Hostel.Floor.BedNo'|translate}}</th>
+                        <th>{{'Hostel.Floor.Status'|translate}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let bed of bedList">
+                        <td>{{data.addRoom.roomNo}}</td>
+                        <td>
+                            <mat-form-field class="col-12 col-lg-6">
+                                <input type="text" matInput required placeholder="{{'Hostel.Floor.BedNo'|translate}}"
+                                    [(ngModel)]="bed.bedNo" #HostelCautionDeposit="ngModel" [ngModelOptions]="{standalone: true}"
+                                    maxlength="20" />
+                            </mat-form-field></td>
+                        <td>
+                            <mat-form-field class="col-12 col-lg-6">
+                                <mat-select placeholder="{{'Hostel.Floor.Status'|translate}}" [(ngModel)]="bed.status"
+                                    #hostel="ngModel" [ngModelOptions]="{standalone: true}" required>
+                                    <mat-option *ngFor="let status of statusList" [value]="status.id">
+                                        {{status.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div mat-dialog-actions>
+    <div class="col-12">
+        <button class="btn-icon-rounded btn-primary" matTooltip="{{'Hostel.Floor.Save'|translate}}"
+            matTooltipPosition="above" *ngIf="isGenerated" (click)="add()">
+            <i class="zmdi zmdi-floppy"></i>
+        </button>
+        <button class="btn-icon-rounded btn-primary" matTooltip="{{'Hostel.Floor.Save'|translate}}"
+            matTooltipPosition="above" *ngIf="!isGenerated" (click)="generate()">
+            <i class="zmdi zmdi-floppy"></i>
+        </button>
+        <button class="btn-icon-rounded btn-primary" matTooltip="{{'Hostel.Floor.Save'|translate}}"
+            matTooltipPosition="above" (click)="cancel()">
+            <i class="zmdi zmdi-close"></i>
+        </button>
+    </div>
+</div>

@@ -1,0 +1,55 @@
+<div class="page-title d-flex justify-content-between align-items-center">
+  <div class="page-title-wrap">
+      <h2 class="mb-0">{{'Payroll.Component.Title'|translate}}</h2>
+  </div>
+  <a class="btn-icon-rounded btn-outline-primary" matTooltip="List" matTooltipPosition="above" routerLink="/payroll/components" routerLinkActive="active"><i class="zmdi zmdi-view-list"></i></a>
+</div>
+<div class="rct-block">
+  <div class="rct-block-content">
+    <mat-form-field class="col-12 col-lg-6">
+      <mat-select placeholder="{{'Payroll.Component.SelectGroup'|translate}}" [(ngModel)]="addComponent.groupId"
+                  #group="ngModel" [ngModelOptions]="{standalone: true}" required>
+          <mat-option *ngFor="let group of groupList" [value]="group.id">
+              {{group.name}}
+          </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div class="col-12 col-lg-6 inline-block">
+      <mat-slide-toggle [(ngModel)]="addComponent.status" [ngModelOptions]="{standalone: true}">
+          {{'Payroll.Component.Status'|translate}}
+      </mat-slide-toggle>
+    </div>
+    <mat-form-field class="col-12 col-lg-6">
+        <input type="text" matInput placeholder="{{'Payroll.Component.Name'|translate}}" required NoSpaces
+                [(ngModel)]="addComponent.name" #NameModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20"/>
+    </mat-form-field>
+    <mat-form-field class="col-12 col-lg-6">
+        <input type="text" matInput placeholder="{{'Payroll.Component.ShortName'|translate}}" required NoSpaces
+                [(ngModel)]="addComponent.shortName" #ShortNameModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20"/>
+    </mat-form-field>
+    <mat-form-field class="col-12 col-lg-6">
+      <input type="number" matInput required placeholder="{{'Payroll.Component.SequenceNo'|translate}}"
+             [(ngModel)]="addComponent.sequenceNo" #SequenceNo="ngModel" 
+             [ngModelOptions]="{standalone: true}" maxlength="20" />
+    </mat-form-field>
+    <mat-form-field class="col-12 col-lg-6">
+      <textarea type="text" matInput placeholder="{{'Payroll.Component.Description'|translate}}" #PresentAddressModel="ngModel"
+                [(ngModel)]="addComponent.description" [ngModelOptions]="{standalone: true}"></textarea>
+    </mat-form-field>
+    <div class="col-12">
+      <mat-checkbox [(ngModel)]="addComponent.isPayslip" [ngModelOptions]="{standalone: true}"></mat-checkbox>
+      {{'Payroll.Component.isPayslip' | translate}}
+      <mat-checkbox [(ngModel)]="addComponent.isBasic" [ngModelOptions]="{standalone: true}"></mat-checkbox>
+      {{'Payroll.Component.IsBasic' | translate}}
+      <mat-checkbox [(ngModel)]="addComponent.others" [ngModelOptions]="{standalone: true}"></mat-checkbox>
+      {{'Payroll.Component.Others' | translate}}
+    </div>
+    <div class="col-12">
+      <button class="btn-icon-rounded btn-primary" matTooltip="{{'Payroll.Component.Save'|translate}}" matTooltipPosition="above" (click)="add()">
+          <i class="zmdi zmdi-floppy"></i>
+      </button>
+      <a class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="{{'Payroll.Component.Cancel'|translate}}" matTooltipPosition="above" routerLink="/payroll/components" routerLinkActive="active"><i class="zmdi zmdi-close"></i></a>
+    </div>
+  </div>
+</div>
+  

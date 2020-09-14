@@ -1,0 +1,108 @@
+<div class="page-title d-flex justify-content-between align-items-center">
+  <div class="page-title-wrap">
+      <h2 class="mb-0">{{'Sidenav.Children.Dashboard'|translate}}</h2>
+  </div>
+</div>
+
+<!-- Counts -->
+<div class="row">
+  <div class="col-12 col-lg-3">
+      <div class="rct-block rct-visual-block blue-madison text-white">
+          <div class="rct-block-content">
+              <div class="display-4">{{totalHostelCount}}</div>
+              <h2>{{'Hostel.Dashboard.TotalHostels'|translate}}</h2>
+              <i class="zmdi zmdi-accounts"></i>
+          </div>
+      </div>
+  </div>
+  <div class="col-12 col-lg-3">
+      <div class="rct-block rct-visual-block green-haze text-white">
+          <div class="rct-block-content">
+              <div class="display-4">{{assignStudentCount}}</div>
+              <h2>{{'Hostel.Dashboard.AssignedStudents'|translate}}</h2>
+              <i class="zmdi zmdi-account"></i>
+          </div>
+      </div>
+  </div>
+  <div class="col-12 col-lg-3">
+      <div class="rct-block rct-visual-block purple-plum text-white">
+          <div class="rct-block-content">
+              <div class="display-4">{{inactiveHostelCount}}</div>
+              <h2>{{'Hostel.Dashboard.InactiveHostels'|translate}}</h2>
+              <i class="zmdi zmdi-balance"></i>
+          </div>
+      </div>
+  </div>
+</div>
+
+<!-- Charts -->
+<!-- <div class="row"> -->
+  <!-- hostel Wise Students -->
+  <!-- <div class="col-12 col-lg-6">
+      <div class="rct-block">
+          <div class="rct-block-title">
+              <h2 class="mb-0">{{'Hostel.Dashboard.HostelWiseStudents'|translate}}</h2>
+          </div>
+          <div class="rct-block-content">
+              <canvas baseChart [datasets]="hostelWiseBarChartData" [options]="barChartOptions" [labels]="hostelWiseBarChartLabels" [legend]="barChartLegend"
+                      [colors]="hostelWiseBarChartColor" [chartType]="barChartType"></canvas>
+          </div>
+      </div>
+  </div> -->
+  <!-- Gender Wise Hostels -->
+  <!-- <div class="col-12 col-lg-6">
+      <div class="rct-block">
+          <div class="rct-block-title">
+              <h2 class="mb-0">{{'Hostel.Dashboard.GenderWiseHostels'|translate}}</h2>
+          </div>
+          <div class="rct-block-content">
+              <canvas baseChart [data]="donutChartData" [labels]="donutChartLabels" [options]="donutChartOptions" [chartType]="donutChartType" [colors]="donutChartColor"></canvas>
+          </div>
+      </div>
+  </div>
+</div> -->
+
+<div class="rct-block">
+  <div class="rct-full-block">
+      <div class="table-responsive">
+          <table class="table mb-0">
+              <thead>
+                  <tr>
+                      <th>{{'Hostel.Dashboard.Hostel'|translate}}</th>
+                      <th>{{'Hostel.Dashboard.RollNo'|translate}}</th>
+                      <th>{{'Hostel.Dashboard.Name'|translate}}</th>
+                      <th>{{'Hostel.Dashboard.Block'|translate}}</th>
+                      <th>{{'Hostel.Dashboard.Floor'|translate}}</th>
+                      <th>{{'Hostel.Dashboard.Room'|translate}}</th>
+                      <th>{{'Hostel.Dashboard.Bed'|translate}}</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr *ngFor="let hostel of hostels">
+                      <td>{{hostel.hostel}}</td>
+                      <td>{{hostel.rollNo}}</td>
+                      <td>{{hostel.name}}</td>
+                      <td>{{hostel.block}}</td>
+                      <td>{{hostel.floor}}</td>
+                      <td>{{hostel.room}}</td>
+                      <td>{{hostel.bed}}</td>
+                  </tr>
+              </tbody>
+              <tfoot>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>
+                  <a class="nav-link" routerLinkActive="active"
+                  routerLink="/hostel/reports/allocate">
+                    <span class="menu-title">{{'Hostel.Dashboard.ViewAll'|translate}}</span>
+                  </a>
+                </td>
+              </tfoot>
+          </table>
+      </div>
+  </div>
+</div>

@@ -1,0 +1,73 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Institute.AcademicYear.UpdateAcademicYear'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" matTooltip="{{'Institute.AcademicYear.AcademicYears'|translate}}" matTooltipPosition="above" routerLink="/institute/academicyear/list" routerLinkActive="active"><i class="zmdi zmdi-view-list"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-block-content">
+        <form class="row">
+            <mat-form-field class="col-12 col-lg-6">
+                <input type="text" matInput placeholder="{{'Institute.AcademicYear.Code'|translate}}" required [(ngModel)]="academicYear.academicYearCode" #academicYearCodeModel="ngModel" 
+                       [ngModelOptions]="{standalone: true}" maxlength="25"
+                       (keyup)="checkWhiteSpace(academicYearCodeModel, challanStartingNumberModel)" (keydown)="resetError(academicYearCodeModel, challanStartingNumberModel)" />
+
+                <mat-error *ngIf="academicYearCodeModel.invalid && academicYearCodeModel.touched">
+                    <span *ngIf="academicYearCodeModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                </mat-error>
+
+                <mat-hint class="mat-error" *ngIf="academicYearCodeModel.whiteSpaceError !== ''">
+                    <span>{{academicYearCodeModel.whiteSpaceError}}</span>
+                </mat-hint>
+
+                <mat-hint class="mat-error" *ngIf="errorMessage !== ''">
+                    <span>{{errorMessage}}</span>
+                </mat-hint>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <input type="text" maxlength="25" matInput placeholder="{{'Institute.AcademicYear.ChallanStartingNumber'|translate}}" required [(ngModel)]="academicYear.challanStartingNumber"
+                       #challanStartingNumberModel="ngModel" [ngModelOptions]="{standalone: true}"
+                       (keyup)="checkWhiteSpace(academicYearCodeModel, challanStartingNumberModel)" (keydown)="resetError(academicYearCodeModel, challanStartingNumberModel)" />
+
+                <mat-error *ngIf="challanStartingNumberModel.invalid && challanStartingNumberModel.touched">
+                    <span *ngIf="challanStartingNumberModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                    <span *ngIf="challanStartingNumberModel.hasError('maxlength')">{{'Institute.AcademicYear.ChallanStartingNumberMaximumValidation'|translate}}</span>
+                </mat-error>
+
+                <mat-hint class="mat-error" *ngIf="challanStartingNumberModel.whiteSpaceError !== ''">
+                    <span>{{challanStartingNumberModel.whiteSpaceError}}</span>
+                </mat-hint>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <input matInput [matDatepicker]="fromDate" placeholder="{{'Institute.AcademicYear.FromDate'|translate}} *" [value]="academicYear.fromDate"
+                       (dateChange)="academicYear.fromDate = $event.value" disabled required>
+                <mat-datepicker-toggle matSuffix [for]="fromDate"></mat-datepicker-toggle>
+                <mat-datepicker #fromDate disabled="false"></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <input matInput [matDatepicker]="toDate" placeholder="{{'Institute.AcademicYear.ToDate'|translate}} *" [value]="academicYear.toDate"
+                       (dateChange)="academicYear.toDate = $event.value; resetError(academicYearCodeModel, challanStartingNumberModel)" disabled required>
+                <mat-datepicker-toggle matSuffix [for]="toDate"></mat-datepicker-toggle>
+                <mat-datepicker #toDate disabled="false"></mat-datepicker>
+
+                <mat-hint class="mat-error" *ngIf="dateExceedError !== ''">
+                    <span>{{dateExceedError}}</span>
+                </mat-hint>
+            </mat-form-field>
+            <div class="form-group col-12 col-lg-6">
+                <mat-slide-toggle [(ngModel)]="academicYear.isActive" #isActiveModel="ngModel" [ngModelOptions]="{standalone: true}">{{'Institute.AcademicYear.IsActive'|translate}}</mat-slide-toggle>
+            </div>
+            <div class="col-12">
+                <button class="btn-icon-rounded btn-primary" (click)="updateAcademicYear()" matTooltip="{{'Common.Save'|translate}}" matTooltipPosition="above"
+                        [disabled]="!(academicYearCodeModel.valid && challanStartingNumberModel.valid
+                        && (academicYear.fromDate !== null && academicYear.fromDate !== undefined) && (academicYear.toDate !== null && academicYear.toDate !== undefined))">
+                    <i class="zmdi zmdi-floppy"></i>
+                </button>
+                <a class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="{{'Common.Cancel'|translate}}" matTooltipPosition="above" routerLink="/institute/academicyear/list" routerLinkActive="active"><i class="zmdi zmdi-close"></i></a>
+            </div>
+        </form>
+    </div>
+</div>

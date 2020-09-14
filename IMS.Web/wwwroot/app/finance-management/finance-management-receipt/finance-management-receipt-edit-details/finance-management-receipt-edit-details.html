@@ -1,0 +1,86 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'FinanceManagement.GeneralReceipt.EditBasicReceipts'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" matTooltip="{{'FinanceManagement.GeneralReceipt.BasicReceipts'|translate}}" matTooltipPosition="above" routerLink="/finance/receipt/list" routerLinkActive="active"><i class="zmdi zmdi-view-list"></i></a>
+</div>
+
+<div class="rct-block">
+    <div class="rct-block-content">
+        <form class="row">
+            <mat-form-field class="col-12 col-lg-6">
+                <input type="text" matInput placeholder="{{'FinanceManagement.GeneralReceipt.Code'|translate}}" required
+                       [(ngModel)]="financeReceipt.code" #codeModel="ngModel" [ngModelOptions]="{standalone: true}"
+                       maxlength="20" (keyup)="checkWhiteSpace()" (keydown)="checkWhiteSpace(); resetError()" />
+
+                <mat-error *ngIf="codeModel.invalid && codeModel.touched">
+                    <span *ngIf="codeModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                </mat-error>
+
+                <mat-hint class="mat-error" *ngIf="isEmptyCodeError">
+                    <span>{{'FinanceManagement.GeneralReceipt.EmptyFinanceReceiptCode'|translate}}</span>
+                </mat-hint>
+
+                <mat-hint class="mat-error" *ngIf="errorMessage !== ''">
+                    <span>{{errorMessage}}</span>
+                </mat-hint>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <input matInput [matDatepicker]="receiptDate" placeholder="{{'FinanceManagement.GeneralReceipt.ReceiptDate'|translate}} *" [value]="financeReceipt.receiptDate"
+                       (dateChange)="financeReceipt.receiptDate = $event.value" disabled required [min]="currentDate">
+                <mat-datepicker-toggle matSuffix [for]="receiptDate"></mat-datepicker-toggle>
+                <mat-datepicker #receiptDate disabled="false"></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <input matInput type="number" [(ngModel)]="financeReceipt.amount" placeholder="{{'FinanceManagement.GeneralReceipt.Amount'|translate}}"
+                       #amountModel="ngModel" [ngModelOptions]="{standalone: true}" required min="0" />
+
+                <mat-error *ngIf="amountModel.invalid && amountModel.touched">
+                    <span *ngIf="amountModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <mat-select placeholder="{{'FinanceManagement.GeneralReceipt.ReceivedFrom'|translate}}" [(ngModel)]="financeReceipt.receivedFrom"
+                            #receivedFromModel="ngModel" [ngModelOptions]="{standalone: true}" required (keyup)="checkWhiteSpace()" (keydown)="resetError()">
+                    <mat-option *ngFor="let incomeChartOfAccount of incomeChartOfAccountsList" [value]="incomeChartOfAccount.id">
+                        {{incomeChartOfAccount.code}} - {{incomeChartOfAccount.name}}
+                    </mat-option>
+                </mat-select>
+
+                <mat-error *ngIf="receivedFromModel.invalid && receivedFromModel.touched">
+                    <span *ngIf="receivedFromModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <mat-select placeholder="{{'FinanceManagement.GeneralReceipt.ReceivedBy'|translate}}" [(ngModel)]="financeReceipt.receivedBy"
+                            #receivedByModel="ngModel" [ngModelOptions]="{standalone: true}" required (keyup)="checkWhiteSpace()" (keydown)="resetError()">
+                    <mat-option *ngFor="let systemUser of systemUsersList" [value]="systemUser.id">
+                        {{systemUser.name}}
+                    </mat-option>
+                </mat-select>
+
+                <mat-error *ngIf="receivedByModel.invalid && receivedByModel.touched">
+                    <span *ngIf="receivedByModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <input type="text" matInput placeholder="{{'FinanceManagement.GeneralReceipt.Remarks'|translate}}"
+                       [(ngModel)]="financeReceipt.remarks" #remarksModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="150" />
+            </mat-form-field>
+
+            <div class="col-12">
+                <button class="btn-icon-rounded btn-primary" (click)="updateFinanceReceipt()" matTooltip="{{'Common.Save'|translate}}" matTooltipPosition="above"
+                        [disabled]="!(codeModel.valid && amountModel.valid && receivedFromModel.valid && receivedByModel.valid
+                        && (financeReceipt.receiptDate !== null && financeReceipt.receiptDate !== undefined))">
+                    <i class="zmdi zmdi-floppy"></i>
+                </button>
+                <a class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="{{'Common.Cancel'|translate}}" matTooltipPosition="above" routerLink="/finance/receipt/list" routerLinkActive="active"><i class="zmdi zmdi-close"></i></a>
+            </div>
+        </form>
+    </div>
+</div>

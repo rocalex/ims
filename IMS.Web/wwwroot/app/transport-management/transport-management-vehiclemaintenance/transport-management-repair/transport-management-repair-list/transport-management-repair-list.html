@@ -1,0 +1,37 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'TransportManagement.Repair.Repairs'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" *ngIf="isAllowed('Add')" matTooltip="{{'TransportManagement.Repair.AddRepair'|translate}}" matTooltipPosition="before" routerLink="/transportmanagement/vehiclemaintenance/repair/add" routerLinkActive="active"><i class="zmdi zmdi-plus"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-full-block">
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th>{{'TransportManagement.Repair.Code'|translate}}</th>
+                        <th>{{'TransportManagement.Repair.RepairDate'|translate}}</th>
+                        <th>{{'TransportManagement.Repair.Vehicle'|translate}}</th>
+                        <th>{{'TransportManagement.Repair.RepairCost'|translate}}</th>
+                        <th>{{'Common.CreatedOn'|translate}}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of repairs">
+                        <td>{{item.code}}</td>
+                        <td>{{item.repairDate|date}}</td>
+                        <td>{{item.vehicle.vehicleCode}}</td>
+                        <td>{{item.repairCost}}</td>
+                        <td>{{item.createdOn|date}}</td>
+                        <td><a matTooltip="Edit" matTooltipPosition="above" *ngIf="isAllowed('Edit')" routerLink="/transportmanagement/vehiclemaintenance/repair/{{item.id}}" routerLinkActive="active"><i class="zmdi zmdi-edit zmdi-hc-lg"></i></a></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="rct-block-title text-center" *ngIf="repairs.length==0">
+                {{'TransportManagement.Repair.NoRepairAdded'|translate}}
+            </div>
+        </div>
+    </div>
+</div>

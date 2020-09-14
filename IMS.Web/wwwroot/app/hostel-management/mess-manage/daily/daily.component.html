@@ -1,0 +1,90 @@
+<div class="page-title d-flex justify-content-between align-items-center">
+  <div class="page-title-wrap">
+      <h2 class="mb-0">{{'Hostel.Mess.DailyExpenses'|translate}}</h2>
+  </div>
+</div>
+<div class="rct-block">
+  <div class="rct-block-content">
+    <mat-form-field class="col-12 col-lg-6">
+      <mat-select placeholder="{{'Hostel.Mess.Hostel'|translate}}" [(ngModel)]="searchDaily.hostelId" (selectionChange)="getMessManageList($event.value)"
+                  #hostel="ngModel" [ngModelOptions]="{standalone: true}" required>
+          <mat-option *ngFor="let hostel of hostelList" [value]="hostel.id">
+              {{hostel.name}}
+          </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="col-12 col-lg-6">
+      <mat-select placeholder="{{'Hostel.Mess.MessManage'|translate}}" [(ngModel)]="searchDaily.messManageId"
+                  #messManage="ngModel" [ngModelOptions]="{standalone: true}" required>
+          <mat-option *ngFor="let messManage of messManageList" [value]="messManage.id">
+              {{messManage.name}}
+          </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="col-12 col-lg-6">
+      <mat-select placeholder="{{'Hostel.Mess.ExpenseType'|translate}}" [(ngModel)]="searchDaily.expenseTypeId"
+                  #expenseType="ngModel" [ngModelOptions]="{standalone: true}" required>
+          <mat-option *ngFor="let expenseType of expenseTypeList" [value]="expenseType.id">
+              {{expenseType.name}}
+          </mat-option>
+      </mat-select>
+    </mat-form-field>
+    
+    <div class="col-12">
+      <button class="btn-icon-rounded btn-primary" matTooltip="{{'Hostel.Mess.Search'|translate}}" matTooltipPosition="above" (click)="search()">
+          <i class="zmdi zmdi-search"></i>
+      </button>
+      <button class="btn-icon-rounded btn-primary" matTooltip="{{'Hostel.Mess.Save'|translate}}" matTooltipPosition="above" [disabled]="!isSearched" (click)="save()">
+          <i class="zmdi zmdi-floppy"></i>
+      </button>
+    </div>
+  </div>
+  <div class="rct-full-block" *ngIf="isSearched">
+    <div class="table-responsive">
+      <table class="table mb-0">
+        <thead>
+          <tr>
+            <th>{{'Hostel.Mess.Date'|translate}}</th>
+            <th>{{'Hostel.Mess.BillNo'|translate}}</th>
+            <th>{{'Hostel.Mess.Particulars'|translate}}</th>
+            <th>{{'Hostel.Mess.Amount'|translate}}</th>
+            <th>{{'Hostel.Mess.Description'|translate}}</th>
+            <th>{{'Hostel.Mess.Proof'|translate}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let dailyExpense of dailyExpenses; let i = index;">
+            <td>{{dailyExpense.date | date}}</td>
+            <td>
+              <input type="text" matInput required placeholder="{{'Hostel.Mess.BillNo'|translate}}" 
+              [(ngModel)]="dailyExpense.billNo" #HostelCautionDeposit="ngModel" [ngModelOptions]="{standalone: true}"/>
+            </td>
+            <td>
+              <input type="text" matInput required placeholder="{{'Hostel.Mess.Particulars'|translate}}" 
+              [(ngModel)]="dailyExpense.particulars" #HostelCautionDeposit="ngModel" [ngModelOptions]="{standalone: true}"/>
+            </td>
+            <td>
+              <input type="number" matInput required placeholder="{{'Hostel.Mess.Amount'|translate}}" 
+              [(ngModel)]="dailyExpense.amount" #HostelCautionDeposit="ngModel" [ngModelOptions]="{standalone: true}"/>
+            </td>
+            <td>
+              <input type="text" matInput required placeholder="{{'Hostel.Mess.Description'|translate}}" 
+                  [(ngModel)]="dailyExpense.description" #HostelCautionDeposit="ngModel" [ngModelOptions]="{standalone: true}"/>
+            </td>
+            <td>
+              <div class="col-12 col-lg-6 form-group">
+                  <div class="custom-file">
+                      <input type="file" class="custom-file-input" (change)="fileSelectionChange($event, i)"aria-describedby="fileInput" />
+                      <label class="custom-file-label" for="fileInput">{{'Hostel.Mess.UploadProof'|translate}}</label>
+                  </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="rct-block-title text-center" *ngIf="dailyExpenses.length==0">
+        {{'Hostel.Mess.NoRecords'|translate}}
+      </div>
+    </div>
+  </div>
+</div>

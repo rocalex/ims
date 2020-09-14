@@ -1,0 +1,148 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Staff.CircularNotice.AddNotice'|translate}}</h2>
+    </div>
+
+    <a class="btn-icon-rounded btn-outline-primary" matTooltip="{{'Staff.CircularNotice.Notices'|translate}}" matTooltipPosition="above" routerLink="/staff/activities/notice/list" routerLinkActive="active">
+        <i class="zmdi zmdi-view-list"></i>
+    </a>
+</div>
+
+<div class="rct-block">
+    <div class="rct-block-content">
+        <form class="row">
+            <mat-form-field class="col-12 col-lg-6">
+                <input matInput [matDatepicker]="noticeDate" placeholder="{{'Staff.CircularNotice.Date'|translate}} *"
+                       (dateChange)="notice.noticeDate = $event.value" disabled required [min]="currentDate">
+                <mat-datepicker-toggle matSuffix [for]="noticeDate"></mat-datepicker-toggle>
+                <mat-datepicker #noticeDate disabled="false"></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <mat-select placeholder="{{'Staff.CircularNotice.NoticeType'|translate}}" [(ngModel)]="notice.noticeType" #noticeTypeModel="ngModel" [ngModelOptions]="{standalone: true}" required>
+                    <mat-option *ngFor="let noticeType of noticeTypeEnumDetails" [value]="noticeType.key">
+                        {{noticeType.value}}
+                    </mat-option>
+                </mat-select>
+
+                <mat-error *ngIf="noticeTypeModel.invalid && noticeTypeModel.touched">
+                    <span *ngIf="noticeTypeModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <input type="text" matInput placeholder="{{'Staff.CircularNotice.Message'|translate}}" required
+                       [(ngModel)]="notice.message" #noticeMessageModel="ngModel" [ngModelOptions]="{standalone: true}"
+                       (keyup)="checkWhiteSpace()" (keydown)="resetError()" maxlength="100" />
+
+                <mat-error *ngIf="noticeMessageModel.invalid && noticeMessageModel.touched">
+                    <span *ngIf="noticeMessageModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                </mat-error>
+
+                <mat-hint class="mat-error" *ngIf="isEmptyNoticeMessageError">
+                    <span>{{'Staff.CircularNotice.EmptyNoticeMessage'|translate}}</span>
+                </mat-hint>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <textarea type="text" matInput placeholder="{{'Staff.CircularNotice.Description'|translate}}" [(ngModel)]="notice.description"
+                          maxlength="100" [ngModelOptions]="{standalone: true}"></textarea>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <mat-select placeholder="{{'Staff.CircularNotice.NoticeTo'|translate}}" [(ngModel)]="notice.noticeTo" #noticeToModel="ngModel" [ngModelOptions]="{standalone: true}" required
+                            (selectionChange)="setRecipientsListForAllSelected()">
+                    <mat-option *ngFor="let noticeTo of noticeToEnumDetails" [value]="noticeTo.key">
+                        {{noticeTo.value}}
+                    </mat-option>
+                </mat-select>
+
+                <mat-error *ngIf="noticeToModel.invalid && noticeToModel.touched">
+                    <span *ngIf="noticeToModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                </mat-error>
+            </mat-form-field>
+
+            <div class="col-12" *ngIf="notice.noticeTo !== null && notice.noticeTo !== undefined">
+                <h3>{{'Staff.CircularNotice.Recipients'|translate}}</h3>
+                <mat-hint class="mat-error" *ngIf="isEmptyRecipientsListError">
+                    <span>{{'Staff.CircularNotice.EmptyRecipientsMessage'|translate}}</span>
+                </mat-hint>
+                <div class="rct-block">
+                    <div class="rct-block-title pointer d-flex align-items-center">
+                        <div class="flex-grow-1">{{noticeToEnumDetails[notice.noticeTo].value}}</div>
+                    </div>
+
+                    <!-- Students -->
+                    <div *ngIf="notice.noticeTo===2 || notice.noticeTo===0">
+                        <!-- Class Filter -->
+                        <mat-form-field class="col-12 col-lg-6">
+                            <mat-select placeholder="{{'MarkManagement.ClassExam.SelectClass'|translate}}" [(ngModel)]="selectedClassId" #noticeToModel="ngModel" [ngModelOptions]="{standalone: true}"
+                                        (selectionChange)="filterStudentsList()" [disabled]="notice.noticeTo===0">
+                                <mat-option *ngFor="let class of classList" [value]="class.id">
+                                    {{class.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <!-- Section Filter -->
+                        <mat-form-field class="col-12 col-lg-6">
+                            <mat-select placeholder="{{'MarkManagement.ClassExam.SelectSection'|translate}}" [(ngModel)]="selectedSectionId" #noticeToModel="ngModel" [ngModelOptions]="{standalone: true}"
+                                        (selectionChange)="filterStudentsList()" [disabled]="notice.noticeTo===0">
+                                <mat-option *ngFor="let section of sectionsList" [value]="section.id">
+                                    {{section.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <div *ngFor="let student of filteredStudentsList">
+                            <div class="form-group col-12 col-lg-6">
+                                <mat-checkbox [(ngModel)]="student.isSelected" (change)="checkboxChange(student.isSelected, student.userId, notice.noticeTo)"
+                                              [ngModelOptions]="{standalone: true}" [disabled]="student.isDisabled">
+                                    {{student.rollNumber}} - {{student.firstName}}
+                                </mat-checkbox>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Staffs -->
+                    <div *ngIf="notice.noticeTo===3 || notice.noticeTo===1">
+                        <div *ngFor="let staff of staffsList">
+                            <div class="form-group col-12 col-lg-6">
+                                <mat-checkbox [(ngModel)]="staff.isSelected" (change)="checkboxChange(staff.isSelected, staff.userId, notice.noticeTo)"
+                                              [ngModelOptions]="{standalone: true}" [disabled]="staff.isDisabled">
+                                    {{staff.employeeId}} - {{staff.firstName}}
+                                </mat-checkbox>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- System Users -->
+                    <div *ngIf="notice.noticeTo===4">
+                        <div *ngFor="let systemUser of systemUsersList">
+                            <div class="form-group col-12 col-lg-6">
+                                <mat-checkbox [(ngModel)]="systemUser.isSelected" (change)="checkboxChange(systemUser.isSelected, systemUser.id, notice.noticeTo)"
+                                              [ngModelOptions]="{standalone: true}">
+                                    {{systemUser.name}}
+                                </mat-checkbox>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <button class="btn-icon-rounded btn-primary" matTooltip="{{'Common.Save'|translate}}" matTooltipPosition="above" (click)="addNotice(false)"
+                        [disabled]="!((notice.noticeDate !== null && notice.noticeDate !== undefined) && noticeTypeModel.valid && noticeMessageModel.valid && noticeToModel.valid)">
+                    <i class="zmdi zmdi-floppy"></i>
+                </button>
+                <button class="btn-icon-rounded btn-primary" matTooltip="{{'Common.SaveAndSendNotification'|translate}}" matTooltipPosition="above" (click)="addNotice(true)"
+                        [disabled]="!((notice.noticeDate !== null && notice.noticeDate !== undefined) && noticeTypeModel.valid && noticeMessageModel.valid && noticeToModel.valid)">
+                    <i class="zmdi zmdi-email"></i>
+                </button>
+                <a class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="{{'Common.Cancel'|translate}}" matTooltipPosition="above" routerLink="/staff/activities/notice/list" routerLinkActive="active">
+                    <i class="zmdi zmdi-close"></i>
+                </a>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,153 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'TransportManagement.VehicleMaster.EditVehicleMaster'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" matTooltip="Details" matTooltipPosition="above" routerLink="/transportmanagement/drivermaster/list" routerLinkActive="active"><i class="zmdi zmdi-view-list"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-block-content">
+        <mat-form-field class="col-12 col-lg-6">
+            <input type="text" matInput placeholder="{{'TransportManagement.DriverMaster.Name'|translate}}" required NoSpaces
+                   [(ngModel)]="addDriver.Name" #NameModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20"
+                   (keydown)="resetError('Name')" />
+            <mat-error *ngIf="NameModel.invalid && NameModel.touched">
+                <span *ngIf="NameModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                <span *ngIf="(!NameModel.hasError('required') && NameModel.hasError('whitespace'))">{{'Common.WhiteSpace'|translate}}</span>
+            </mat-error>
+            <mat-hint class="mat-error" *ngIf="hasError('Name')">
+                <span>{{error.Message}}</span>
+            </mat-hint>
+        </mat-form-field>
+
+        <mat-form-field class="col-12 col-lg-6">
+            <input type="number" matInput placeholder="{{'TransportManagement.DriverMaster.Salary'|translate}}" required
+                   [(ngModel)]="addDriver.Salary" #SalaryModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20"
+                   (keydown)="resetError('Salary')" pattern="\d+" />
+            <mat-error *ngIf="SalaryModel.invalid && SalaryModel.touched">
+                <span *ngIf="SalaryModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                <span *ngIf="SalaryModel.hasError('pattern')">{{'TransportManagement.DriverMaster.SalaryError'|translate}}</span>
+            </mat-error>
+            <mat-hint class="mat-error" *ngIf="hasError('Salary')">
+                <span>{{error.Message}}</span>
+            </mat-hint>
+        </mat-form-field>
+
+        <mat-form-field class="col-12 col-lg-6">
+            <input matInput [matDatepicker]="dateOfBirth" placeholder="{{'TransportManagement.DriverMaster.DateOfBirth'|translate}} *"
+                   (dateChange)="addDriver.DateOfBirth = $event.value" [value]="addDriver.DateOfBirth" disabled>
+            <mat-datepicker-toggle matSuffix [for]="dateOfBirth"></mat-datepicker-toggle>
+            <mat-datepicker #dateOfBirth disabled="false"></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field class="col-12 col-lg-6">
+            <input type="text" pattern="[0-9]*" minlength="10" maxlength="10" matInput
+                   placeholder="{{'TransportManagement.DriverMaster.MobileNumber'|translate}}" required
+                   [(ngModel)]="addDriver.MobileNumber" #MobileNumberModel="ngModel"
+                   [ngModelOptions]="{standalone: true}" (keydown)="resetError('MobileNumber')" />
+            <mat-error *ngIf="MobileNumberModel.invalid && MobileNumberModel.touched">
+                <span *ngIf="MobileNumberModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                <span [hidden]="!MobileNumberModel.hasError('pattern')">Mobile number should be only numbers</span>
+            </mat-error>
+            <mat-hint class="mat-error" *ngIf="hasError('MobileNumber')" [hidden]="(errorMessage === '')">
+                <span>{{error.Message}}</span>
+            </mat-hint>
+        </mat-form-field>
+
+        <div class="col-12 col-lg-6 form-group">
+            <mat-slide-toggle [(ngModel)]="addDriver.IsDriver" [ngModelOptions]="{standalone: true}">
+                {{'TransportManagement.DriverMaster.IsDriver'|translate}}
+            </mat-slide-toggle>
+        </div>
+
+        <mat-form-field class="col-12 col-lg-6">
+            <textarea type="text" matInput placeholder="{{'TransportManagement.DriverMaster.Address'|translate}}" maxlength="100"
+                      [(ngModel)]="addDriver.Address" [ngModelOptions]="{standalone: true}"></textarea>
+        </mat-form-field>
+
+        <mat-form-field class="col-12 col-lg-6">
+            <input type="text" matInput placeholder="{{'TransportManagement.DriverMaster.LicenseNumber'|translate}}" required NoSpaces
+                   [(ngModel)]="addDriver.LicenseNumber" #LicenseNumberModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20"
+                   (keydown)="resetError('LicenseNumber')" />
+            <mat-error *ngIf="LicenseNumberModel.invalid && LicenseNumberModel.touched">
+                <span *ngIf="LicenseNumberModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                <span *ngIf="(!LicenseNumberModel.hasError('required') && LicenseNumberModel.hasError('whitespace'))">{{'Common.WhiteSpace'|translate}}</span>
+            </mat-error>
+            <mat-hint class="mat-error" *ngIf="hasError('LicenseNumber')">
+                <span>{{error.Message}}</span>
+            </mat-hint>
+        </mat-form-field>
+
+        <mat-form-field class="col-12 col-lg-6">
+            <input type="text" matInput placeholder="{{'TransportManagement.DriverMaster.LicenseType'|translate}}" required NoSpaces
+                   [(ngModel)]="addDriver.LicenseType" #LicenseTypeModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20"
+                   (keydown)="resetError('LicenseType')" />
+            <mat-error *ngIf="LicenseTypeModel.invalid && LicenseTypeModel.touched">
+                <span *ngIf="LicenseTypeModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                <span *ngIf="(!LicenseTypeModel.hasError('required') && LicenseTypeModel.hasError('whitespace'))">{{'Common.WhiteSpace'|translate}}</span>
+            </mat-error>
+            <mat-hint class="mat-error" *ngIf="hasError('LicenseType')">
+                <span>{{error.Message}}</span>
+            </mat-hint>
+        </mat-form-field>
+
+        <mat-form-field class="col-12 col-lg-6">
+            <input matInput [matDatepicker]="dateOfIssue" placeholder="{{'TransportManagement.DriverMaster.DateOfIssue'|translate}} *"
+                   (dateChange)="addDriver.DateOfIssue = $event.value" [value]="addDriver.DateOfIssue" disabled>
+            <mat-datepicker-toggle matSuffix [for]="dateOfIssue"></mat-datepicker-toggle>
+            <mat-datepicker #dateOfIssue disabled="false"></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field class="col-12 col-lg-6">
+            <input type="text" matInput placeholder="{{'TransportManagement.DriverMaster.PlaceOfIssue'|translate}}" required NoSpaces
+                   [(ngModel)]="addDriver.PlaceOfIssue" #PlaceOfIssueModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20"
+                   (keydown)="resetError('PlaceOfIssue')" />
+            <mat-error *ngIf="PlaceOfIssueModel.invalid && PlaceOfIssueModel.touched">
+                <span *ngIf="PlaceOfIssueModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                <span *ngIf="(!PlaceOfIssueModel.hasError('required') && PlaceOfIssueModel.hasError('whitespace'))">{{'Common.WhiteSpace'|translate}}</span>
+            </mat-error>
+            <mat-hint class="mat-error" *ngIf="hasError('PlaceOfIssue')">
+                <span>{{error.Message}}</span>
+            </mat-hint>
+        </mat-form-field>
+
+        <mat-form-field class="col-12 col-lg-6">
+            <input matInput [matDatepicker]="validityTill" placeholder="{{'TransportManagement.DriverMaster.ValidityTill'|translate}} *"
+                   [min]="currentDate" (dateChange)="addDriver.ValidityTill = $event.value" [value]="addDriver.ValidityTill" disabled>
+            <mat-datepicker-toggle matSuffix [for]="validityTill"></mat-datepicker-toggle>
+            <mat-datepicker #validityTill disabled="false"></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field class="col-12 col-lg-6">
+            <input type="text" matInput placeholder="{{'TransportManagement.DriverMaster.IssuingAuthority'|translate}}" required NoSpaces
+                   [(ngModel)]="addDriver.IssuingAuthority" #IssuingAuthorityModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20"
+                   (keydown)="resetError('IssuingAuthority')" />
+            <mat-error *ngIf="IssuingAuthorityModel.invalid && IssuingAuthorityModel.touched">
+                <span *ngIf="IssuingAuthorityModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                <span *ngIf="(!IssuingAuthorityModel.hasError('required') && IssuingAuthorityModel.hasError('whitespace'))">{{'Common.WhiteSpace'|translate}}</span>
+            </mat-error>
+            <mat-hint class="mat-error" *ngIf="hasError('IssuingAuthority')">
+                <span>{{error.Message}}</span>
+            </mat-hint>
+        </mat-form-field>
+
+        <div class="col-12 col-lg-6 mb-2">
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" id="fileInput" aria-describedby="fileInput" #fileInput
+                       (change)="preview(fileInput.files)" accept=".jpg, .jpeg, .png" />
+                <label class="custom-file-label" for="fileInput">Choose License Photo</label>
+            </div>
+            <img class="img-thumbnail mt-2" [src]="imgURL" width="200" height="200" *ngIf="imgURL" />
+        </div>
+
+        <div class="col-12">
+            <button class="btn-icon-rounded btn-primary" matTooltip="Save" matTooltipPosition="above" (click)="updateDriverMaster()"
+                    [disabled]="!(NameModel.valid && SalaryModel.valid && (addDriver.DateOfBirth !== null && addDriver.DateOfBirth !== undefined)
+                    && MobileNumberModel.valid && LicenseNumberModel.valid && LicenseTypeModel.valid
+                    && (addDriver.DateOfIssue !== null && addDriver.DateOfIssue !== undefined) && PlaceOfIssueModel.valid
+                    && (addDriver.ValidityTill !== null && addDriver.ValidityTill !== undefined) && IssuingAuthorityModel.valid)">
+                <i class="zmdi zmdi-floppy"></i>
+            </button>
+            <a class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="Cancel" matTooltipPosition="above" routerLink="/transportmanagement/drivermaster/list" routerLinkActive="active"><i class="zmdi zmdi-close"></i></a>
+        </div>
+    </div>
+</div>

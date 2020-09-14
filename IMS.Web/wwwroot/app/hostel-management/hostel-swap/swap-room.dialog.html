@@ -1,0 +1,57 @@
+<h1 mat-dialog-title>{{'Hostel.Swap.SwapRoom' | translate}}</h1>
+<div mat-dialog-content>
+    <mat-form-field class="col-12 col-lg-6">
+      <mat-select placeholder="{{'Hostel.Swap.Hostel'|translate}}" [(ngModel)]="hostelId" #hostel="ngModel" disabled
+        (selectionChange)="getBlockListByHostelId($event.value)" [ngModelOptions]="{standalone: true}" required>
+        <mat-option *ngFor="let hostel of hostelList" [value]="hostel.id">
+          {{hostel.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="col-12 col-lg-6">
+      <mat-select placeholder="{{'Hostel.Swap.Block'|translate}}" [(ngModel)]="blockId" #block="ngModel"
+        (selectionChange)="generateFloor($event.value)" [ngModelOptions]="{standalone: true}" required>
+        <mat-option *ngFor="let block of blockList" [value]="block">
+          {{block.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="col-12 col-lg-6">
+      <mat-select placeholder="{{'Hostel.Swap.Floor'|translate}}" [(ngModel)]="floorId" #floor="ngModel"
+        (selectionChange)="getRoom($event.value)" [ngModelOptions]="{standalone: true}" required>
+        <mat-option *ngFor="let floor of floorList" [value]="floor">
+          {{floor.floorName}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="col-12 col-lg-6">
+      <mat-select placeholder="{{'Hostel.Swap.Room'|translate}}" [(ngModel)]="roomId" #room="ngModel" (selectionChange)="getBeds($event.value)"
+        [ngModelOptions]="{standalone: true}" required>
+        <mat-option *ngFor="let room of roomList" [value]="room.id">
+          {{room.roomNo}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="col-12 col-lg-6">
+      <mat-select placeholder="{{'Hostel.Swap.BedNo'|translate}}" [(ngModel)]="swapModel.bedId" #bed="ngModel"
+        [ngModelOptions]="{standalone: true}" required>
+        <mat-option *ngFor="let bed of bedList" [value]="bed.id">
+          {{bed.bedNo}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+</div>
+<div mat-dialog-actions>
+    <div class="col-12">
+        <button class="btn-icon-rounded btn-primary" matTooltip="{{'Hostel.Swap.Save'|translate}}"
+            matTooltipPosition="above" (click)="add()">
+            <i class="zmdi zmdi-floppy"></i>
+        </button>
+        <button class="btn-icon-rounded btn-primary" matTooltip="{{'Hostel.Swap.Save'|translate}}"
+            matTooltipPosition="above" (click)="cancel()">
+            <i class="zmdi zmdi-close"></i>
+        </button>
+    </div>
+</div>

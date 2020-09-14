@@ -1,0 +1,83 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'AutoSequence.AutoSequence'|translate}}</h2>
+    </div>
+</div>
+<div class="rct-block">
+    <div class="rct-block-content">
+        <div class="row">
+            <mat-form-field class="col-12 col-lg-6">
+                <mat-select placeholder="{{'AutoSequence.SelectType'|translate}}" [(ngModel)]="selectedType" [ngModelOptions]="{standalone: true}"
+                            (selectionChange)="getSequenceGenerators()" required>
+                    <mat-option *ngFor="let selector of selectors" [value]="selector">
+                        {{selector}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div class="col-12" *ngIf="selectedType">
+                <div class="row">
+                    <div class="col-6">
+                        <h5 class="text-center">{{'AutoSequence.Available'|translate}}</h5>
+                        <hr />
+                        <ul class="list-group mb-3">
+                            <li class="list-group-item d-flex justify-content-between align-items-center"
+                                *ngFor="let item of available">
+                                {{item.name}}
+                                <div>
+                                    <button class="btn btn-outline-secondary rounded" (click)="selectedToEditData(item)"
+                                             matTooltip="Edit" matTooltipPosition="above"
+                                            *ngIf="(item.name === 'Institute' || item.name === 'Text' || item.name === 'Sequence Number')">
+                                        <i class="zmdi zmdi-edit"></i>
+                                    </button>
+                                    <button class="ml-1 btn btn-outline-secondary rounded" matTooltip="Add" matTooltipPosition="above" (click)="selectFromList(item)"><i class="zmdi zmdi-plus"></i></button>
+                                </div>
+                            </li>
+                        </ul>
+                        <mat-form-field *ngIf="selectedToEdit.name === 'Text'">
+                            <input type="text" matInput placeholder="{{'AutoSequence.CustomText'|translate}}" [(ngModel)]="autoSequence.CustomText" (change)="generateDemoString()"
+                                   maxlength="{{selectedToEdit.length}}" />
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input type="number" matInput placeholder="{{'AutoSequence.Length'|translate}}" [(ngModel)]="selectedToEdit.length" (change)="generateDemoString()"
+                                   [disabled]="!(selectedToEdit.name === 'Institute' || selectedToEdit.name === 'Text' || selectedToEdit.name === 'Sequence Number')" />
+                        </mat-form-field>
+                        <mat-form-field class="col-12 col-lg-6">
+                            <mat-select placeholder="{{'AutoSequence.SelectSeperator'|translate}}" [(ngModel)]="autoSequence.SeperatorDescription" [ngModelOptions]="{standalone: true}"
+                                        (selectionChange)="generateDemoString()">
+                                <mat-option *ngFor="let seperator of seperators" [value]="seperator">
+                                    {{seperator}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-6">
+                        <h5 class="text-center">{{'AutoSequence.Selected'|translate}}</h5>
+                        <hr />
+                        <ul class="list-group mb-3" [(dragulaModel)]="selected" dragula="DRAGULA_FACTS">
+                            <li class="draggable-item list-group-item d-flex justify-content-between align-items-center"
+                                *ngFor="let item of selected">
+                                {{item.name}}
+                                <button class="btn btn-outline-secondary rounded" (click)="selectedToEditData(item)"
+                                         matTooltip="Edit" matTooltipPosition="above"
+                                        *ngIf="(item.name === 'Institute' || item.name === 'Text' || item.name === 'Sequence Number')">
+                                    <i class="zmdi zmdi-edit"></i>
+                                </button>
+                                <button class="btn btn-outline-secondary rounded" matTooltip="Cancel" matTooltipPosition="above" *ngIf="item.name !== 'Sequence Number'" (click)="discardFromList(item)"><i class="zmdi zmdi-close"></i></button>
+                            </li>
+                        </ul>
+                        <mat-form-field>
+                            <input type="text" matInput placeholder="{{'AutoSequence.Output'|translate}}" disabled [(ngModel)]="demoString" />
+                        </mat-form-field>
+                    </div>
+                </div>
+                <hr />
+                <button class="btn-icon-rounded btn-primary" matTooltip="Save" matTooltipPosition="above" (click)="updateAutoSequenceGenerator()">
+                    <i class="zmdi zmdi-floppy"></i>
+                </button>
+                <button class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="Cancel" matTooltipPosition="above" (click)="getSequenceGenerators()">
+                    <i class="zmdi zmdi-close"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

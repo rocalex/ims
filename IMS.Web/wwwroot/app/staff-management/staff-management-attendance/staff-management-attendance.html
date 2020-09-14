@@ -1,0 +1,89 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Staff.Attendance.Attendance'|translate}}</h2>
+    </div>
+</div>
+<div class="rct-block">
+    <div class="rct-block-content">
+        <form class="row">
+            <mat-form-field class="form-group col-12 col-lg-6">
+                <mat-select placeholder="{{'Common.Select'|translate}} {{'Staff.Attendance.AttendanceType'|translate}}" [(ngModel)]="selectedAttendance"
+                            #AttendanceType="ngModel" [ngModelOptions]="{standalone: true}" (selectionChange)="resetStaff()" required>
+                    <mat-option *ngFor="let attendanceType of attendanceTypes" [value]="attendanceType">
+                        {{attendanceType}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="form-group col-12 col-lg-6" *ngIf="selectedAttendance === 'Daily'">
+                <input matInput [matDatepicker]="admissionDate" placeholder="{{'Staff.Attendance.Date'|translate}} *"
+                       (dateChange)="selectedDate = $event.value" [value]="selectedDate" disabled required>
+                <mat-datepicker-toggle matSuffix [for]="admissionDate"></mat-datepicker-toggle>
+                <mat-datepicker #admissionDate disabled="false"></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field class="form-group col-12 col-lg-6" *ngIf="selectedAttendance === 'Monthly'">
+                <mat-select placeholder="{{'Common.Select'|translate}} {{'Staff.Attendance.AttendanceMonth'|translate}}" [(ngModel)]="selectedMonth"
+                            #SelectedMonthModel="ngModel" [ngModelOptions]="{standalone: true}" (selectionChange)="resetStaff()" required>
+                    <mat-option *ngFor="let monthName of monthNames" [value]="monthName">
+                        {{monthName}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div class="col-12">
+                <button class="btn-icon-rounded btn-primary" matTooltip="Search" matTooltipPosition="above" (click)="getStaffByClassId()"
+                        [disabled]="!(AttendanceType.valid)">
+                    <i class="zmdi zmdi-search"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="rct-block" *ngIf="staffs.length">
+    <div class="table-responsive">
+        <table class="table mb-0">
+            <thead>
+                <tr>
+                    <th>
+                        <mat-checkbox [(ngModel)]="allSelected" (change)="selectAll()" [indeterminate]="indeterminate">
+                        </mat-checkbox>
+                    </th>
+                    <th>{{'Staff.Attendance.Image'|translate}}</th>
+                    <th>{{'Staff.Attendance.Name'|translate}}</th>
+                    <th>{{'Staff.Master.EmployeeId'|translate}}</th>
+                    <th *ngFor="let attendanceColumn of attendanceColumns">{{attendanceColumn}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let Staff of staffs">
+                    <td><mat-checkbox [(ngModel)]="Staff.isSelectedForAttendance" (change)="checkboxChange()" [ngModelOptions]="{standalone: true}"></mat-checkbox></td>
+                    <td>
+                        <div class="embed-responsive embed-responsive-1by1" style="width:50px;">
+                            <img [src]="((Staff.personalImage)?Staff.personalImage:'/assets/img/default_user.png')" class="embed-responsive-item rounded-circle" />
+                        </div>
+                    </td>
+                    <td>{{Staff.firstName}} {{Staff.middleName}} {{Staff.lastName}}</td>
+                    <td>
+                        <a class="btn-outline-primary" routerLink="/staff/information/{{Staff.id}}" routerLinkActive="active">
+                            {{Staff.employeeId}}
+                        </a>
+                    </td>
+                    <td *ngFor="let attendanceColumn of Staff.attendance">
+                        <span (click)="changeNextIcon(Staff.id, attendanceColumn.id)"
+                              [hidden]="attendanceColumn.isDisabled">
+                            <svg *ngIf="attendanceColumn.value === 'None'" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="24" height="24" viewBox="0 0 24 24" class="text-grey" fill="currentcolor"><path d="M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3M19,5V19H5V5H19Z" /></svg>
+                            <svg *ngIf="attendanceColumn.value === 'Present'" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="24" height="24" viewBox="0 0 24 24" class="text-success" fill="currentcolor"><path d="M9,7V17H11V13H13A2,2 0 0,0 15,11V9A2,2 0 0,0 13,7H9M11,9H13V11H11V9M5,3H19A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V5A2,2 0 0,1 5,3Z" /></svg>
+                            <svg *ngIf="attendanceColumn.value === 'Absent'" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="24" height="24" viewBox="0 0 24 24" class="text-danger" fill="currentcolor"><path d="M3,5A2,2 0 0,1 5,3H19A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5C3.89,21 3,20.1 3,19V5M11,7A2,2 0 0,0 9,9V17H11V13H13V17H15V9A2,2 0 0,0 13,7H11M11,9H13V11H11V9Z" /></svg>
+                            <svg *ngIf="attendanceColumn.value === 'Leave'" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="24" height="24" viewBox="0 0 24 24" class="text-warning" fill="currentcolor"><path d="M9,7V17H15V15H11V7H9M5,3H19A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V5A2,2 0 0,1 5,3Z" /></svg>
+                            <svg *ngIf="attendanceColumn.value === 'Half Leave'" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="24" height="24" viewBox="0 0 24 24" class="text-warning" fill="currentcolor"><path d="M9,7V17H11V13H13V17H15V7H13V11H11V7H9M5,3H19A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V5A2,2 0 0,1 5,3Z" /></svg>
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="rct-block-content">
+        <button class="btn-icon-rounded btn-primary mt-3" matTooltip="Save" matTooltipPosition="above" (click)="addStaffAttendance()">
+            <i class="zmdi zmdi-floppy"></i>
+        </button>
+    </div>
+</div>

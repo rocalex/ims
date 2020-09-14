@@ -1,0 +1,112 @@
+<div class="page-title d-flex justify-content-between align-items-center">
+  <div class="page-title-wrap">
+    <h2 class="mb-0">{{'Payroll.Timesheets.Title'|translate}}</h2>
+  </div>
+</div>
+<div class="rct-block">
+  <div class="rct-block-content">
+    <mat-form-field class="col-12 col-lg-6">
+      <mat-select placeholder="{{'Payroll.Timesheets.PayrollType'|translate}}" [(ngModel)]="searchTimesheet.payrollType"
+        (selectionChange)="changePayrollType($event.value)" #payrollType="ngModel" [ngModelOptions]="{standalone: true}"
+        required>
+        <mat-option *ngFor="let payrollType of payrollTypeList" [value]="payrollType.id">
+          {{payrollType.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="col-12 col-lg-6">
+      <mat-select placeholder="{{'Payroll.Timesheets.AcademicYear'|translate}}"
+        [(ngModel)]="searchTimesheet.academicYear" #academicYear="ngModel" [ngModelOptions]="{standalone: true}"
+        required>
+        <mat-option *ngFor="let academicYear of academicYearList" [value]="academicYear.academicYearCode">
+          {{academicYear.academicYearCode}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="col-12 col-lg-6" *ngIf="isMonthType">
+      <mat-select placeholder="{{'Payroll.Timesheets.Month'|translate}}" [(ngModel)]="searchTimesheet.month"
+        #group="ngModel" [ngModelOptions]="{standalone: true}" required>
+        <mat-option *ngFor="let month of monthList" [value]="month.id">
+          {{month.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="col-12 col-lg-6" *ngIf="isDailyType">
+      <input matInput [matDatepicker]="startDate" placeholder="{{'Payroll.Timesheets.FromDate'|translate}} *"
+        [value]="searchTimesheet.fromDate" [max]="currentDate" (dateChange)="searchTimesheet.fromDate = $event.value"
+        disabled required />
+      <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+      <mat-datepicker #startDate disabled="false"></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field class="col-12 col-lg-6">
+      <mat-select placeholder="{{'Payroll.Timesheets.SelectClassTeacher'|translate}}" (selectionChange)="changeTeacher($event.value)"
+        [(ngModel)]="selectedTeacher" #teacherName="ngModel" [ngModelOptions]="{standalone: true}" required>
+        <mat-option *ngFor="let teacher of teacherList" [value]="teacher">
+          {{fullName(teacher)}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div class="col-12">
+      <button class="btn-icon-rounded btn-primary" matTooltip="{{'Payroll.Timesheets.Search'|translate}}"
+        matTooltipPosition="above" (click)="search()">
+        <i class="zmdi zmdi-search"></i>
+      </button>
+    </div>
+  </div>
+</div>
+<div class="fixed-action-btn" *ngIf="isSearched">
+  <a class="btn-floating btn-lg red waves-effect waves-light" matTooltip="{{'Payroll.Timesheets.Save'|translate}}" matTooltipPosition="above" (click)="save()"
+   routerLinkActive="active">
+   <i class="zmdi zmdi-floppy"></i>
+  </a>
+</div>
+<div class="rct-block" *ngIf="isSearched">
+  <div class="rct-block-content">
+    <mat-accordion>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{fullName(selectedTeacher)}}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="rct-block">
+          <div class="rct-full-block">
+            <mat-form-field class="col-12 col-lg-6">
+              <mat-select placeholder="{{'Payroll.Timesheets.Select'|translate}}" (selectionChange)="changePresentType($event.value)"
+                [(ngModel)]="selectedPresence" #teacherName="ngModel" [ngModelOptions]="{standalone: true}" required>
+                <mat-option *ngFor="let present of presentTypeList" [value]="present.id">
+                  {{present.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div class="table-responsive">
+              <table class="table mb-0">
+                <thead>
+                  <tr>
+                    <th>{{'Payroll.Timesheets.Date'|translate}}</th>
+                    <th>{{'Payroll.Timesheets.Present'|translate}}/{{'Payroll.Timesheets.Absent'|translate}}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let present of presentList">
+                    <td>{{present.presenceDate|date}}</td>
+                    <td>
+                      <mat-form-field class="col-12 col-lg-6">
+                        <mat-select placeholder="{{'Payroll.Timesheets.Select'|translate}}"
+                          [(ngModel)]="present.presenceType" #teacherName="ngModel" [ngModelOptions]="{standalone: true}" required>
+                          <mat-option *ngFor="let present of presentTypeList" [value]="present.id">
+                            {{present.name}}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+</div>

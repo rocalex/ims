@@ -1,0 +1,38 @@
+<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Hostel.Lookup.RoomTypes'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary"
+    matTooltip="{{'Payroll.Group.Add'|translate}}" matTooltipPosition="before"
+    routerLink="/hostel/lookup/roomtype/add" routerLinkActive="active"><i class="zmdi zmdi-plus"></i></a>
+</div>
+
+<div class="rct-block">
+    <div class="rct-full-block">
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th>{{'Hostel.Lookup.Code'|translate}}</th>
+                        <th>{{'Hostel.Lookup.Name'|translate}}</th>
+                        <th>{{'Hostel.Lookup.CreatedOn'|translate}}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let roomType of roomTypes">
+                        <td>{{roomType.code}}</td>
+                        <td>{{roomType.name}}</td>
+                        <td>{{roomType.createdOn|date}}</td>
+                        <td> <a class="nav-link" routerLink="/hostel/lookup/roomtype/{{roomType.id}}" *ngIf="isAllowed('Edit')"
+                            matTooltip="{{'Hostel.Lookup.Edit'|translate}}" matTooltipPosition="above" 
+                            routerLinkActive="active"><i class="zmdi zmdi-edit zmdi-hc-lg"></i></a></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="rct-block-title text-center" *ngIf="roomTypes.length==0">
+                {{'Hostel.Lookup.NoRoomType'|translate}}
+            </div>
+        </div>
+    </div>
+</div>

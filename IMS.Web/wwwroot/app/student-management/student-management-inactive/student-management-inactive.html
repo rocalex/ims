@@ -1,0 +1,51 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Student.Information.InActiveStudents'|translate}}</h2>
+    </div>
+</div>
+<div class="shop-grid">
+    <div class="row">
+        <div class="col-12 col-md-6 col-lg-4 col-xl-3" *ngFor="let student of students">
+            <div class="rct-block overflow-hidden">
+                <div class="rct-block-content">
+                    <div class="product-image mb-20 embed-responsive embed-responsive-1by1">
+                        <img [src]="((student.personalImage)?student.personalImage:'/assets/img/default_user.png')" alt="product" class="embed-responsive-item rounded-circle" />
+                    </div>
+                    <div class="rpoduct-detail row">
+                        <h4 class="col-12 mb-15">{{student.firstName}} {{student.lastName}}</h4>
+                        <div class="col-6 p-2 text-grey">
+                            <i class="mr-3 zmdi zmdi-cake zmdi-hc-lg"></i>
+                            <span>{{student.dateOfBirth|date}}</span>
+                        </div>
+                        <div class="col-6 p-2 text-grey">
+                            <i class="mr-3 zmdi zmdi-smartphone zmdi-hc-lg"></i>
+                            <span>{{student.mobileNumber}}</span>
+                        </div>
+                        <div class="col-6 p-2 text-grey">
+                            <i class="mr-3 zmdi zmdi-confirmation-number zmdi-hc-lg"></i>
+                            <span>{{student.rollNumber}}</span>
+                        </div>
+                        <div class="col-6 p-2 text-grey">
+                            <i class="mr-3 zmdi zmdi-confirmation-number zmdi-hc-lg"></i>
+                            <span>{{student.admissionNumber}}</span>
+                        </div>
+                        <div class="col-6 p-2 text-grey">
+                            <i class="mr-3 zmdi zmdi-calendar-alt zmdi-hc-lg"></i>
+                            <span>{{student.admissionDate|date}}</span>
+                        </div>
+                        <div class="col-6 p-2 text-grey">
+                            <i class="mr-3 zmdi zmdi-calendar-alt zmdi-hc-lg"></i>
+                            <span>{{student.createdOn|date}}</span>
+                        </div>
+                    </div>
+                    <div class="rct-block-footer-drawer">
+                        <button class="btn-icon-rounded btn-outline-primary" matTooltip="Re-Activate" matTooltipPosition="above" (click)="markActiveAndInActiveStudent(student.id)"><i class="zmdi zmdi-check"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 rct-block rct-block-title text-center" *ngIf="students.length==0">
+            No Student In-Active
+        </div>
+    </div>
+</div>

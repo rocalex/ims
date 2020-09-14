@@ -1,0 +1,33 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'RoleManagement.Roles'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary"
+       matTooltip="{{'UserManagement.User.AddUser'|translate}}" matTooltipPosition="before"
+       routerLink="/role/add" routerLinkActive="active"><i class="zmdi zmdi-plus"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-full-block">
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th>{{'Common.Name'|translate}}</th>
+                        <th>{{'Common.CreatedOn'|translate}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let role of roles">
+                        <td>{{role.roleName}}</td>
+                        <td>{{role.createdOn|date}}</td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <div class="rct-block-title text-center" *ngIf="roles.length==0">
+                No Roles Added
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,34 @@
+<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Hostel.Lookup.BedStatus'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" *ngIf="isAllowed('Add')"
+    matTooltip="{{'Payroll.Group.Add'|translate}}" matTooltipPosition="before"
+    routerLink="/hostel/lookup/bedstatus/add" routerLinkActive="active"><i class="zmdi zmdi-plus"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-full-block">
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th>{{'Hostel.Lookup.Name'|translate}}</th>
+                        <th>{{'Hostel.Lookup.CreatedOn'|translate}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let bedStatus of bedStatusList">
+                        <td>{{bedStatus.name}}</td>
+                        <td>{{bedStatus.createdOn|date}}</td>
+                        <td> <a class="nav-link" routerLink="/hostel/lookup/bedstatus/{{bedStatus.id}}" *ngIf="isAllowed('Edit')"
+                            matTooltip="{{'Hostel.Lookup.Edit'|translate}}" matTooltipPosition="above" 
+                            routerLinkActive="active"><i class="zmdi zmdi-edit zmdi-hc-lg"></i></a></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="rct-block-title text-center" *ngIf="bedStatusList.length==0">
+                {{'Hostel.Lookup.NoBedStatus'|translate}}
+            </div>
+        </div>
+    </div>
+</div>

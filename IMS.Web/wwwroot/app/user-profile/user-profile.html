@@ -1,0 +1,48 @@
+﻿<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'UserProfile.Profile'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" matTooltip="Edit" matTooltipPosition="above" (click)="enableEditProfile()" routerLinkActive="active"><i class="zmdi zmdi-edit"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-block-content">
+        <form class="row">
+            <mat-form-field class="col-12 col-lg-6">
+                <input matInput placeholder="{{'Common.Name'|translate}}" type="text" required [(ngModel)]="loggedInUserProfile.name" #nameModel="ngModel" maxlength="25"
+                       [ngModelOptions]="{standalone: true}" (keyup)="checkWhiteSpace()" (keydown)="resetError()" [disabled]="!isEditEnabled" />
+
+                <mat-error *ngIf="nameModel.invalid && nameModel.touched">
+                    <span *ngIf="nameModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                </mat-error>
+
+                <mat-hint class="mat-error" *ngIf="nameWhiteSpaceError !== ''">
+                    <span>{{nameWhiteSpaceError}}</span>
+                </mat-hint>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <input matInput type="text" placeholder="{{'UserManagement.User.Email'|translate}}" required [(ngModel)]="loggedInUserProfile.email" #emailModel="ngModel" [ngModelOptions]="{standalone: true}"
+                       pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" (keydown)="resetError()" disabled />
+
+                <mat-error *ngIf="emailModel.invalid && emailModel.touched">
+                    <span *ngIf="emailModel.hasError('required')">{{'Common.Required'|translate}}</span>
+                    <span *ngIf="emailModel.hasError('pattern')">{{'UserManagement.User.Emailformatshouldbe'|translate}}<strong>joe@abc.com</strong></span>
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <input matInput placeholder="{{'Staff.Master.InstituteName'|translate}}" type="text" required [(ngModel)]="loggedInUserProfile.institute" #instituteModel="ngModel"
+                       [ngModelOptions]="{standalone: true}" disabled />
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-lg-6">
+                <input matInput placeholder="{{'UserManagement.User.Role'|translate}}" type="text" required [(ngModel)]="loggedInUserProfile.userGroup" #userGroupModel="ngModel"
+                       [ngModelOptions]="{standalone: true}" disabled />
+            </mat-form-field>
+            <div class="col-12">
+                <button class="btn-icon-rounded btn-primary" matTooltip="Save" matTooltipPosition="above" (click)="updateProfileDetails()" *ngIf="isEditEnabled"><i class="zmdi zmdi-floppy"></i></button>
+                <button class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="Cancel" matTooltipPosition="above" (click)="cancelEditing()" *ngIf="isEditEnabled"><i class="zmdi zmdi-close"></i></button>
+            </div>
+        </form>
+    </div>
+</div>

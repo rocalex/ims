@@ -1,0 +1,120 @@
+<div class="page-title d-flex justify-content-between align-items-center">
+    <div class="page-title-wrap">
+        <h2 class="mb-0">{{'Hostel.Add.AddHostel'|translate}}</h2>
+    </div>
+    <a class="btn-icon-rounded btn-outline-primary" matTooltip="Details" matTooltipPosition="above" routerLink="/hostel/list" routerLinkActive="active"><i class="zmdi zmdi-view-list"></i></a>
+</div>
+<div class="rct-block">
+    <div class="rct-block-content">
+        <mat-form-field class="col-12 col-lg-6">
+            <input type="text" matInput placeholder="{{'Hostel.Add.HostelCode'|translate}}" required NoSpaces
+                   [(ngModel)]="addHostel.code" #NameModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20"/>
+        </mat-form-field>
+
+        <mat-form-field class="col-12 col-lg-6">
+            <input type="text" matInput placeholder="{{'Hostel.Add.HostelName'|translate}}" required
+                   [(ngModel)]="addHostel.name" #Name="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20"/>
+        </mat-form-field>
+
+        <mat-form-field class="col-12 col-lg-6">
+            <mat-select placeholder="{{'Hostel.Add.HostelType'|translate}}" [(ngModel)]="addHostel.hostelType"
+                        #hostelType="ngModel" [ngModelOptions]="{standalone: true}" required>
+                <mat-option *ngFor="let hostelType of hostelTypes" [value]="hostelType.value">
+                    {{hostelType.label}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        
+        <mat-form-field class="col-12 col-lg-6">
+            <input type="text" matInput placeholder="{{'Hostel.Add.ContactPerson'|translate}}" 
+                   [(ngModel)]="addHostel.contactPerson" #SalaryModel="ngModel" [ngModelOptions]="{standalone: true}" />
+        </mat-form-field>
+        
+        <mat-form-field class="col-12 col-lg-6">
+            <input type="text" pattern="[0-9]*" minlength="10" maxlength="10" matInput
+                   placeholder="{{'Hostel.Add.ContactMobile'|translate}}"
+                   [(ngModel)]="addHostel.contactMobile" #MobileNumberModel="ngModel"
+                   [ngModelOptions]="{standalone: true}" />
+        </mat-form-field>
+
+        <mat-form-field class="col-12 col-lg-6">
+            <mat-select placeholder="{{'Hostel.Add.SelectCountry'|translate}}" [(ngModel)]="addHostel.countryId"
+                        #countryName="ngModel" [ngModelOptions]="{standalone: true}" required>
+                <mat-option *ngFor="let country of countryList" [value]="country.id">
+                    {{country.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="col-12 col-lg-6">
+            <mat-select placeholder="{{'Hostel.Add.SelectState'|translate}}" [(ngModel)]="addHostel.stateId"
+                        #stateName="ngModel" [ngModelOptions]="{standalone: true}" required>
+                <mat-option *ngFor="let state of stateList" [value]="state.id">
+                    {{state.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="col-12 col-lg-6">
+            <mat-select placeholder="{{'Hostel.Add.SelectCity'|translate}}" [(ngModel)]="addHostel.cityId"
+                        #cityName="ngModel" [ngModelOptions]="{standalone: true}" required>
+                <mat-option *ngFor="let city of cityList" [value]="city.id">
+                    {{city.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="col-12 col-lg-6">
+            <input type="text" matInput placeholder="{{'Hostel.Add.ZipCode'|translate}}"
+                   [(ngModel)]="addHostel.zipCode" #PermanentZipcodeModel="ngModel" [ngModelOptions]="{standalone: true}" maxlength="20"/>
+        </mat-form-field>
+        
+        <mat-form-field class="col-12 col-lg-6">
+            <textarea type="text" matInput placeholder="{{'Hostel.Add.Address1'|translate}}" required #PresentAddressModel="ngModel" maxlength="100"
+                      [(ngModel)]="addHostel.address1" [ngModelOptions]="{standalone: true}"></textarea>
+        </mat-form-field>
+
+        <mat-form-field class="col-12 col-lg-6">
+            <textarea type="text" matInput placeholder="{{'Hostel.Add.Address2'|translate}}" #PresentAddressModel="ngModel" maxlength="100"
+                      [(ngModel)]="addHostel.address2" [ngModelOptions]="{standalone: true}"></textarea>
+        </mat-form-field>
+        
+        <mat-form-field class="col-12 col-lg-6">
+            <input type="number" matInput placeholder="{{'Hostel.Add.HostelCautionDeposit'|translate}}"
+                   [(ngModel)]="addHostel.hostelCautionDeposit" #HostelCautionDeposit="ngModel" 
+                   [ngModelOptions]="{standalone: true}" maxlength="20" />
+        </mat-form-field>
+
+        <div class="col-12 col-lg-6 form-group">
+            <mat-slide-toggle [(ngModel)]="addHostel.status" [ngModelOptions]="{standalone: true}">
+                {{'Hostel.Add.Status'|translate}}
+            </mat-slide-toggle>
+        </div>
+
+        <div class="col-12 col-lg-6 form-group">
+            <mat-select multiple placeholder="{{'Hostel.Add.AssignMembers'|translate}}" [(ngModel)]="addHostel.assignMembers" #assignMembers="ngModel" [ngModelOptions]="{standalone: true}" required>
+                <mat-option *ngFor="let student of memberList" [value]="student.id">{{student.firstName + ' ' + (student.middleName?student.middleName:'') + ' ' + student.lastName}}</mat-option>
+            </mat-select>
+        </div>
+        
+        <mat-form-field class="col-12 col-lg-6">
+            <input matInput ngx-google-places-autocomplete #placesRef="ngx-places" [(ngModel)]="addHostel.placeName"
+                   placeholder="{{'Hostel.Add.PlaceName'|translate}}" (onAddressChange)="handleAddressChange($event)" />
+        </mat-form-field>
+        <div class="col-12 col-lg-6">
+            <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" [disableDefaultUI]="false" [zoomControl]="false"
+                     (mapClick)="mapClicked($event)">
+                <agm-marker [latitude]="markers.lat" [longitude]="markers.lng" [label]="markers.label"
+                            [markerDraggable]="markers.draggable">
+                </agm-marker>
+            </agm-map>
+        </div>
+
+        <div class="col-12">
+            <button class="btn-icon-rounded btn-primary" matTooltip="{{'Hostel.Add.Save'|translate}}" matTooltipPosition="above" (click)="add()">
+                <i class="zmdi zmdi-floppy"></i>
+            </button>
+            <a class="ml-2 btn-icon-rounded btn-outline-secondary" matTooltip="{{'Hostel.Add.Cancel'|translate}}" matTooltipPosition="above" routerLink="/hostel/list" routerLinkActive="active"><i class="zmdi zmdi-close"></i></a>
+        </div>
+    </div>
+</div>
